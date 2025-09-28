@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "com.atarusov.justcounter";
+option java_multiple_files = true;
+
+message CounterProto {
+  string id = 1;
+  string title = 2;
+  int32 value = 3;
+  uint64 color = 4;
+}
+
+message CounterListProto {
+  repeated CounterProto counters = 1;
+}
