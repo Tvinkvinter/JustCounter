@@ -73,6 +73,8 @@ class CounterListScreenViewModel @Inject constructor(
             Action.CreateNewCounter -> createNewCounter()
             is Action.CounterMinusClick -> onCounterMinusClick(action.counterId)
             is Action.CounterPlusClick -> onCounterPlusClick(action.counterId)
+            is Action.CounterTitleInput -> onTitleInput(action.counterId, action.newTitle)
+            is Action.CounterTitleInputDone -> onTitleInputDone(action.counterId)
             is Action.CounterValueInput -> onValueInput(action.counterId, action.newValue)
             is Action.CounterValueInputDone -> onCounterValueInputDone(action.counterId)
             is Action.CounterChangeColor -> onCounterChangeColor(action.counterId, action.newColor)
@@ -98,6 +100,27 @@ class CounterListScreenViewModel @Inject constructor(
         val counter = getCounterById(counterId)
         fillEmptyFields(counterId)
         updateCounter(counter.copy(value = (counter.value + 1).coerceAtMost(999999999)))
+    }
+
+    private fun onTitleInput(counterId: String, input: String) {
+        val counterItem = getCounterItemById(counterId)
+        if (input.length <= 12) {
+            updateCounterItem(counterItem.copy(titleField = input))
+            updateCounter(getCounterById(counterId).copy(title = input))
+        }
+    }
+
+    private fun onTitleInputDone(counterId: String) {
+        val counterItem = getCounterItemById(counterId)
+        viewModelScope.launch {
+            if (counterItem.titleField.isBlank()) {
+                _screenEvents.emit(OneTimeEvent.ShowTitleInputError(counterId))
+            } else {
+                _screenEvents.emit(OneTimeEvent.ClearFocus)
+                fillEmptyFields(counterId)
+            }
+        }
+
     }
 
     private fun onValueInput(counterId: String, input: String) {

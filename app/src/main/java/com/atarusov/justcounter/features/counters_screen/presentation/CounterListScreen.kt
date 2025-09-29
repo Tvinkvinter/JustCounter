@@ -1,5 +1,6 @@
 package com.atarusov.justcounter.features.counters_screen.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,16 +42,20 @@ import com.atarusov.justcounter.ui.theme.JustCounterTheme
 fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
 
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val titleEmptyErrorMessage = stringResource(R.string.counter_screen_empty_title_error)
+    val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
             when (event) {
-                OneTimeEvent.ClearFocus -> focusManager.clearFocus()
+                OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+                is OneTimeEvent.ShowTitleInputError -> {
+                    Toast.makeText(context, titleEmptyErrorMessage, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
-
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -97,14 +103,22 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                             Action.OpenCounterEditDialog(it)
                         )
                     },
+                    onInputTitle = {
+                        viewModel.onAction(Action.CounterTitleInput(counterItem.counterId, it))
+                    },
+                    onInputTitleDone = {
+                        viewModel.onAction(Action.CounterTitleInputDone(counterItem.counterId))
+                    },
                     onInputValue = {
                         viewModel.onAction(
                             Action.CounterValueInput(counterItem.counterId, it)
                         )
                     },
-                    onInputDone = { viewModel.onAction(
-                        Action.CounterValueInputDone(counterItem.counterId)
-                    ) },
+                    onInputValueDone = {
+                        viewModel.onAction(
+                            Action.CounterValueInputDone(counterItem.counterId)
+                        )
+                    },
                     modifier = Modifier.padding(top = 12.dp)
                 )
             }
@@ -114,7 +128,21 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
     state.editDialog?.let { editDialogState ->
         EditCounterDialog(
             state = editDialogState,
-            onInputValue = { newValue ->
+            events = viewModel.screenEvents,
+            onTitleInput = { newTitle ->
+                viewModel.onAction(
+                    Action.CounterTitleInput(
+                        counterId = editDialogState.itemState.counterId,
+                        newTitle = newTitle
+                    )
+                )
+            },
+            onTitleInputDone = { counterId ->
+                viewModel.onAction(
+                    Action.CounterTitleInputDone(counterId)
+                )
+            },
+            onValueInput = { newValue ->
                 viewModel.onAction(
                     Action.CounterValueInput(
                         counterId = editDialogState.itemState.counterId,
