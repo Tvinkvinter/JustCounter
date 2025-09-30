@@ -1,17 +1,23 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.ui
 
 import android.widget.Toast
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -37,6 +43,7 @@ import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.OneTimeEvent
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
+import com.atarusov.justcounter.ui.theme.RemoveRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListAction as Action
 
@@ -61,11 +68,22 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
     }
     CompositionLocalProvider(LocalTextSelectionColors provides TransparentTextSelectionColors) {
         Scaffold(
-            topBar = { CounterListTopAppBar() },
-            floatingActionButton = { CounterListFAB { viewModel.onAction(Action.CreateNewCounter) } },
+            topBar = {
+                CounterListTopAppBar(
+                    removeMode = state.removeMode,
+                    onRemoveModeSwitch = { viewModel.onAction(Action.SwitchRemoveMode) }
+                )
+            },
+            floatingActionButton = {
+                CounterListFAB(
+                    onClick = { viewModel.onAction(Action.CreateNewCounter) },
+                    isVisible = !state.removeMode
+                )
+            },
         ) { paddingValues ->
             CounterList(
                 paddingValues = paddingValues,
+                removeMode = state.removeMode,
                 counterItems = state.counterItems,
                 onAction = { viewModel.onAction(it) }
             )
@@ -94,10 +112,31 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CounterListTopAppBar() {
+fun CounterListTopAppBar(
+    removeMode: Boolean,
+    onRemoveModeSwitch: () -> Unit
+) {
     TopAppBar(
         title = { Text("Test") },
         modifier = Modifier.shadow(4.dp),
+        actions = {
+            IconButton(
+                onClick = onRemoveModeSwitch,
+                modifier = Modifier.size(40.dp),
+                colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = if (removeMode) RemoveRed else Color.DarkGray
+                )
+            ) {
+                Icon(
+                    painter = painterResource(
+                        if (removeMode) R.drawable.ic_trash_can_opened
+                        else R.drawable.ic_trash_can
+                    ),
+                    contentDescription = stringResource(R.string.counter_screen_add_btn_description),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White
         ),
@@ -106,20 +145,32 @@ fun CounterListTopAppBar() {
 }
 
 @Composable
-fun CounterListFAB(onClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = onClick
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_plus_48),
-            contentDescription = stringResource(R.string.counter_screen_add_btn_description)
-        )
-    }
+fun CounterListFAB(
+    onClick: () -> Unit,
+    isVisible: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val offsetY by animateDpAsState(
+        targetValue = if (isVisible) 0.dp else 100.dp,
+        label = "fabOffset"
+    )
+
+        FloatingActionButton(
+            onClick = onClick,
+            modifier = modifier.offset(x=0.dp, y=offsetY)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_plus),
+                contentDescription = stringResource(R.string.counter_screen_add_btn_description)
+            )
+        }
+
 }
 
 @Composable
 fun CounterList(
     paddingValues: PaddingValues,
+    removeMode: Boolean,
     counterItems: List<CounterItem>,
     onAction: (action: Action) -> Unit
 ) {
@@ -133,21 +184,22 @@ fun CounterList(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        itemsIndexed(
+        items(
             items = counterItems,
-            key = { index, counterItem -> counterItem.counterId },
-            contentType = { index, counterItem -> CounterItem::class }
-        ) { index, counterItem ->
+            key = { it.counterId },
+        ) { counterItem ->
             CounterItem(
                 state = counterItem,
-                onPLusClick = { onAction(Action.PlusClick(it)) },
-                onMinusClick = { onAction(Action.MinusClick(it)) },
-                onEditClick = { onAction(Action.OpenCounterEditDialog(it)) },
+                removeMode = removeMode,
+                onPLusClick = { onAction(Action.PlusClick(counterItem.counterId)) },
+                onMinusClick = { onAction(Action.MinusClick(counterItem.counterId)) },
+                onEditClick = { onAction(Action.OpenCounterEditDialog(counterItem.counterId)) },
                 onInputTitle = { onAction(Action.TitleInput(counterItem.counterId, it)) },
                 onInputTitleDone = { onAction(Action.TitleInputDone(counterItem.counterId)) },
                 onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
                 onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId)) },
-                modifier = Modifier.padding(top = 12.dp)
+                onRemoveClick = { onAction(Action.RemoveClick(counterItem.counterId)) },
+                modifier = Modifier.padding(top = 12.dp).animateItem()
             )
         }
     }
@@ -156,8 +208,20 @@ fun CounterList(
 
 @Composable
 @Preview(showBackground = true)
-fun CounterScreenPreview() {
+fun CounterTopAppBarPreview() {
     JustCounterTheme {
-        CounterListScreen()
+        Column {
+            CounterListTopAppBar(true, {})
+            CounterListTopAppBar(false, {})
+        }
+
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun CounterScreenFABPreview() {
+    JustCounterTheme {
+        CounterListFAB({}, true)
     }
 }

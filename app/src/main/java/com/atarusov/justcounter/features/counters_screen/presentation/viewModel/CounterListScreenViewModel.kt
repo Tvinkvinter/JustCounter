@@ -21,6 +21,7 @@ import javax.inject.Inject
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListAction as Action
 
 data class CounterListScreenState(
+    val removeMode: Boolean = false,
     val counterItems: List<CounterItem> = listOf(),
     val editDialog: EditDialogState? = null
 )
@@ -59,7 +60,10 @@ class CounterListScreenViewModel @Inject constructor(
                 val newCounterItemList = newCounterList.map { CounterItem(it) }
                 val newEditDialogState = getUpdatedEditDialogState(newCounterItemList)
                 _screenState.update { oldScreenState ->
-                    oldScreenState.copy(newCounterItemList, newEditDialogState)
+                    oldScreenState.copy(
+                        counterItems = newCounterItemList,
+                        editDialog = newEditDialogState
+                    )
                 }
             }
         }
@@ -71,6 +75,7 @@ class CounterListScreenViewModel @Inject constructor(
 
     fun onAction(action: Action) {
         when (action) {
+            Action.SwitchRemoveMode -> switchRemoveMode()
             Action.CreateNewCounter -> createNewCounter()
             is Action.MinusClick -> onCounterMinusClick(action.counterId)
             is Action.PlusClick -> onCounterPlusClick(action.counterId)
@@ -79,8 +84,15 @@ class CounterListScreenViewModel @Inject constructor(
             is Action.ValueInput -> onValueInput(action.counterId, action.newValue)
             is Action.ValueInputDone -> onCounterValueInputDone(action.counterId)
             is Action.ChangeColor -> onCounterChangeColor(action.counterId, action.newColor)
+            is Action.RemoveClick -> onRemoveClick(action.counterId)
             is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
             is Action.CloseCounterEditDialog -> closeEditDialog(action.cancelEdits)
+        }
+    }
+
+    private fun switchRemoveMode() {
+        _screenState.update { currentState ->
+            currentState.copy(removeMode = !currentState.removeMode)
         }
     }
 
@@ -150,6 +162,12 @@ class CounterListScreenViewModel @Inject constructor(
     private fun onCounterChangeColor(counterId: String, newColor: Color) {
         val counter = getCounterById(counterId)
         updateCounter(counter.copy(color = newColor))
+    }
+
+    private fun onRemoveClick(counterId: String) {
+        viewModelScope.launch {
+            counterListRepository.removeCounter(counterId)
+        }
     }
 
     private fun openEditDialog(counterId: String) {

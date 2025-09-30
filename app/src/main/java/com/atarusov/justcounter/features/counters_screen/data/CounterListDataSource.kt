@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -41,11 +40,9 @@ class CounterListDataSource @Inject constructor(
     }
 
     override suspend fun removeCounter(counterId: String) {
-        withContext(Dispatchers.IO) {
-            dataStore.updateData { counterListProto ->
-                val itemIndex = counterListProto.countersList.indexOfFirst { it.id == counterId }
-                counterListProto.toBuilder().removeCounters(itemIndex).build()
-            }
+        dataStore.updateData { counterListProto ->
+            val itemIndex = counterListProto.countersList.indexOfFirst { it.id == counterId }
+            counterListProto.toBuilder().removeCounters(itemIndex).build()
         }
     }
 }
