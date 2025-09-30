@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.ui
+package com.atarusov.justcounter.features.counters_screen.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
@@ -56,8 +56,8 @@ fun ColorPalette(
 fun ColorPalettePreview() {
     JustCounterTheme {
         ColorPalette(
-            CounterCardColors.green,
-            {}
+            selectedColor = CounterCardColors.green,
+            onColorSelected = {}
         )
     }
 }

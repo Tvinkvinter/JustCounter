@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.atarusov.justcounter.features.counters_screen.presentation.CounterListScreen
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.CounterListScreen
 
 @Composable
 fun SetupNavGraph(

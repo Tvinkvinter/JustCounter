@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
-import com.atarusov.justcounter.features.counters_screen.presentation.edit_counter_dialog.EditDialogState
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListAction as Action
 
 data class CounterListScreenState(
     val counterItems: List<CounterItem> = listOf(),
@@ -71,13 +72,13 @@ class CounterListScreenViewModel @Inject constructor(
     fun onAction(action: Action) {
         when (action) {
             Action.CreateNewCounter -> createNewCounter()
-            is Action.CounterMinusClick -> onCounterMinusClick(action.counterId)
-            is Action.CounterPlusClick -> onCounterPlusClick(action.counterId)
-            is Action.CounterTitleInput -> onTitleInput(action.counterId, action.newTitle)
-            is Action.CounterTitleInputDone -> onTitleInputDone(action.counterId)
-            is Action.CounterValueInput -> onValueInput(action.counterId, action.newValue)
-            is Action.CounterValueInputDone -> onCounterValueInputDone(action.counterId)
-            is Action.CounterChangeColor -> onCounterChangeColor(action.counterId, action.newColor)
+            is Action.MinusClick -> onCounterMinusClick(action.counterId)
+            is Action.PlusClick -> onCounterPlusClick(action.counterId)
+            is Action.TitleInput -> onTitleInput(action.counterId, action.newTitle)
+            is Action.TitleInputDone -> onTitleInputDone(action.counterId)
+            is Action.ValueInput -> onValueInput(action.counterId, action.newValue)
+            is Action.ValueInputDone -> onCounterValueInputDone(action.counterId)
+            is Action.ChangeColor -> onCounterChangeColor(action.counterId, action.newColor)
             is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
             is Action.CloseCounterEditDialog -> closeEditDialog(action.cancelEdits)
         }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Just Counter</string>
 
+    <string name="counter_edit_dialog_btn_cancel">Cancel</string>
+    <string name="counter_edit_dialog_btn_save">Save</string>
     <string name="counter_screen_empty_title_error">Title can\'t be empty</string>
 
     <string name="counter_screen_plus_btn_description">Plus</string>

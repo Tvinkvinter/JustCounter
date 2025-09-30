@@ -1,6 +1,5 @@
-package com.atarusov.justcounter.ui
+package com.atarusov.justcounter.features.counters_screen.presentation.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,8 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -22,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -63,21 +59,15 @@ fun CounterItem(
         ),
         elevation = CardDefaults.cardElevation(6.dp),
     ) {
-        val customTextSelectionColors = TextSelectionColors(
-            handleColor = Color.Transparent,
-            backgroundColor = Color.Transparent
-        ) // TODO: refactor
-
-        CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                Modifier.fillMaxWidth().padding(top = 4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
             ) {
-                Spacer(
-                    modifier = Modifier.size(24.dp)
-                )
+                Spacer(Modifier.size(24.dp))
                 BasicTextField(
                     value = state.titleField,
                     onValueChange = onInputTitle,
@@ -97,24 +87,19 @@ fun CounterItem(
                     cursorBrush = SolidColor(state.color.getContrastContentColor())
                 )
                 IconButton(
-                    {}, modifier = Modifier
-                        .size(24.dp),
+                    onClick = { onEditClick(state.counterId) },
+                    modifier = Modifier.size(24.dp),
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_pencil_48),
                         contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
-                        modifier = Modifier
-                            .alpha(0.5f)
-                            .clickable(
-                                onClick = { onEditClick(state.counterId) }
-                            ),
+                        modifier = Modifier.alpha(0.5f),
                     )
                 }
             }
             TextField(
                 value = state.valueField,
                 onValueChange = onInputValue,
-                modifier = Modifier,
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
                     textAlign = TextAlign.Center
                 ),
@@ -139,7 +124,7 @@ fun CounterItem(
             Row(Modifier.padding(bottom = 4.dp)) {
                 IconButton(  //todo: обрезается ripple
                     onClick = { onMinusClick(state.counterId) },
-                    Modifier
+                    modifier = Modifier
                         .size(24.dp)
                         .weight(1f)
                 ) {
@@ -162,7 +147,6 @@ fun CounterItem(
                 }
             }
         }
-        }
     }
 }
 
@@ -170,14 +154,14 @@ fun CounterItem(
 @Composable
 private fun CounterPreview() {
     JustCounterTheme {
-        val counter = Counter(
+        val counterItem = CounterItem(Counter(
             title = "Tvinkvinter",
             color = CounterCardColors.getRandom(),
             value = 128
-        )
+        ))
 
         CounterItem(
-            state = CounterItem(counter),
+            state = counterItem,
             onPLusClick = {},
             onMinusClick = {},
             onEditClick = {},
