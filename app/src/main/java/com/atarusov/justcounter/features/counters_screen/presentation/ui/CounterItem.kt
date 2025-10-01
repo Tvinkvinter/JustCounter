@@ -2,6 +2,8 @@ package com.atarusov.justcounter.features.counters_screen.presentation.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,13 +18,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -84,6 +86,7 @@ fun CounterItem(
                         .padding(start = 4.dp)
                         .size(24.dp)
                 )
+
                 BasicTextField(
                     value = state.titleField,
                     onValueChange = onInputTitle,
@@ -105,25 +108,26 @@ fun CounterItem(
                     singleLine = true,
                     cursorBrush = SolidColor(state.color.getContrastContentColor())
                 )
-                IconButton(
-                    onClick = {
-                        if (removeMode) onRemoveClick()
-                        else onEditClick()
-                    },
+
+                Icon(
+                    painter = painterResource(
+                        if (removeMode) R.drawable.ic_cross
+                        else R.drawable.ic_pencil
+                    ),
+                    contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
                     modifier = Modifier
                         .padding(end = 4.dp)
-                        .size(24.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            if (removeMode) R.drawable.ic_cross
-                            else R.drawable.ic_pencil
-                        ),
-                        contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
-                        modifier = Modifier.alpha(if (removeMode) 1f else 0.5f),
-                        tint = state.color.getContrastContentColor()
-                    )
-                }
+                        .size(24.dp)
+                        .clickable(
+                            onClick = {
+                                if (removeMode) onRemoveClick()
+                                else onEditClick()
+                            },
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(bounded = false, radius = 16.dp),
+                        ).alpha(if (removeMode) 1f else 0.5f),
+                    tint = state.color.getContrastContentColor()
+                )
             }
             TextField(
                 value = state.valueField,
@@ -159,37 +163,33 @@ fun CounterItem(
                     .padding(bottom = 4.dp)
                     .alpha(contentAlpha)
             ) {
-                IconButton(  //todo: обрезается ripple
-                    onClick = { onMinusClick() },
+                Icon(
+                    painter = painterResource(R.drawable.ic_minus),
+                    contentDescription = stringResource(R.string.counter_screen_plus_btn_description),
                     modifier = Modifier
+                        .weight(1f)
                         .size(24.dp)
-                        .weight(1f),
-                    enabled = !removeMode,
-                    colors = IconButtonDefaults.iconButtonColors(
-                        disabledContentColor = state.color.getContrastContentColor()
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_minus),
-                        contentDescription = stringResource(R.string.counter_screen_plus_btn_description),
-                    )
-                }
+                        .clickable(
+                            onClick = onMinusClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(bounded = false, radius = 16.dp),
+                            enabled = !removeMode
+                        )
+                )
 
-                IconButton(
-                    onClick = { onPLusClick() },
+                Icon(
+                    painter = painterResource(R.drawable.ic_plus),
+                    contentDescription = stringResource(R.string.counter_screen_plus_btn_description),
                     modifier = Modifier
+                        .weight(1f)
                         .size(24.dp)
-                        .weight(1f),
-                    enabled = !removeMode,
-                    colors = IconButtonDefaults.iconButtonColors(
-                        disabledContentColor = state.color.getContrastContentColor()
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_plus),
-                        contentDescription = stringResource(R.string.counter_screen_minus_btn_description),
-                    )
-                }
+                        .clickable(
+                            onClick = onPLusClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(bounded = false, radius = 16.dp),
+                            enabled = !removeMode
+                        )
+                )
             }
         }
     }
