@@ -96,7 +96,9 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                 onTitleInput = { input ->
                     viewModel.onAction(Action.TitleInput(dialogState.itemState.counterId, input))
                 },
-                onTitleInputDone = { counterId -> viewModel.onAction(Action.TitleInputDone(counterId)) },
+                onTitleInputDone = {
+                    viewModel.onAction(Action.TitleInputDone(dialogState.itemState.counterId))
+                },
                 onValueInput = { input ->
                     viewModel.onAction(Action.ValueInput(dialogState.itemState.counterId, input))
                 },
@@ -155,16 +157,15 @@ fun CounterListFAB(
         label = "fabOffset"
     )
 
-        FloatingActionButton(
-            onClick = onClick,
-            modifier = modifier.offset(x=0.dp, y=offsetY)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_plus),
-                contentDescription = stringResource(R.string.counter_screen_add_btn_description)
-            )
-        }
-
+    FloatingActionButton(
+        onClick = onClick,
+        modifier = modifier.offset(x=0.dp, y=offsetY)
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_plus),
+            contentDescription = stringResource(R.string.counter_screen_add_btn_description)
+        )
+    }
 }
 
 @Composable

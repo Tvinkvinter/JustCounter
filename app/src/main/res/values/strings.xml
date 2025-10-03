@@ -9,4 +9,6 @@
     <string name="counter_screen_minus_btn_description">Minus</string>
     <string name="counter_screen_edit_btn_description">Edit</string>
     <string name="counter_screen_add_btn_description">Create new counter</string>
+
+    <string name="counter_screen_edit_title_btn_description">Edit title</string>
 </resources>
