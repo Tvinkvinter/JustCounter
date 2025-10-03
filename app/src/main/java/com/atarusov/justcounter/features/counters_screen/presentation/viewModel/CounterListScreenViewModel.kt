@@ -91,8 +91,8 @@ class CounterListScreenViewModel @Inject constructor(
     }
 
     private fun switchRemoveMode() {
-        _screenState.update { currentState ->
-            currentState.copy(removeMode = !currentState.removeMode)
+        _screenState.update { oldScreenState ->
+            oldScreenState.copy(removeMode = !oldScreenState.removeMode)
         }
     }
 
@@ -174,11 +174,9 @@ class CounterListScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val openForCounterItem = getCounterItemById(counterId)
             val openForCounter = getCounterById(counterId)
-            _screenState.emit(
-                _screenState.value.copy(
-                    editDialog = EditDialogState(openForCounterItem, openForCounter)
-                )
-            )
+            _screenState.update { oldScreenState ->
+                oldScreenState.copy(editDialog = EditDialogState(openForCounterItem, openForCounter))
+            }
             _screenEvents.emit(OneTimeEvent.ClearFocus)
         }
     }
@@ -188,7 +186,7 @@ class CounterListScreenViewModel @Inject constructor(
             val editDialogState = _screenState.value.editDialog!!
             fillEmptyFields(editDialogState.itemState.counterId)
             if (cancelEdits) updateCounter(editDialogState.getInitialCounterState())
-            _screenState.emit(_screenState.value.copy(editDialog = null))
+            _screenState.update { oldScreenState -> oldScreenState.copy(editDialog = null) }
         }
     }
 
@@ -214,8 +212,8 @@ class CounterListScreenViewModel @Inject constructor(
                 else oldCounterItem
             }
 
-            _screenState.update {
-                it.copy(
+            _screenState.update { oldScreenState ->
+                oldScreenState.copy(
                     counterItems = newCounterItems,
                     editDialog = getUpdatedEditDialogState(newCounterItem)
                 )
