@@ -1,1 +1,17 @@
+# Android Studio specific
+.idea/deploymentTargetSelector.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/libraries
+
+# User-specific
+*.iml
+
+# Build output
+.gradle
+/local.properties
 /build
+/captures
