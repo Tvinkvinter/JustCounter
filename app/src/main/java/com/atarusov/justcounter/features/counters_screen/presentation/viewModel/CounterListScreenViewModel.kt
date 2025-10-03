@@ -179,6 +179,7 @@ class CounterListScreenViewModel @Inject constructor(
                     editDialog = EditDialogState(openForCounterItem, openForCounter)
                 )
             )
+            _screenEvents.emit(OneTimeEvent.ClearFocus)
         }
     }
 
