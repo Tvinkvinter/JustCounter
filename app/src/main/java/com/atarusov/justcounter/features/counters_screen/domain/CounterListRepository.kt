@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface CounterListRepository {
     val counterListFlow: Flow<List<Counter>>
+    suspend fun getAllCounters(): List<Counter>
+    suspend fun getCounterById(counterId: String): Counter
     suspend fun addCounter(counter: Counter)
     suspend fun updateCounter(newCounterState: Counter)
     suspend fun removeCounter(counterId: String)

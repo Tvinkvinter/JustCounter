@@ -38,14 +38,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditCounterDialog
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListScreenViewModel
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.OneTimeEvent
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.RemoveRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListAction as Action
 
 @Composable
 fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
@@ -76,7 +76,7 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
             },
             floatingActionButton = {
                 CounterListFAB(
-                    onClick = { viewModel.onAction(Action.CreateNewCounter) },
+                    onClick = { viewModel.onAction(Action.AddCounter) },
                     isVisible = !state.removeMode
                 )
             },
@@ -96,17 +96,27 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                 onTitleInput = { input ->
                     viewModel.onAction(Action.TitleInput(dialogState.itemState.counterId, input))
                 },
-                onTitleInputDone = {
-                    viewModel.onAction(Action.TitleInputDone(dialogState.itemState.counterId))
+                onTitleInputDone = { input ->
+                    viewModel.onAction(Action.TitleInputDone(dialogState.itemState.counterId, input))
                 },
                 onValueInput = { input ->
                     viewModel.onAction(Action.ValueInput(dialogState.itemState.counterId, input))
                 },
+                onValueInputDone = { input ->
+                    viewModel.onAction(Action.ValueInputDone(dialogState.itemState.counterId, input))
+                },
                 onColorSelected = { selectedColor ->
                     viewModel.onAction(Action.ChangeColor(dialogState.itemState.counterId, selectedColor))
                 },
-                onDismiss = { viewModel.onAction(Action.CloseCounterEditDialog(true)) },
-                onConfirm = { viewModel.onAction(Action.CloseCounterEditDialog()) }
+                onDismiss = {
+                    viewModel.onAction(
+                        Action.CloseCounterEditDialog(
+                            dialogState.itemState,
+                            dialogState.getInitialCounterState()
+                        )
+                    )
+                },
+                onConfirm = { viewModel.onAction(Action.CloseCounterEditDialog(dialogState.itemState)) }
             )
         }
     }
@@ -196,10 +206,10 @@ fun CounterList(
                 onMinusClick = { onAction(Action.MinusClick(counterItem.counterId)) },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counterItem.counterId)) },
                 onInputTitle = { onAction(Action.TitleInput(counterItem.counterId, it)) },
-                onInputTitleDone = { onAction(Action.TitleInputDone(counterItem.counterId)) },
+                onInputTitleDone = { onAction(Action.TitleInputDone(counterItem.counterId, it)) },
                 onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
-                onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId)) },
-                onRemoveClick = { onAction(Action.RemoveClick(counterItem.counterId)) },
+                onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId, it)) },
+                onRemoveClick = { onAction(Action.RemoveCounter(counterItem.counterId)) },
                 modifier = Modifier.padding(top = 12.dp).animateItem()
             )
         }

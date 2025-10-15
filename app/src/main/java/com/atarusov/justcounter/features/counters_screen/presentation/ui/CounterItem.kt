@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterItem
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
@@ -51,10 +51,10 @@ fun CounterItem(
     onPLusClick: () -> Unit,
     onMinusClick: () -> Unit,
     onEditClick: () -> Unit,
-    onInputTitle: (titleInput: String) -> Unit,
-    onInputTitleDone: () -> Unit,
-    onInputValue: (valueInput: String) -> Unit,
-    onInputValueDone: () -> Unit,
+    onInputTitle: (input: String) -> Unit,
+    onInputTitleDone: (input: String) -> Unit,
+    onInputValue: (input: String) -> Unit,
+    onInputValueDone: (input: String) -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -103,7 +103,7 @@ fun CounterItem(
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onInputTitleDone() }
+                        onDone = { onInputTitleDone(state.titleField) }
                     ),
                     singleLine = true,
                     cursorBrush = SolidColor(state.color.getContrastContentColor())
@@ -143,7 +143,7 @@ fun CounterItem(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { onInputValueDone() }
+                    onDone = { onInputValueDone(state.valueField) }
                 ),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,

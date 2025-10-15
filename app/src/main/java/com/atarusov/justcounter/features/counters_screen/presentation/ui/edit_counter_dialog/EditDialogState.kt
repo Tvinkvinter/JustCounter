@@ -1,7 +1,7 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog
 
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterItem
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 
 data class EditDialogState(
     val itemState: CounterItem,

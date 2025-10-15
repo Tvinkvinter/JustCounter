@@ -55,9 +55,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.ColorPalette
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterItem
-import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.OneTimeEvent
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import kotlinx.coroutines.flow.Flow
@@ -67,9 +67,10 @@ import kotlinx.coroutines.flow.emptyFlow
 fun EditCounterDialog(
     state: EditDialogState,
     events: Flow<OneTimeEvent>,
-    onTitleInput: (newTitle: String) -> Unit,
-    onTitleInputDone: () -> Unit,
+    onTitleInput: (input: String) -> Unit,
+    onTitleInputDone: (input: String) -> Unit,
     onValueInput: (newValue: String) -> Unit,
+    onValueInputDone: (input: String) -> Unit,
     onColorSelected: (selectedColor: Color) -> Unit,
     onDismiss: () -> Unit,
     onConfirm: (newCounterState: CounterItem) -> Unit
@@ -105,7 +106,7 @@ fun EditCounterDialog(
                     color = state.itemState.color
                 ) {
                     TitleTextFieldWithIcon(
-                        value = state.itemState.titleField,
+                        title = state.itemState.titleField,
                         onValueChange = onTitleInput,
                         onInputDone = onTitleInputDone,
                         itemColor = state.itemState.color,
@@ -126,7 +127,10 @@ fun EditCounterDialog(
                     ),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
-                    )
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { onValueInputDone(state.itemState.valueField) }
+                    ),
                 )
 
                 ColorPalette(
@@ -167,14 +171,14 @@ fun EditCounterDialog(
 
 @Composable
 fun TitleTextFieldWithIcon(
-    value: String,
-    onValueChange: (newValue: String) -> Unit,
-    onInputDone: () -> Unit,
+    title: String,
+    onValueChange: (input: String) -> Unit,
+    onInputDone: (input: String) -> Unit,
     itemColor: Color,
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
-    var textFieldValue by remember(value) { mutableStateOf(TextFieldValue(value)) }
+    var textFieldValue by remember(title) { mutableStateOf(TextFieldValue(title)) }
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -199,7 +203,7 @@ fun TitleTextFieldWithIcon(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { onInputDone() }
+                onDone = { onInputDone(title) }
             ),
             singleLine = true,
             cursorBrush = SolidColor(itemColor.getContrastContentColor())
@@ -215,8 +219,8 @@ fun TitleTextFieldWithIcon(
                     indication = ripple(bounded = false, radius = 16.dp),
                 ) {
                     textFieldValue = textFieldValue.copy(
-                        text = value,
-                        selection = TextRange(value.length)
+                        text = title,
+                        selection = TextRange(title.length)
                     )
                     focusRequester.requestFocus()
                 },
@@ -240,7 +244,7 @@ fun EditCounterDialogPreview() {
             EditDialogState(
                 counterItem,
                 initialCounterState = Counter("Test", 128, CounterCardColors.red)
-            ), emptyFlow(), {}, {}, {}, {}, {}, {}
+            ), emptyFlow(), {}, {}, {}, {}, {}, {}, {}
         )
     }
 }
