@@ -34,12 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
-import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
@@ -51,9 +51,9 @@ fun CounterItem(
     onPLusClick: () -> Unit,
     onMinusClick: () -> Unit,
     onEditClick: () -> Unit,
-    onInputTitle: (input: String) -> Unit,
+    onInputTitle: (inputTextField: TextFieldValue) -> Unit,
     onInputTitleDone: (input: String) -> Unit,
-    onInputValue: (input: String) -> Unit,
+    onInputValue: (inputTextField: TextFieldValue) -> Unit,
     onInputValueDone: (input: String) -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -103,7 +103,7 @@ fun CounterItem(
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onInputTitleDone(state.titleField) }
+                        onDone = { onInputTitleDone(state.titleField.text) }
                     ),
                     singleLine = true,
                     cursorBrush = SolidColor(state.color.getContrastContentColor())
@@ -143,7 +143,7 @@ fun CounterItem(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { onInputValueDone(state.valueField) }
+                    onDone = { onInputValueDone(state.valueField.text) }
                 ),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -199,11 +199,12 @@ fun CounterItem(
 @Composable
 private fun CounterPreview() {
     JustCounterTheme {
-        val counterItem = CounterItem(Counter(
-            title = "Tvinkvinter",
+        val counterItem = CounterItem(
+            titleField = TextFieldValue("Tvinkvinter"),
+            valueField = TextFieldValue("128"),
             color = CounterCardColors.getRandom(),
-            value = 128
-        ))
+            counterId = ""
+        )
 
         CounterItem(
             state = counterItem,
@@ -228,11 +229,10 @@ private fun CounterPreview() {
 private fun CounterInRemoveModePreview() {
     JustCounterTheme {
         val counterItem = CounterItem(
-            Counter(
-                title = "Tvinkvinter",
-                color = CounterCardColors.getRandom(),
-                value = 128
-            )
+            titleField = TextFieldValue("Tvinkvinter"),
+            valueField = TextFieldValue("128"),
+            color = CounterCardColors.getRandom(),
+            counterId = ""
         )
 
         CounterItem(

@@ -1,6 +1,7 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 
 sealed class Action {
@@ -11,9 +12,9 @@ sealed class Action {
     data class ChangeColor(val counterId: String, val newColor: Color) : Action()
     data class MinusClick(val counterId: String) : Action()
     data class PlusClick(val counterId: String) : Action()
-    data class TitleInput(val counterId: String, val input: String) : Action()
+    data class TitleInput(val counterId: String, val inputTextField: TextFieldValue) : Action()
     data class TitleInputDone(val counterId: String, val input: String) : Action()
-    data class ValueInput(val counterId: String, val input: String) : Action()
+    data class ValueInput(val counterId: String, val inputTextField: TextFieldValue) : Action()
     data class ValueInputDone(val counterId: String, val input: String) : Action()
 
     data object SwitchRemoveMode : Action()

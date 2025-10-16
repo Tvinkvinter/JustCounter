@@ -15,6 +15,7 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.AddCounterItem,
             is InternalAction.RemoveCounterItem,
             is InternalAction.UpdateCounterItem,
+            is InternalAction.UpdateCounterItemTitleField,
             is InternalAction.UpdateCounterItemValueField,
             is InternalAction.OpenEditCounterDialog,
             InternalAction.CloseEditCounterDialog,

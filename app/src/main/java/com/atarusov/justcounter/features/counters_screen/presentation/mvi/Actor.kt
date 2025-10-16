@@ -1,6 +1,7 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.Action
@@ -25,9 +26,9 @@ class Actor @Inject constructor(
             is Action.ChangeColor -> changeCounterColor(action.counterId, action.newColor)
             is Action.MinusClick -> changeValueBy(action.counterId, -1)
             is Action.PlusClick -> changeValueBy(action.counterId, 1)
-            is Action.TitleInput -> updateCounterTitle(action.counterId, action.input)
+            is Action.TitleInput -> updateCounterTitle(action.counterId, action.inputTextField)
             is Action.TitleInputDone -> onTitleInputDone(action.counterId, action.input)
-            is Action.ValueInput -> updateCounterValue(action.counterId, action.input)
+            is Action.ValueInput -> updateCounterValue(action.counterId, action.inputTextField)
             is Action.ValueInputDone -> onValueInputDone(action.counterId, action.input)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
@@ -66,11 +67,11 @@ class Actor @Inject constructor(
         repository.updateCounter(newCounter)
     }
 
-    private fun updateCounterTitle(counterId: String, newTitle: String) = flow {
-        if (newTitle.length <= 12) {
-            val newCounter = repository.getCounterById(counterId).copy(title = newTitle)
+    private fun updateCounterTitle(counterId: String, inputTextField: TextFieldValue) = flow {
+        if (inputTextField.text.length <= 12) {
+            val newCounter = repository.getCounterById(counterId).copy(title = inputTextField.text)
 
-            emit(InternalAction.UpdateCounterItem(newCounter))
+            emit(InternalAction.UpdateCounterItemTitleField(counterId, inputTextField))
             repository.updateCounter(newCounter)
         }
     }
@@ -80,19 +81,20 @@ class Actor @Inject constructor(
         else emit(InternalAction.ClearFocus)
     }
 
-    private fun updateCounterValue(counterId: String, input: String) = flow {
+    private fun updateCounterValue(counterId: String, inputTextField: TextFieldValue) = flow {
         val counter = repository.getCounterById(counterId)
 
         when {
-            input.isBlank() || input == "-" -> {
-                emit(InternalAction.UpdateCounterItemValueField(counterId, input))
+            inputTextField.text.isBlank() || inputTextField.text == "-" -> {
+                emit(InternalAction.UpdateCounterItemValueField(counterId, inputTextField))
                 repository.updateCounter(counter.copy(value = 0))
             }
 
-            input.replace("-", "").length <= 9 -> {
-                input.toIntOrNull()?.let { value ->
+            inputTextField.text.replace("-", "").length <= 9 -> {
+                inputTextField.text.toIntOrNull()?.let { value ->
                     val newCounter = counter.copy(value = value)
-                    emit(InternalAction.UpdateCounterItem(newCounter))
+                    val newTextFieldValue = inputTextField.copy(text = value.toString())
+                    emit(InternalAction.UpdateCounterItemValueField(counterId, newTextFieldValue))
                     repository.updateCounter(newCounter)
                 }
             }
@@ -124,8 +126,8 @@ class Actor @Inject constructor(
             return@flow
         }
 
-        onTitleInputDone(currentItem.counterId, currentItem.titleField).collect(::emit)
-        onValueInputDone(currentItem.counterId, currentItem.valueField).collect(::emit)
+        onTitleInputDone(currentItem.counterId, currentItem.titleField.text).collect(::emit)
+        onValueInputDone(currentItem.counterId, currentItem.valueField.text).collect(::emit)
         emit(InternalAction.ClearFocus)
     }
 }

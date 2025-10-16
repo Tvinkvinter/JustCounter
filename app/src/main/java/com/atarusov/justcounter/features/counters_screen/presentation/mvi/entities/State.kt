@@ -1,6 +1,8 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 
@@ -11,15 +13,15 @@ data class State(
 )
 
 data class CounterItem(
-    val titleField: String,
-    val valueField: String,
+    val titleField: TextFieldValue,
+    val valueField: TextFieldValue,
     val color: Color,
     val counterId: String
-) {
-    constructor(counter: Counter) : this(
-        titleField = counter.title,
-        valueField = counter.value.toString(),
-        color = counter.color,
-        counterId = counter.id
-    )
-}
+)
+
+fun Counter.toCounterItem() = CounterItem(
+    titleField = TextFieldValue(title, TextRange(title.length)),
+    valueField = TextFieldValue(value.toString(), TextRange(value.toString().length)),
+    color = color,
+    counterId = id
+)

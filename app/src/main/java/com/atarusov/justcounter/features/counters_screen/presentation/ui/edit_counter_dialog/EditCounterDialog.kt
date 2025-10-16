@@ -67,9 +67,9 @@ import kotlinx.coroutines.flow.emptyFlow
 fun EditCounterDialog(
     state: EditDialogState,
     events: Flow<OneTimeEvent>,
-    onTitleInput: (input: String) -> Unit,
+    onTitleInput: (inputTextField: TextFieldValue) -> Unit,
     onTitleInputDone: (input: String) -> Unit,
-    onValueInput: (newValue: String) -> Unit,
+    onValueInput: (inputTextField: TextFieldValue) -> Unit,
     onValueInputDone: (input: String) -> Unit,
     onColorSelected: (selectedColor: Color) -> Unit,
     onDismiss: () -> Unit,
@@ -106,8 +106,8 @@ fun EditCounterDialog(
                     color = state.itemState.color
                 ) {
                     TitleTextFieldWithIcon(
-                        title = state.itemState.titleField,
-                        onValueChange = onTitleInput,
+                        titleFieldValue = state.itemState.titleField,
+                        onTitleChange = onTitleInput,
                         onInputDone = onTitleInputDone,
                         itemColor = state.itemState.color,
                         modifier = Modifier.padding(vertical = 4.dp)
@@ -129,7 +129,7 @@ fun EditCounterDialog(
                         keyboardType = KeyboardType.Number
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onValueInputDone(state.itemState.valueField) }
+                        onDone = { onValueInputDone(state.itemState.valueField.text) }
                     ),
                 )
 
@@ -171,14 +171,14 @@ fun EditCounterDialog(
 
 @Composable
 fun TitleTextFieldWithIcon(
-    title: String,
-    onValueChange: (input: String) -> Unit,
+    titleFieldValue: TextFieldValue,
+    onTitleChange: (inputTextField: TextFieldValue) -> Unit,
     onInputDone: (input: String) -> Unit,
     itemColor: Color,
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
-    var textFieldValue by remember(title) { mutableStateOf(TextFieldValue(title)) }
+    var localTitleFieldState by remember(titleFieldValue) { mutableStateOf(titleFieldValue) }
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -188,11 +188,8 @@ fun TitleTextFieldWithIcon(
         Spacer(Modifier.size(24.dp))
 
         BasicTextField(
-            value = textFieldValue,
-            onValueChange = { newValue ->
-                textFieldValue = newValue
-                onValueChange(newValue.text)
-            },
+            value = localTitleFieldState,
+            onValueChange = onTitleChange,
             modifier = Modifier.focusRequester(focusRequester),
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = itemColor.getContrastContentColor(),
@@ -203,7 +200,7 @@ fun TitleTextFieldWithIcon(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { onInputDone(title) }
+                onDone = { onInputDone(titleFieldValue.text) }
             ),
             singleLine = true,
             cursorBrush = SolidColor(itemColor.getContrastContentColor())
@@ -218,10 +215,7 @@ fun TitleTextFieldWithIcon(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(bounded = false, radius = 16.dp),
                 ) {
-                    textFieldValue = textFieldValue.copy(
-                        text = title,
-                        selection = TextRange(title.length)
-                    )
+                    localTitleFieldState = localTitleFieldState.copy(selection = TextRange(titleFieldValue.text.length))
                     focusRequester.requestFocus()
                 },
             tint = itemColor.getContrastContentColor()
@@ -232,12 +226,12 @@ fun TitleTextFieldWithIcon(
 @Preview
 @Composable
 fun EditCounterDialogPreview() {
-    val counter = Counter(
-        title = "Tvinkvinter",
+    val counterItem = CounterItem(
+        titleField = TextFieldValue("Tvinkvinter"),
+        valueField = TextFieldValue("128"),
         color = CounterCardColors.red,
-        value = 120
+        ""
     )
-    val counterItem = CounterItem(counter)
 
     JustCounterTheme {
         EditCounterDialog(
