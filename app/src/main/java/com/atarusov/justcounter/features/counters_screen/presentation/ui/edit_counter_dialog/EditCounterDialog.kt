@@ -56,7 +56,6 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
-import com.atarusov.justcounter.features.counters_screen.presentation.ui.ColorPalette
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme

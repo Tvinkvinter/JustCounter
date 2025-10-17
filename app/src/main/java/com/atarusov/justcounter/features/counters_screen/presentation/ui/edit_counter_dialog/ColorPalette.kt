@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counters_screen.presentation.ui
+package com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
