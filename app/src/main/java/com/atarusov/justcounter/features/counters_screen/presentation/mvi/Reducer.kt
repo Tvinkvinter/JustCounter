@@ -97,9 +97,18 @@ class Reducer @Inject constructor() {
         return previousState.copy(editDialog = EditDialogState(openDialogForCounterItem, counter))
     }
 
-    private fun switchRemoveMode(previousState: State) = previousState.copy(
-        removeMode = !previousState.removeMode
-    )
+    private fun switchRemoveMode(previousState: State): State {
+        val correctedCounterItems = previousState.counterItems.map {
+            if (it.valueField.text.isBlank() || it.valueField.text == "-") {
+                it.copy(valueField = it.valueField.copy(text = "0"))
+            } else it
+        }
+
+        return previousState.copy(
+            counterItems = correctedCounterItems,
+            removeMode = !previousState.removeMode
+        )
+    }
 
     private fun List<CounterItem>.getCounterItemById(counterId: String) = find {
         it.counterId == counterId
