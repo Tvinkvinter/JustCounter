@@ -132,6 +132,17 @@ fun EditCounterDialog(
                     ),
                 )
 
+                Text(
+                    text = "Steps:",
+                    modifier = Modifier.align(Alignment.Start).padding(start = 48.dp, top = 12.dp),
+                    style = MaterialTheme.typography.bodySmall
+                )
+
+                StepConfigurator(
+                    state = StepConfiguratorState(listOf(1, 2, 3), state.itemState.color),
+                    modifier = Modifier.padding(horizontal = 48.dp - 4.dp).padding(top = 4.dp)
+                )
+
                 ColorPalette(
                     selectedColor = state.itemState.color,
                     onColorSelected = onColorSelected,
@@ -229,6 +240,7 @@ fun EditCounterDialogPreview() {
         titleField = TextFieldValue("Tvinkvinter"),
         valueField = TextFieldValue("128"),
         color = CounterCardColors.red,
+        steps = listOf(1),
         ""
     )
 

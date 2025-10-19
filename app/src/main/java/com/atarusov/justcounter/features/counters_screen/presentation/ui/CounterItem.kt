@@ -2,8 +2,10 @@ package com.atarusov.justcounter.features.counters_screen.presentation.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,14 +13,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.ripple
@@ -36,8 +43,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
@@ -63,9 +72,10 @@ fun CounterItem(
         animationSpec = tween(durationMillis = 300)
     )
 
+    Column(
+        modifier = modifier.width(150.dp),
+    ) {
     Card(
-        modifier = modifier
-            .width(150.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = state.color,
@@ -163,36 +173,95 @@ fun CounterItem(
                     .padding(bottom = 4.dp)
                     .alpha(contentAlpha)
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_minus),
-                    contentDescription = stringResource(R.string.counter_screen_plus_btn_description),
+                Text(
+                    text = if (state.steps[0] == 1) "−" else "−${state.steps[0]}",
                     modifier = Modifier
                         .weight(1f)
-                        .size(24.dp)
                         .clickable(
                             onClick = onMinusClick,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(bounded = false, radius = 16.dp),
                             enabled = !removeMode
-                        )
+                        ),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge
                 )
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_plus),
-                    contentDescription = stringResource(R.string.counter_screen_plus_btn_description),
+                Text(
+                    text = if (state.steps[0] == 1) "+" else "+${state.steps[0]}",
                     modifier = Modifier
                         .weight(1f)
-                        .size(24.dp)
                         .clickable(
                             onClick = onPLusClick,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(bounded = false, radius = 16.dp),
                             enabled = !removeMode
-                        )
+                        ),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }
     }
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            for (index in state.steps.indices.reversed()) {
+                if (index != 0) {
+                    ExtraStepButton(
+                        text = "-${state.steps[index]}",
+                        containerColor = state.color,
+                        removeMode = removeMode,
+                        onClick = {}
+                    )
+                }
+            }
+            for (index in state.steps.indices) {
+                if (index != 0) {
+                    ExtraStepButton(
+                        text = "+${state.steps[index]}",
+                        containerColor = state.color,
+                        removeMode = removeMode,
+                        onClick = {}
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExtraStepButton(
+    text: String,
+    containerColor: Color,
+    removeMode: Boolean,
+    onClick: () -> Unit
+) {
+    BasicText(
+        text = text,
+        modifier = Modifier
+            .size(36.dp)
+            .background(color = containerColor, shape = CircleShape)
+            .alpha(if (removeMode) 0.5f else 1f)
+            .wrapContentSize()
+            .clickable(
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(bounded = false, radius = 16.dp),
+                enabled = !removeMode
+            ),
+        style = MaterialTheme.typography.bodyMedium.copy(
+            textAlign = TextAlign.Center,
+        ),
+        overflow = TextOverflow.MiddleEllipsis,
+        maxLines = 1,
+        color = { containerColor.getContrastContentColor() },
+        autoSize = TextAutoSize.StepBased(
+            minFontSize = 10.sp,
+            maxFontSize = MaterialTheme.typography.bodyMedium.fontSize
+        )
+    )
 }
 
 @Preview(showBackground = true)
@@ -203,6 +272,7 @@ private fun CounterPreview() {
             titleField = TextFieldValue("Tvinkvinter"),
             valueField = TextFieldValue("128"),
             color = CounterCardColors.getRandom(),
+            steps = listOf(1),
             counterId = ""
         )
 
@@ -232,6 +302,67 @@ private fun CounterInRemoveModePreview() {
             titleField = TextFieldValue("Tvinkvinter"),
             valueField = TextFieldValue("128"),
             color = CounterCardColors.getRandom(),
+            steps = listOf(1),
+            counterId = ""
+        )
+
+        CounterItem(
+            state = counterItem,
+            removeMode = true,
+            onPLusClick = {},
+            onMinusClick = {},
+            onEditClick = {},
+            onInputTitle = {},
+            onInputTitleDone = {},
+            onInputValue = {},
+            onInputValueDone = {},
+            onRemoveClick = {},
+            modifier = Modifier
+                .width(200.dp)
+                .padding(12.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CounterWithExtraStepsPreview() {
+    JustCounterTheme {
+        val counterItem = CounterItem(
+            titleField = TextFieldValue("Tvinkvinter"),
+            valueField = TextFieldValue("128"),
+            color = CounterCardColors.getRandom(),
+            steps = listOf(1, 2, 3),
+            counterId = ""
+        )
+
+        CounterItem(
+            state = counterItem,
+            removeMode = false,
+            onPLusClick = {},
+            onMinusClick = {},
+            onEditClick = {},
+            onInputTitle = {},
+            onInputTitleDone = {},
+            onInputValue = {},
+            onInputValueDone = {},
+            onRemoveClick = {},
+            modifier = Modifier
+                .width(200.dp)
+                .padding(12.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CounterWithExtraStepsInRemoveModePreview() {
+    JustCounterTheme {
+        val counterItem = CounterItem(
+            titleField = TextFieldValue("Tvinkvinter"),
+            valueField = TextFieldValue("128"),
+            color = CounterCardColors.getRandom(),
+            steps = listOf(1, 2, 3),
             counterId = ""
         )
 

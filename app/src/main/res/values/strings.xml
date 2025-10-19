@@ -5,10 +5,10 @@
     <string name="counter_edit_dialog_btn_save">Save</string>
     <string name="counter_screen_empty_title_error">Title can\'t be empty</string>
 
-    <string name="counter_screen_plus_btn_description">Plus</string>
-    <string name="counter_screen_minus_btn_description">Minus</string>
     <string name="counter_screen_edit_btn_description">Edit</string>
     <string name="counter_screen_add_btn_description">Create new counter</string>
 
     <string name="counter_screen_edit_title_btn_description">Edit title</string>
+    <string name="counter_screen_edit_plus_btn_description">Add custom step</string>
+    <string name="counter_screen_edit_minus_btn_description">Remove last custom step</string>
 </resources>

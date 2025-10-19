@@ -60,7 +60,10 @@ class Reducer @Inject constructor() {
                 if (it.counterId == newCounter.id) newCounterItem
                 else it
             },
-            editDialog = previousState.editDialog?.copy(itemState = newCounterItem)
+            editDialog = previousState.editDialog?.copy(
+                itemState = newCounterItem,
+                stepConfiguratorState = StepConfiguratorState(newCounterItem)
+            )
         )
     }
 
