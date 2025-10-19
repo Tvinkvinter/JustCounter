@@ -135,7 +135,7 @@ fun EditCounterDialog(
                 ColorPalette(
                     selectedColor = state.itemState.color,
                     onColorSelected = onColorSelected,
-                    modifier = Modifier.padding(top = 24.dp)
+                    modifier = Modifier.padding(top = 24.dp).padding(horizontal = 48.dp - 2.dp)
                 )
 
                 Row(

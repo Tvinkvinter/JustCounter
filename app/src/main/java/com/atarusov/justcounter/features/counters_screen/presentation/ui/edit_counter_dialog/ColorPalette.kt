@@ -3,9 +3,10 @@ package com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_c
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -24,10 +25,9 @@ fun ColorPalette(
     modifier: Modifier = Modifier
 ) {
     FlowRow(
-        modifier = modifier
-            .wrapContentWidth()
-            .defaultMinSize(120.dp),
-        horizontalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxWidth().defaultMinSize(120.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
         itemVerticalAlignment = Alignment.CenterVertically,
         maxItemsInEachRow = CounterCardColors.getList().size / 2
     ) {
@@ -57,7 +57,8 @@ fun ColorPalettePreview() {
     JustCounterTheme {
         ColorPalette(
             selectedColor = CounterCardColors.green,
-            onColorSelected = {}
+            onColorSelected = {},
+            modifier = Modifier.width(300.dp)
         )
     }
 }
