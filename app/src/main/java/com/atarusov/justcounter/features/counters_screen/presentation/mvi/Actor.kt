@@ -43,7 +43,7 @@ class Actor @Inject constructor(
     }
 
     private fun createNewCounter() = flow {
-        val newCounter = Counter("test", 0, CounterCardColors.getRandom())
+        val newCounter = Counter("test", 0, CounterCardColors.getRandom(), listOf(1))
         emit(InternalAction.AddCounterItem(newCounter))
         repository.addCounter(newCounter)
     }

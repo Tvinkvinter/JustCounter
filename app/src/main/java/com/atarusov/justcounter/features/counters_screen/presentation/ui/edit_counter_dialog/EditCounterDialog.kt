@@ -139,7 +139,7 @@ fun EditCounterDialog(
                 )
 
                 StepConfigurator(
-                    state = StepConfiguratorState(listOf(1, 2, 3), state.itemState.color),
+                    state = StepConfiguratorState(state.itemState.steps, state.itemState.color),
                     modifier = Modifier.padding(horizontal = 48.dp - 4.dp).padding(top = 4.dp)
                 )
 
@@ -248,7 +248,7 @@ fun EditCounterDialogPreview() {
         EditCounterDialog(
             EditDialogState(
                 counterItem,
-                initialCounterState = Counter("Test", 128, CounterCardColors.red)
+                initialCounterState = Counter("Test", 128, CounterCardColors.red, listOf(1))
             ), emptyFlow(), {}, {}, {}, {}, {}, {}, {}
         )
     }

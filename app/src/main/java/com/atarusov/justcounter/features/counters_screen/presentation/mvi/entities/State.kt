@@ -16,6 +16,7 @@ data class CounterItem(
     val titleField: TextFieldValue,
     val valueField: TextFieldValue,
     val color: Color,
+    val steps: List<Int>,
     val counterId: String
 )
 
@@ -23,5 +24,6 @@ fun Counter.toCounterItem() = CounterItem(
     titleField = TextFieldValue(title, TextRange(title.length)),
     valueField = TextFieldValue(value.toString(), TextRange(value.toString().length)),
     color = color,
+    steps = steps,
     counterId = id
 )

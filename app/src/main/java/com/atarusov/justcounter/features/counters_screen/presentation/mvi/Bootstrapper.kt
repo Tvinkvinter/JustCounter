@@ -16,7 +16,7 @@ class Bootstrapper @Inject constructor(
         emit(InternalAction.LoadCounterItems(counters))
 
         if (counters.isEmpty()) {
-            val newCounter = Counter("First Counter", 0, CounterCardColors.getRandom()) // todo: change counter name
+            val newCounter = Counter("First Counter", 0, CounterCardColors.getRandom(), listOf(1)) // todo: change counter name
             repository.addCounter(newCounter)
             emit(InternalAction.AddCounterItem(newCounter))
         }
