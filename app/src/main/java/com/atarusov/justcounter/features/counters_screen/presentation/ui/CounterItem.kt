@@ -25,7 +25,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.ripple
@@ -169,11 +168,12 @@ fun CounterItem(
                 )
             )
             Row(
-                Modifier
-                    .padding(bottom = 4.dp)
-                    .alpha(contentAlpha)
+                Modifier.padding(bottom = 4.dp).alpha(contentAlpha),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Spacer(Modifier.width(4.dp))
+
+                BasicText(
                     text = if (state.steps[0] == 1) "−" else "−${state.steps[0]}",
                     modifier = Modifier
                         .weight(1f)
@@ -183,11 +183,21 @@ fun CounterItem(
                             indication = ripple(bounded = false, radius = 16.dp),
                             enabled = !removeMode
                         ),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        textAlign = TextAlign.Center,
+                    ),
+                    overflow = TextOverflow.MiddleEllipsis,
+                    maxLines = 1,
+                    color = { state.color.getContrastContentColor() },
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = 10.sp,
+                        maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
                 )
 
-                Text(
+                Spacer(Modifier.width(8.dp))
+
+                BasicText(
                     text = if (state.steps[0] == 1) "+" else "+${state.steps[0]}",
                     modifier = Modifier
                         .weight(1f)
@@ -197,9 +207,19 @@ fun CounterItem(
                             indication = ripple(bounded = false, radius = 16.dp),
                             enabled = !removeMode
                         ),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        textAlign = TextAlign.Center,
+                    ),
+                    overflow = TextOverflow.MiddleEllipsis,
+                    maxLines = 1,
+                    color = { state.color.getContrastContentColor() },
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = 10.sp,
+                        maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
                 )
+
+                Spacer(Modifier.width(4.dp))
             }
         }
     }
@@ -214,7 +234,8 @@ fun CounterItem(
                     ExtraStepButton(
                         text = "-${state.steps[index]}",
                         containerColor = state.color,
-                        removeMode = removeMode,
+                        alpha = contentAlpha,
+                        enabled = !removeMode,
                         onClick = { onMinusClick(state.steps[index]) }
                     )
                 }
@@ -224,7 +245,8 @@ fun CounterItem(
                     ExtraStepButton(
                         text = "+${state.steps[index]}",
                         containerColor = state.color,
-                        removeMode = removeMode,
+                        alpha = contentAlpha,
+                        enabled = !removeMode,
                         onClick = { onPLusClick(state.steps[index]) }
                     )
                 }
@@ -237,7 +259,8 @@ fun CounterItem(
 private fun ExtraStepButton(
     text: String,
     containerColor: Color,
-    removeMode: Boolean,
+    alpha: Float,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     BasicText(
@@ -245,13 +268,13 @@ private fun ExtraStepButton(
         modifier = Modifier
             .size(36.dp)
             .background(color = containerColor, shape = CircleShape)
-            .alpha(if (removeMode) 0.5f else 1f)
+            .alpha(alpha)
             .wrapContentSize()
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(bounded = false, radius = 16.dp),
-                enabled = !removeMode
+                enabled = enabled
             ),
         style = MaterialTheme.typography.bodyMedium.copy(
             textAlign = TextAlign.Center,
