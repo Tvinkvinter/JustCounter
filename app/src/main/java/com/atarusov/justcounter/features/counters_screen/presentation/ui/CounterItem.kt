@@ -74,155 +74,156 @@ fun CounterItem(
     Column(
         modifier = modifier.width(150.dp),
     ) {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = state.color,
-            contentColor = state.color.getContrastContentColor()
-        ),
-        elevation = CardDefaults.cardElevation(6.dp),
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Card(
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = state.color,
+                contentColor = state.color.getContrastContentColor()
+            ),
+            elevation = CardDefaults.cardElevation(6.dp),
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(
-                    Modifier
-                        .padding(start = 4.dp)
-                        .size(24.dp)
-                )
-
-                BasicTextField(
-                    value = state.titleField,
-                    onValueChange = onInputTitle,
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .alpha(contentAlpha),
+                        .fillMaxWidth()
+                        .padding(top = 4.dp)
+                ) {
+                    Spacer(
+                        Modifier
+                            .padding(start = 4.dp)
+                            .size(24.dp)
+                    )
+
+                    BasicTextField(
+                        value = state.titleField,
+                        onValueChange = onInputTitle,
+                        modifier = Modifier
+                            .weight(1f)
+                            .alpha(contentAlpha),
+                        enabled = !removeMode,
+                        textStyle = MaterialTheme.typography.titleMedium.copy(
+                            color = state.color.getContrastContentColor(),
+                            textAlign = TextAlign.Center,
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = { onInputTitleDone(state.titleField.text) }
+                        ),
+                        singleLine = true,
+                        cursorBrush = SolidColor(state.color.getContrastContentColor())
+                    )
+
+                    Icon(
+                        painter = painterResource(
+                            if (removeMode) R.drawable.ic_cross
+                            else R.drawable.ic_pencil
+                        ),
+                        contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .size(24.dp)
+                            .alpha(if (removeMode) 1f else 0.5f)
+                            .clickable(
+                                onClick = {
+                                    if (removeMode) onRemoveClick()
+                                    else onEditClick()
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = ripple(bounded = false, radius = 16.dp),
+                            ),
+                        tint = state.color.getContrastContentColor()
+                    )
+                }
+                TextField(
+                    value = state.valueField,
+                    onValueChange = onInputValue,
+                    modifier = Modifier.alpha(contentAlpha),
                     enabled = !removeMode,
-                    textStyle = MaterialTheme.typography.titleMedium.copy(
-                        color = state.color.getContrastContentColor(),
-                        textAlign = TextAlign.Center,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
+                        textAlign = TextAlign.Center
                     ),
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
+                        keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onInputTitleDone(state.titleField.text) }
+                        onDone = { onInputValueDone(state.valueField.text) }
                     ),
-                    singleLine = true,
-                    cursorBrush = SolidColor(state.color.getContrastContentColor())
-                )
-
-                Icon(
-                    painter = painterResource(
-                        if (removeMode) R.drawable.ic_cross
-                        else R.drawable.ic_pencil
-                    ),
-                    contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .size(24.dp)
-                        .clickable(
-                            onClick = {
-                                if (removeMode) onRemoveClick()
-                                else onEditClick()
-                            },
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(bounded = false, radius = 16.dp),
-                        ).alpha(if (removeMode) 1f else 0.5f),
-                    tint = state.color.getContrastContentColor()
-                )
-            }
-            TextField(
-                value = state.valueField,
-                onValueChange = onInputValue,
-                modifier = Modifier.alpha(contentAlpha),
-                enabled = !removeMode,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(
-                    textAlign = TextAlign.Center
-                ),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { onInputValueDone(state.valueField.text) }
-                ),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    focusedTextColor = state.color.getContrastContentColor(),
-                    unfocusedTextColor = state.color.getContrastContentColor(),
-                    disabledTextColor = state.color.getContrastContentColor(),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    cursorColor = state.color.getContrastContentColor()
-                )
-            )
-            Row(
-                Modifier.padding(bottom = 4.dp).alpha(contentAlpha),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(Modifier.width(4.dp))
-
-                BasicText(
-                    text = if (state.steps[0] == 1) "−" else "−${state.steps[0]}",
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable(
-                            onClick = { onMinusClick(state.steps[0]) },
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(bounded = false, radius = 16.dp),
-                            enabled = !removeMode
-                        ),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        textAlign = TextAlign.Center,
-                    ),
-                    overflow = TextOverflow.MiddleEllipsis,
-                    maxLines = 1,
-                    color = { state.color.getContrastContentColor() },
-                    autoSize = TextAutoSize.StepBased(
-                        minFontSize = 10.sp,
-                        maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        focusedTextColor = state.color.getContrastContentColor(),
+                        unfocusedTextColor = state.color.getContrastContentColor(),
+                        disabledTextColor = state.color.getContrastContentColor(),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = state.color.getContrastContentColor()
                     )
                 )
+                Row(
+                    Modifier.padding(bottom = 4.dp).alpha(contentAlpha),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(Modifier.width(4.dp))
 
-                Spacer(Modifier.width(8.dp))
-
-                BasicText(
-                    text = if (state.steps[0] == 1) "+" else "+${state.steps[0]}",
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable(
-                            onClick = { onPLusClick(state.steps[0]) },
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(bounded = false, radius = 16.dp),
-                            enabled = !removeMode
+                    BasicText(
+                        text = if (state.steps[0] == 1) "−" else "−${state.steps[0]}",
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(
+                                onClick = { onMinusClick(state.steps[0]) },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = ripple(bounded = false, radius = 16.dp),
+                                enabled = !removeMode
+                            ),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            textAlign = TextAlign.Center,
                         ),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        textAlign = TextAlign.Center,
-                    ),
-                    overflow = TextOverflow.MiddleEllipsis,
-                    maxLines = 1,
-                    color = { state.color.getContrastContentColor() },
-                    autoSize = TextAutoSize.StepBased(
-                        minFontSize = 10.sp,
-                        maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
+                        overflow = TextOverflow.MiddleEllipsis,
+                        maxLines = 1,
+                        color = { state.color.getContrastContentColor() },
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 10.sp,
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
+                        )
                     )
-                )
 
-                Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(8.dp))
+
+                    BasicText(
+                        text = if (state.steps[0] == 1) "+" else "+${state.steps[0]}",
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(
+                                onClick = { onPLusClick(state.steps[0]) },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = ripple(bounded = false, radius = 16.dp),
+                                enabled = !removeMode
+                            ),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            textAlign = TextAlign.Center,
+                        ),
+                        overflow = TextOverflow.MiddleEllipsis,
+                        maxLines = 1,
+                        color = { state.color.getContrastContentColor() },
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 10.sp,
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
+                        )
+                    )
+
+                    Spacer(Modifier.width(4.dp))
+                }
             }
         }
-    }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
