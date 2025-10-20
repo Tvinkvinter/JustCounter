@@ -1,7 +1,6 @@
 package com.atarusov.justcounter.features.counters_screen.domain
 
 import androidx.compose.ui.graphics.Color
-import androidx.core.graphics.toColorLong
 import com.atarusov.justcounter.CounterProto
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid

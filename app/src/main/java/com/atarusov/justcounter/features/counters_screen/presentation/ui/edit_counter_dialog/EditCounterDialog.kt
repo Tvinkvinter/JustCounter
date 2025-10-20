@@ -70,6 +70,8 @@ fun EditCounterDialog(
     onTitleInputDone: (input: String) -> Unit,
     onValueInput: (inputTextField: TextFieldValue) -> Unit,
     onValueInputDone: (input: String) -> Unit,
+    onStepInput: (index: Int, inputTextField: TextFieldValue) -> Unit,
+    onStepInputDone: () -> Unit,
     onColorSelected: (selectedColor: Color) -> Unit,
     onDismiss: () -> Unit,
     onConfirm: (newCounterState: CounterItem) -> Unit
@@ -139,7 +141,9 @@ fun EditCounterDialog(
                 )
 
                 StepConfigurator(
-                    state = StepConfiguratorState(state.itemState.steps, state.itemState.color),
+                    state = state.stepConfiguratorState,
+                    onStepInput = onStepInput,
+                    onStepInputDone = onStepInputDone,
                     modifier = Modifier.padding(horizontal = 48.dp - 4.dp).padding(top = 4.dp)
                 )
 
@@ -244,12 +248,18 @@ fun EditCounterDialogPreview() {
         ""
     )
 
+    val stepConfiguratorState = StepConfiguratorState(
+        steps = listOf(TextFieldValue("1"),TextFieldValue("2"),TextFieldValue("3")),
+        btnColor = counterItem.color
+    )
+
     JustCounterTheme {
         EditCounterDialog(
             EditDialogState(
-                counterItem,
+                itemState = counterItem,
+                stepConfiguratorState = stepConfiguratorState,
                 initialCounterState = Counter("Test", 128, CounterCardColors.red, listOf(1))
-            ), emptyFlow(), {}, {}, {}, {}, {}, {}, {}
+            ), emptyFlow(), {}, {}, {}, {}, {_, _ -> }, {}, {}, {}, {}
         )
     }
 }

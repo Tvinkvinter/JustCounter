@@ -16,6 +16,8 @@ sealed class Action {
     data class TitleInputDone(val counterId: String, val input: String) : Action()
     data class ValueInput(val counterId: String, val inputTextField: TextFieldValue) : Action()
     data class ValueInputDone(val counterId: String, val input: String) : Action()
+    data class StepInput(val counterId: String, val stepIndex: Int, val input: TextFieldValue) : Action()
+    data object StepInputDone : Action()
 
     data object SwitchRemoveMode : Action()
     data class OpenCounterEditDialog(val counterId: String) : Action()

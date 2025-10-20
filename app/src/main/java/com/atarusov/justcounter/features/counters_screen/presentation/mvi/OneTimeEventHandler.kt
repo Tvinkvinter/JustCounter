@@ -17,6 +17,7 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.UpdateCounterItem,
             is InternalAction.UpdateCounterItemTitleField,
             is InternalAction.UpdateCounterItemValueField,
+            is InternalAction.UpdateStepConfiguratorField,
             is InternalAction.OpenEditCounterDialog,
             InternalAction.CloseEditCounterDialog,
             InternalAction.SwitchRemoveMode -> null

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -18,9 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,17 +32,12 @@ import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
-data class StepConfiguratorState(
-    val steps: List<Int>,
-    val btnColor: Color,
-    val removeBtnEnabled: Boolean = true,
-    val addBtnEnabled: Boolean = true
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StepConfigurator(
     state: StepConfiguratorState,
+    onStepInput: (index: Int, input: TextFieldValue) -> Unit,
+    onStepInputDone: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -66,8 +63,8 @@ fun StepConfigurator(
         ) {
             state.steps.forEachIndexed { index, step ->
                 BasicTextField(
-                    value = TextFieldValue(step.toString()),
-                    onValueChange = {},
+                    value = step,
+                    onValueChange = { onStepInput(index, it) },
                     modifier = Modifier.size(48.dp),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         textAlign = TextAlign.Center,
@@ -86,7 +83,13 @@ fun StepConfigurator(
                         ) {
                             innerTextField()
                         }
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { onStepInputDone() }
+                    )
                 )
             }
         }
@@ -100,7 +103,7 @@ fun StepConfigurator(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_plus),
-                contentDescription = stringResource(R.string.counter_screen_edit_plus_btn_description) //todo,
+                contentDescription = stringResource(R.string.counter_screen_edit_plus_btn_description),
             )
         }
     }
@@ -110,12 +113,19 @@ fun StepConfigurator(
 @Preview(showBackground = true)
 fun StepConfiguratorPreview() {
     val stepConfiguratorState = StepConfiguratorState(
-        steps = listOf(1, 2, 3),
+        steps = listOf(
+            TextFieldValue("1"),
+            TextFieldValue("2"),
+            TextFieldValue("3"),
+        ),
         btnColor = CounterCardColors.green,
     )
 
     JustCounterTheme {
-        StepConfigurator(stepConfiguratorState, Modifier.width(300.dp))
-
+        StepConfigurator(
+            stepConfiguratorState,
+            { index, input -> }, {},
+            Modifier.width(300.dp)
+        )
     }
 }

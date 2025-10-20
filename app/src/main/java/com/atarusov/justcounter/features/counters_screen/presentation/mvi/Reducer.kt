@@ -7,6 +7,7 @@ import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entiti
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.State
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.toCounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.StepConfiguratorState
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {
@@ -24,6 +25,11 @@ class Reducer @Inject constructor() {
             is InternalAction.UpdateCounterItemValueField -> updateCounterItemValueField(
                 previousState,
                 internalAction.counterId,
+                internalAction.newTextField
+            )
+            is InternalAction.UpdateStepConfiguratorField -> updateStepConfiguratorField(
+                previousState,
+                internalAction.stepIndex,
                 internalAction.newTextField
             )
 
@@ -95,9 +101,36 @@ class Reducer @Inject constructor() {
         )
     )
 
+    private fun updateStepConfiguratorField(
+        previousState: State,
+        stepIndex: Int,
+        newFieldValue: TextFieldValue
+    ): State {
+        val newSteps = previousState.editDialog?.stepConfiguratorState?.steps?.mapIndexed { index, fieldValue ->
+            if (index == stepIndex) newFieldValue
+            else fieldValue
+        }
+
+        val newStepConfiguratorState = previousState.editDialog?.stepConfiguratorState?.copy(
+            steps = newSteps!!
+        )
+
+        return previousState.copy(
+            editDialog = previousState.editDialog?.copy(
+                stepConfiguratorState = newStepConfiguratorState!!
+            )
+        )
+    }
+
     private fun openEditCounterDialog(previousState: State, counter: Counter): State {
         val openDialogForCounterItem = previousState.counterItems.getCounterItemById(counter.id)
-        return previousState.copy(editDialog = EditDialogState(openDialogForCounterItem, counter))
+        val editDialogState = EditDialogState(
+            itemState = openDialogForCounterItem,
+            stepConfiguratorState = StepConfiguratorState(openDialogForCounterItem),
+            initialCounterState = counter
+        )
+
+        return previousState.copy(editDialog = editDialogState)
     }
 
     private fun switchRemoveMode(previousState: State): State {

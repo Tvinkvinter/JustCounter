@@ -10,6 +10,7 @@ sealed class InternalAction {
     data class UpdateCounterItem(val counter: Counter) : InternalAction()
     data class UpdateCounterItemTitleField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
     data class UpdateCounterItemValueField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
+    data class UpdateStepConfiguratorField(val stepIndex: Int, val newTextField: TextFieldValue) : InternalAction()
 
     data class OpenEditCounterDialog(val counter: Counter) : InternalAction()
     data object CloseEditCounterDialog : InternalAction()

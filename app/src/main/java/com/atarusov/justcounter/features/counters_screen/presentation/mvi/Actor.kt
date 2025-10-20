@@ -30,6 +30,8 @@ class Actor @Inject constructor(
             is Action.TitleInputDone -> onTitleInputDone(action.counterId, action.input)
             is Action.ValueInput -> updateCounterValue(action.counterId, action.inputTextField)
             is Action.ValueInputDone -> onValueInputDone(action.counterId, action.input)
+            is Action.StepInput -> onStepInput(action.counterId, action.stepIndex, action.input)
+            Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
             is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
@@ -109,6 +111,29 @@ class Actor @Inject constructor(
         emit(InternalAction.ClearFocus)
         emit(InternalAction.UpdateCounterItem(newCounter))
         repository.updateCounter(newCounter)
+    }
+
+    private fun onStepInput(counterId: String, stepIndex: Int, input: TextFieldValue) = flow {
+        val counter = repository.getCounterById(counterId)
+
+        when {
+            input.text.isBlank() -> {
+                emit(InternalAction.UpdateStepConfiguratorField(stepIndex, input))
+            }
+
+            input.text.length <= 9 -> {
+                input.text.toUIntOrNull()?.let { value ->
+                    val newSteps = counter.steps.mapIndexed { index, step ->
+                        if (index == stepIndex) value.toInt()
+                        else step
+                    }
+                    val newCounter = counter.copy(steps = newSteps)
+                    val newTextFieldValue = input.copy(text = value.toString())
+                    emit(InternalAction.UpdateStepConfiguratorField(stepIndex, newTextFieldValue))
+                    repository.updateCounter(newCounter)
+                }
+            }
+        }
     }
 
     private fun openEditDialog(counterId: String) = flow {
