@@ -10,8 +10,8 @@ sealed class Action {
     data class RemoveCounter(val counterId: String) : Action()
 
     data class ChangeColor(val counterId: String, val newColor: Color) : Action()
-    data class MinusClick(val counterId: String) : Action()
-    data class PlusClick(val counterId: String) : Action()
+    data class MinusClick(val counterId: String, val step: Int) : Action()
+    data class PlusClick(val counterId: String, val step: Int) : Action()
     data class TitleInput(val counterId: String, val inputTextField: TextFieldValue) : Action()
     data class TitleInputDone(val counterId: String, val input: String) : Action()
     data class ValueInput(val counterId: String, val inputTextField: TextFieldValue) : Action()

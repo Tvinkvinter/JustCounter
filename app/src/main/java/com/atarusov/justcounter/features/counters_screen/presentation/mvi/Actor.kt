@@ -24,8 +24,8 @@ class Actor @Inject constructor(
             is Action.RemoveCounter -> removeCounter(action.counterId)
 
             is Action.ChangeColor -> changeCounterColor(action.counterId, action.newColor)
-            is Action.MinusClick -> changeValueBy(action.counterId, -1)
-            is Action.PlusClick -> changeValueBy(action.counterId, 1)
+            is Action.MinusClick -> changeValueBy(action.counterId, -action.step)
+            is Action.PlusClick -> changeValueBy(action.counterId, action.step)
             is Action.TitleInput -> updateCounterTitle(action.counterId, action.inputTextField)
             is Action.TitleInputDone -> onTitleInputDone(action.counterId, action.input)
             is Action.ValueInput -> updateCounterValue(action.counterId, action.inputTextField)

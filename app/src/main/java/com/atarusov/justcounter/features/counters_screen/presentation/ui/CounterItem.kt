@@ -57,8 +57,8 @@ import com.atarusov.justcounter.ui.theme.JustCounterTheme
 fun CounterItem(
     state: CounterItem,
     removeMode: Boolean,
-    onPLusClick: () -> Unit,
-    onMinusClick: () -> Unit,
+    onPLusClick: (step: Int) -> Unit,
+    onMinusClick: (step: Int) -> Unit,
     onEditClick: () -> Unit,
     onInputTitle: (inputTextField: TextFieldValue) -> Unit,
     onInputTitleDone: (input: String) -> Unit,
@@ -178,7 +178,7 @@ fun CounterItem(
                     modifier = Modifier
                         .weight(1f)
                         .clickable(
-                            onClick = onMinusClick,
+                            onClick = { onMinusClick(state.steps[0]) },
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(bounded = false, radius = 16.dp),
                             enabled = !removeMode
@@ -192,7 +192,7 @@ fun CounterItem(
                     modifier = Modifier
                         .weight(1f)
                         .clickable(
-                            onClick = onPLusClick,
+                            onClick = { onPLusClick(state.steps[0]) },
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(bounded = false, radius = 16.dp),
                             enabled = !removeMode
@@ -204,7 +204,9 @@ fun CounterItem(
         }
     }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             for (index in state.steps.indices.reversed()) {
@@ -213,7 +215,7 @@ fun CounterItem(
                         text = "-${state.steps[index]}",
                         containerColor = state.color,
                         removeMode = removeMode,
-                        onClick = {}
+                        onClick = { onMinusClick(state.steps[index]) }
                     )
                 }
             }
@@ -223,7 +225,7 @@ fun CounterItem(
                         text = "+${state.steps[index]}",
                         containerColor = state.color,
                         removeMode = removeMode,
-                        onClick = {}
+                        onClick = { onPLusClick(state.steps[index]) }
                     )
                 }
             }
