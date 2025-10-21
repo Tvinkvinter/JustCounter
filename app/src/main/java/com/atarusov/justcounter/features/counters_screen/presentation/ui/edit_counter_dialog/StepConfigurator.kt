@@ -48,8 +48,10 @@ fun StepConfigurator(
             onClick = {},
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = state.btnColor,
-                contentColor = state.btnColor.getContrastContentColor()
-            )
+                contentColor = state.btnColor.getContrastContentColor(),
+                disabledContainerColor = state.btnColor
+            ),
+            enabled = state.removeBtnEnabled
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_minus),
@@ -98,8 +100,10 @@ fun StepConfigurator(
             onClick = {},
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = state.btnColor,
-                contentColor = state.btnColor.getContrastContentColor()
-            )
+                contentColor = state.btnColor.getContrastContentColor(),
+                disabledContainerColor = state.btnColor
+            ),
+            enabled = state.addBtnEnabled
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_plus),

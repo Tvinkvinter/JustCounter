@@ -16,10 +16,11 @@ data class EditDialogState(
 
 data class StepConfiguratorState(
     val steps: List<TextFieldValue>,
-    val btnColor: Color,
-    val removeBtnEnabled: Boolean = true,
-    val addBtnEnabled: Boolean = true
+    val btnColor: Color
 ) {
+    val removeBtnEnabled: Boolean get() = steps.size > 1
+    val addBtnEnabled: Boolean get() = steps.size < 3
+
     constructor(itemState: CounterItem): this(
         steps = itemState.steps.map { TextFieldValue(it.toString(), TextRange(it.toString().length)) },
         btnColor = itemState.color
