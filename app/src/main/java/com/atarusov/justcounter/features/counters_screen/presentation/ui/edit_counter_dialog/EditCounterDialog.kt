@@ -72,6 +72,8 @@ fun EditCounterDialog(
     onValueInputDone: (input: String) -> Unit,
     onStepInput: (index: Int, inputTextField: TextFieldValue) -> Unit,
     onStepInputDone: () -> Unit,
+    onRemoveStep: () -> Unit,
+    onAddStep: () -> Unit,
     onColorSelected: (selectedColor: Color) -> Unit,
     onDismiss: () -> Unit,
     onConfirm: (newCounterState: CounterItem) -> Unit
@@ -144,6 +146,8 @@ fun EditCounterDialog(
                     state = state.stepConfiguratorState,
                     onStepInput = onStepInput,
                     onStepInputDone = onStepInputDone,
+                    onRemoveStepClick = onRemoveStep,
+                    onAddStepClick = onAddStep,
                     modifier = Modifier.padding(horizontal = 48.dp - 4.dp).padding(top = 4.dp)
                 )
 
@@ -259,7 +263,7 @@ fun EditCounterDialogPreview() {
                 itemState = counterItem,
                 stepConfiguratorState = stepConfiguratorState,
                 initialCounterState = Counter("Test", 128, CounterCardColors.red, listOf(1))
-            ), emptyFlow(), {}, {}, {}, {}, {_, _ -> }, {}, {}, {}, {}
+            ), emptyFlow(), {}, {}, {}, {}, {_, _ -> }, {}, {}, {}, {}, {}, {}
         )
     }
 }

@@ -5,8 +5,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.Action
-import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,16 +26,20 @@ class Actor @Inject constructor(
             is Action.ChangeColor -> changeCounterColor(action.counterId, action.newColor)
             is Action.MinusClick -> changeValueBy(action.counterId, -action.step)
             is Action.PlusClick -> changeValueBy(action.counterId, action.step)
+            Action.RemoveStep -> flowOf(InternalAction.RemoveLastStepField)
+            Action.AddStep -> flowOf(InternalAction.AddStepField)
+
             is Action.TitleInput -> updateCounterTitle(action.counterId, action.inputTextField)
             is Action.TitleInputDone -> onTitleInputDone(action.counterId, action.input)
             is Action.ValueInput -> updateCounterValue(action.counterId, action.inputTextField)
             is Action.ValueInputDone -> onValueInputDone(action.counterId, action.input)
-            is Action.StepInput -> onStepInput(action.counterId, action.stepIndex, action.input)
+            is Action.StepInput -> onStepInput(action.stepIndex, action.input)
             Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
             is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
-            is Action.CloseCounterEditDialog -> closeEditDialog(action.currentItem, action.counterToRestore)
+            is Action.CloseCounterEditDialog ->
+                closeEditDialog(action.editDialogState, action.restoreInitialItemState)
         }
     }
 
@@ -113,27 +117,9 @@ class Actor @Inject constructor(
         repository.updateCounter(newCounter)
     }
 
-    private fun onStepInput(counterId: String, stepIndex: Int, input: TextFieldValue) = flow {
-        val counter = repository.getCounterById(counterId)
-
-        when {
-            input.text.isBlank() -> {
-                emit(InternalAction.UpdateStepConfiguratorField(stepIndex, input))
-            }
-
-            input.text.length <= 9 -> {
-                input.text.toUIntOrNull()?.let { value ->
-                    val newSteps = counter.steps.mapIndexed { index, step ->
-                        if (index == stepIndex) value.toInt()
-                        else step
-                    }
-                    val newCounter = counter.copy(steps = newSteps)
-                    val newTextFieldValue = input.copy(text = value.toString())
-                    emit(InternalAction.UpdateStepConfiguratorField(stepIndex, newTextFieldValue))
-                    repository.updateCounter(newCounter)
-                }
-            }
-        }
+    private fun onStepInput(stepIndex: Int, input: TextFieldValue) = flow {
+        if (input.text.length > 9 || input.text.contains("-")) return@flow
+        emit(InternalAction.UpdateStepConfiguratorField(stepIndex, input))
     }
 
     private fun openEditDialog(counterId: String) = flow {
@@ -143,16 +129,30 @@ class Actor @Inject constructor(
         emit(InternalAction.OpenEditCounterDialog(openDialogForCounter))
     }
 
-    private fun closeEditDialog(currentItem: CounterItem, counterToRestore: Counter? = null) = flow {
+    private fun closeEditDialog(editDialogState: EditDialogState, restoreInitialState: Boolean) = flow {
         emit(InternalAction.CloseEditCounterDialog)
-        counterToRestore?.let {
-            emit(InternalAction.UpdateCounterItem(it))
-            repository.updateCounter(it)
+        if (restoreInitialState) {
+            emit(InternalAction.UpdateCounterItem(editDialogState.getInitialCounterState()))
+            repository.updateCounter(editDialogState.getInitialCounterState())
             return@flow
         }
 
-        onTitleInputDone(currentItem.counterId, currentItem.titleField.text).collect(::emit)
-        onValueInputDone(currentItem.counterId, currentItem.valueField.text).collect(::emit)
-        emit(InternalAction.ClearFocus)
+        with(editDialogState) {
+            onTitleInputDone(itemState.counterId, itemState.titleField.text).collect(::emit)
+            onValueInputDone(itemState.counterId, itemState.valueField.text).collect(::emit)
+            saveStepsToRepository(itemState.counterId, stepConfiguratorState.steps).collect(::emit)
+        }
+    }
+
+    private fun saveStepsToRepository(counterId: String, stepFields: List<TextFieldValue>) = flow {
+        var stepsToSave = stepFields.filter {
+            it.text.isNotBlank() && it.text != "0"
+        }.map { it.text.toInt() }
+
+        if (stepsToSave.isEmpty()) stepsToSave = listOf(1)
+        val newCounter = repository.getCounterById(counterId).copy(steps = stepsToSave)
+
+        emit(InternalAction.UpdateCounterItem(newCounter))
+        repository.updateCounter(newCounter)
     }
 }

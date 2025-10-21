@@ -14,6 +14,8 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.LoadCounterItems,
             is InternalAction.AddCounterItem,
             is InternalAction.RemoveCounterItem,
+            is InternalAction.RemoveLastStepField,
+            is InternalAction.AddStepField,
             is InternalAction.UpdateCounterItem,
             is InternalAction.UpdateCounterItemTitleField,
             is InternalAction.UpdateCounterItemValueField,

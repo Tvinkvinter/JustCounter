@@ -16,6 +16,8 @@ class Reducer @Inject constructor() {
             is InternalAction.LoadCounterItems -> loadCounterItems(previousState, internalAction.counters)
             is InternalAction.AddCounterItem -> addCounterItem(previousState, internalAction.counter)
             is InternalAction.RemoveCounterItem -> removeCounterItem(previousState, internalAction.counterId)
+            is InternalAction.RemoveLastStepField -> removeLastStepField(previousState)
+            is InternalAction.AddStepField -> addStepField(previousState)
             is InternalAction.UpdateCounterItem -> updateCounterItem(previousState, internalAction.counter)
             is InternalAction.UpdateCounterItemTitleField -> updateCounterItemTitleField(
                 previousState,
@@ -54,6 +56,38 @@ class Reducer @Inject constructor() {
             removeIf { it.counterId == counterId }
         }
     )
+
+    private fun removeLastStepField(previousState: State): State {
+        checkNotNull(previousState.editDialog) { "Cannot remove step field when editDialog is not open" }
+
+        if (previousState.editDialog.stepConfiguratorState.steps.size <= 1) return previousState
+
+        val newSteps = previousState.editDialog.stepConfiguratorState.steps.toMutableList().apply {
+            removeAt(lastIndex)
+        }
+        val newStepConfiguratorState = previousState.editDialog.stepConfiguratorState.copy(
+            steps = newSteps
+        )
+
+        return previousState.copy(
+            editDialog = previousState.editDialog.copy(stepConfiguratorState = newStepConfiguratorState)
+        )
+    }
+
+    private fun addStepField(previousState: State): State {
+        checkNotNull(previousState.editDialog) { "Cannot add step field when editDialog is not open" }
+
+        val newSteps = previousState.editDialog.stepConfiguratorState.steps.toMutableList().apply {
+            add(TextFieldValue())
+        }
+        val newStepConfiguratorState = previousState.editDialog.stepConfiguratorState.copy(
+            steps = newSteps
+        )
+
+        return previousState.copy(
+            editDialog = previousState.editDialog.copy(stepConfiguratorState = newStepConfiguratorState)
+        )
+    }
 
     private fun updateCounterItem(previousState: State, newCounter: Counter): State {
         val oldCounterItem = previousState.counterItems.getCounterItemById(newCounter.id)

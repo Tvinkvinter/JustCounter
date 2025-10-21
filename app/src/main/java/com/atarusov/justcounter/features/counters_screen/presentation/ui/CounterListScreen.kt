@@ -108,21 +108,14 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                 onStepInput = {index, input ->
                     viewModel.onAction(Action.StepInput(dialogState.itemState.counterId, index, input))
                 },
-                onStepInputDone = {
-                    viewModel.onAction(Action.StepInputDone)
-                },
+                onStepInputDone = { viewModel.onAction(Action.StepInputDone) },
+                onRemoveStep = {viewModel.onAction(Action.RemoveStep)},
+                onAddStep = { viewModel.onAction(Action.AddStep) },
                 onColorSelected = { selectedColor ->
                     viewModel.onAction(Action.ChangeColor(dialogState.itemState.counterId, selectedColor))
                 },
-                onDismiss = {
-                    viewModel.onAction(
-                        Action.CloseCounterEditDialog(
-                            dialogState.itemState,
-                            dialogState.getInitialCounterState()
-                        )
-                    )
-                },
-                onConfirm = { viewModel.onAction(Action.CloseCounterEditDialog(dialogState.itemState)) }
+                onDismiss = { viewModel.onAction(Action.CloseCounterEditDialog(dialogState, true)) },
+                onConfirm = { viewModel.onAction(Action.CloseCounterEditDialog(dialogState, false)) }
             )
         }
     }

@@ -38,6 +38,8 @@ fun StepConfigurator(
     state: StepConfiguratorState,
     onStepInput: (index: Int, input: TextFieldValue) -> Unit,
     onStepInputDone: () -> Unit,
+    onRemoveStepClick: () -> Unit,
+    onAddStepClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -45,7 +47,7 @@ fun StepConfigurator(
         modifier = modifier.fillMaxWidth()
     ) {
         FilledIconButton(
-            onClick = {},
+            onClick = onRemoveStepClick,
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = state.btnColor,
                 contentColor = state.btnColor.getContrastContentColor(),
@@ -97,7 +99,7 @@ fun StepConfigurator(
         }
 
         FilledIconButton(
-            onClick = {},
+            onClick = onAddStepClick,
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = state.btnColor,
                 contentColor = state.btnColor.getContrastContentColor(),
@@ -128,7 +130,7 @@ fun StepConfiguratorPreview() {
     JustCounterTheme {
         StepConfigurator(
             stepConfiguratorState,
-            { index, input -> }, {},
+            { index, input -> }, {}, {}, {},
             Modifier.width(300.dp)
         )
     }
