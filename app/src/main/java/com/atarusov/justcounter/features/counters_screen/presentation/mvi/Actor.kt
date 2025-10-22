@@ -19,7 +19,6 @@ class Actor @Inject constructor(
 
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
-            Action.GetAllCounters -> getAllCounters()
             Action.AddCounter -> createNewCounter()
             is Action.RemoveCounter -> removeCounter(action.counterId)
 
@@ -41,11 +40,6 @@ class Actor @Inject constructor(
             is Action.CloseCounterEditDialog ->
                 closeEditDialog(action.editDialogState, action.restoreInitialItemState)
         }
-    }
-
-    private fun getAllCounters() = flow {
-        val list = repository.getAllCounters()
-        emit(InternalAction.LoadCounterItems(list))
     }
 
     private fun createNewCounter() = flow {

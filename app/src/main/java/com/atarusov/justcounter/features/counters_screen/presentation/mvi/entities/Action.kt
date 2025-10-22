@@ -5,7 +5,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 
 sealed class Action {
-    data object GetAllCounters : Action()
     data object AddCounter : Action()
     data class RemoveCounter(val counterId: String) : Action()
 
