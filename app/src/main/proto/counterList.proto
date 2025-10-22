@@ -8,7 +8,7 @@ message CounterProto {
   string title = 2;
   int32 value = 3;
   repeated int32 steps = 4;
-  uint64 color = 5;
+  int32 color = 5;
 }
 
 message CounterListProto {

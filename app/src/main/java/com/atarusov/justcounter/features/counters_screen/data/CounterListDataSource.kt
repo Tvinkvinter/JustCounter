@@ -1,7 +1,10 @@
 package com.atarusov.justcounter.features.counters_screen.data
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.datastore.core.DataStore
 import com.atarusov.justcounter.CounterListProto
+import com.atarusov.justcounter.CounterProto
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
 import com.atarusov.justcounter.features.counters_screen.domain.toDomain
@@ -39,15 +42,47 @@ class CounterListDataSource @Inject constructor(
         }
     }
 
-    override suspend fun updateCounter(newCounterState: Counter) {
-        dataStore.updateData { counterListProto ->
-            val itemIndex =
-                counterListProto.countersList.indexOfFirst { it.id == newCounterState.id }
-            if (itemIndex != -1) {
-                counterListProto.toBuilder()
-                    .setCounters(itemIndex, newCounterState.toProto())
-                    .build()
-            } else counterListProto
+    override suspend fun setCounter(counter: Counter) {
+        dataStore.updateData { counters ->
+            val index = counters.countersList.indexOfFirst { it.id == counter.id }
+            if (index == -1) return@updateData counters
+
+            counters.toBuilder()
+                .setCounters(index, counter.toProto())
+                .build()
+        }
+    }
+
+    override suspend fun updateCounterTitle(counterId: String, newTitle: String) {
+        updateCounter(counterId) { it.setTitle(newTitle) }
+    }
+
+    override suspend fun updateCounterValue(counterId: String, newValue: Int) {
+        updateCounter(counterId) { it.setValue(newValue) }
+    }
+
+    override suspend fun updateCounterColor(counterId: String, newColor: Color) {
+        updateCounter(counterId) { it.setColor(newColor.toArgb()) }
+    }
+
+    override suspend fun updateCounterSteps(counterId: String, newSteps: List<Int>) {
+        updateCounter(counterId) { it.clearSteps().addAllSteps(newSteps) }
+    }
+
+
+    private suspend fun updateCounter(
+        counterId: String,
+        transform: (CounterProto.Builder) -> CounterProto.Builder
+    ) {
+        dataStore.updateData { counters ->
+            val index = counters.countersList.indexOfFirst { it.id == counterId }
+            if (index == -1) return@updateData counters
+
+            val updatedCounter = transform(counters.countersList[index].toBuilder()).build()
+
+            counters.toBuilder()
+                .setCounters(index, updatedCounter)
+                .build()
         }
     }
 

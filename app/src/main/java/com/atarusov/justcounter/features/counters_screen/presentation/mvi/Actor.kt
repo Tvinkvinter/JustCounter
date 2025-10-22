@@ -62,7 +62,7 @@ class Actor @Inject constructor(
     private fun changeCounterColor(counterId: String, newColor: Color) = flow<InternalAction> {
         val newCounter = repository.getCounterById(counterId).copy(color = newColor)
         emit(InternalAction.UpdateCounterItem(newCounter))
-        repository.updateCounter(newCounter)
+        repository.updateCounterColor(counterId, newColor)
     }
 
     private fun changeValueBy(counterId: String, by: Int, ) = flow {
@@ -70,15 +70,13 @@ class Actor @Inject constructor(
         val newCounter = oldCounter.copy(value = oldCounter.value + by)
 
         emit(InternalAction.UpdateCounterItem(newCounter))
-        repository.updateCounter(newCounter)
+        repository.updateCounterValue(counterId, oldCounter.value + by)
     }
 
     private fun updateCounterTitle(counterId: String, inputTextField: TextFieldValue) = flow {
         if (inputTextField.text.length <= 12) {
-            val newCounter = repository.getCounterById(counterId).copy(title = inputTextField.text)
-
             emit(InternalAction.UpdateCounterItemTitleField(counterId, inputTextField))
-            repository.updateCounter(newCounter)
+            repository.updateCounterTitle(counterId, inputTextField.text)
         }
     }
 
@@ -88,20 +86,17 @@ class Actor @Inject constructor(
     }
 
     private fun updateCounterValue(counterId: String, inputTextField: TextFieldValue) = flow {
-        val counter = repository.getCounterById(counterId)
-
         when {
             inputTextField.text.isBlank() || inputTextField.text == "-" -> {
                 emit(InternalAction.UpdateCounterItemValueField(counterId, inputTextField))
-                repository.updateCounter(counter.copy(value = 0))
+                repository.updateCounterValue(counterId, 0)
             }
 
             inputTextField.text.replace("-", "").length <= 9 -> {
                 inputTextField.text.toIntOrNull()?.let { value ->
-                    val newCounter = counter.copy(value = value)
                     val newTextFieldValue = inputTextField.copy(text = value.toString())
                     emit(InternalAction.UpdateCounterItemValueField(counterId, newTextFieldValue))
-                    repository.updateCounter(newCounter)
+                    repository.updateCounterValue(counterId, value)
                 }
             }
         }
@@ -114,7 +109,7 @@ class Actor @Inject constructor(
 
         emit(InternalAction.ClearFocus)
         emit(InternalAction.UpdateCounterItem(newCounter))
-        repository.updateCounter(newCounter)
+        repository.updateCounterValue(counterId, valueToSave)
     }
 
     private fun onStepInput(stepIndex: Int, input: TextFieldValue) = flow {
@@ -133,7 +128,7 @@ class Actor @Inject constructor(
         emit(InternalAction.CloseEditCounterDialog)
         if (restoreInitialState) {
             emit(InternalAction.UpdateCounterItem(editDialogState.getInitialCounterState()))
-            repository.updateCounter(editDialogState.getInitialCounterState())
+            repository.setCounter(editDialogState.getInitialCounterState())
             return@flow
         }
 
@@ -153,6 +148,6 @@ class Actor @Inject constructor(
         val newCounter = repository.getCounterById(counterId).copy(steps = stepsToSave)
 
         emit(InternalAction.UpdateCounterItem(newCounter))
-        repository.updateCounter(newCounter)
+        repository.updateCounterSteps(counterId, stepsToSave)
     }
 }
