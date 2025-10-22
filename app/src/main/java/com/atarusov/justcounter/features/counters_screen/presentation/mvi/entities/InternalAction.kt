@@ -1,5 +1,6 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 
@@ -7,12 +8,15 @@ sealed class InternalAction {
     data class LoadCounterItems(val counters: List<Counter>) : InternalAction()
     data class AddCounterItem(val counter: Counter) : InternalAction()
     data class RemoveCounterItem(val counterId: String) : InternalAction()
-    data class UpdateCounterItem(val counter: Counter) : InternalAction()
-    data object RemoveLastStepField : InternalAction()
-    data object AddStepField : InternalAction()
+    data class UpdateCounterItemColor(val counterId: String, val newColor: Color) : InternalAction()
     data class UpdateCounterItemTitleField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
     data class UpdateCounterItemValueField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
+    data class ChangeCounterItemValueBy(val counterId: String, val by: Int) : InternalAction()
+    data class UpdateCounterItemSteps(val counterId: String, val steps: List<Int>) : InternalAction()
     data class UpdateStepConfiguratorField(val stepIndex: Int, val newTextField: TextFieldValue) : InternalAction()
+    data class RestoreCounterItem(val counterItem: CounterItem) : InternalAction()
+    data object RemoveLastStepField : InternalAction()
+    data object AddStepField : InternalAction()
 
     data class OpenEditCounterDialog(val counter: Counter) : InternalAction()
     data object CloseEditCounterDialog : InternalAction()

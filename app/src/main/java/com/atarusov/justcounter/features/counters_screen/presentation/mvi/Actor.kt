@@ -6,6 +6,7 @@ import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.toCounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import kotlinx.coroutines.flow.Flow
@@ -54,17 +55,15 @@ class Actor @Inject constructor(
     }
 
     private fun changeCounterColor(counterId: String, newColor: Color) = flow<InternalAction> {
-        val newCounter = repository.getCounterById(counterId).copy(color = newColor)
-        emit(InternalAction.UpdateCounterItem(newCounter))
+        emit(InternalAction.UpdateCounterItemColor(counterId, newColor))
         repository.updateCounterColor(counterId, newColor)
     }
 
     private fun changeValueBy(counterId: String, by: Int, ) = flow {
         val oldCounter = repository.getCounterById(counterId)
-        val newCounter = oldCounter.copy(value = oldCounter.value + by)
-
-        emit(InternalAction.UpdateCounterItem(newCounter))
-        repository.updateCounterValue(counterId, oldCounter.value + by)
+        val newValue = oldCounter.value + by
+        emit(InternalAction.ChangeCounterItemValueBy(counterId, by))
+        repository.updateCounterValue(counterId, newValue)
     }
 
     private fun updateCounterTitle(counterId: String, inputTextField: TextFieldValue) = flow {
@@ -99,10 +98,9 @@ class Actor @Inject constructor(
     private fun onValueInputDone(counterId: String, input: String) = flow {
         var valueToSave = input.toIntOrNull() ?: 0
         if (input.isBlank() || input == "-") valueToSave = 0
-        val newCounter = repository.getCounterById(counterId).copy(value = valueToSave)
 
         emit(InternalAction.ClearFocus)
-        emit(InternalAction.UpdateCounterItem(newCounter))
+        emit(InternalAction.UpdateCounterItemValueField(counterId, TextFieldValue(valueToSave.toString())))
         repository.updateCounterValue(counterId, valueToSave)
     }
 
@@ -121,7 +119,9 @@ class Actor @Inject constructor(
     private fun closeEditDialog(editDialogState: EditDialogState, restoreInitialState: Boolean) = flow {
         emit(InternalAction.CloseEditCounterDialog)
         if (restoreInitialState) {
-            emit(InternalAction.UpdateCounterItem(editDialogState.getInitialCounterState()))
+            val counterItemToRestore = editDialogState.getInitialCounterState().toCounterItem()
+
+            emit(InternalAction.RestoreCounterItem(counterItemToRestore))
             repository.setCounter(editDialogState.getInitialCounterState())
             return@flow
         }
@@ -129,19 +129,17 @@ class Actor @Inject constructor(
         with(editDialogState) {
             onTitleInputDone(itemState.counterId, itemState.titleField.text).collect(::emit)
             onValueInputDone(itemState.counterId, itemState.valueField.text).collect(::emit)
-            saveStepsToRepository(itemState.counterId, stepConfiguratorState.steps).collect(::emit)
+            saveCounterSteps(itemState.counterId, stepConfiguratorState.steps).collect(::emit)
         }
     }
 
-    private fun saveStepsToRepository(counterId: String, stepFields: List<TextFieldValue>) = flow {
+    private fun saveCounterSteps(counterId: String, stepFields: List<TextFieldValue>) = flow {
         var stepsToSave = stepFields.filter {
             it.text.isNotBlank() && it.text != "0"
         }.map { it.text.toInt() }
-
         if (stepsToSave.isEmpty()) stepsToSave = listOf(1)
-        val newCounter = repository.getCounterById(counterId).copy(steps = stepsToSave)
 
-        emit(InternalAction.UpdateCounterItem(newCounter))
+        emit(InternalAction.UpdateCounterItemSteps(counterId, stepsToSave))
         repository.updateCounterSteps(counterId, stepsToSave)
     }
 }

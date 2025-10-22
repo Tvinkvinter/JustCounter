@@ -1,5 +1,6 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
@@ -16,9 +17,11 @@ class Reducer @Inject constructor() {
             is InternalAction.LoadCounterItems -> loadCounterItems(previousState, internalAction.counters)
             is InternalAction.AddCounterItem -> addCounterItem(previousState, internalAction.counter)
             is InternalAction.RemoveCounterItem -> removeCounterItem(previousState, internalAction.counterId)
-            is InternalAction.RemoveLastStepField -> removeLastStepField(previousState)
-            is InternalAction.AddStepField -> addStepField(previousState)
-            is InternalAction.UpdateCounterItem -> updateCounterItem(previousState, internalAction.counter)
+            is InternalAction.UpdateCounterItemColor -> updateCounterItemColor(
+                previousState,
+                internalAction.counterId,
+                internalAction.newColor
+            )
             is InternalAction.UpdateCounterItemTitleField -> updateCounterItemTitleField(
                 previousState,
                 internalAction.counterId,
@@ -29,11 +32,27 @@ class Reducer @Inject constructor() {
                 internalAction.counterId,
                 internalAction.newTextField
             )
+            is InternalAction.ChangeCounterItemValueBy -> changeCounterItemValueBy(
+                previousState,
+                internalAction.counterId,
+                internalAction.by
+            )
+            is InternalAction.UpdateCounterItemSteps -> updateCounterItemSteps(
+                previousState,
+                internalAction.counterId,
+                internalAction.steps
+            )
             is InternalAction.UpdateStepConfiguratorField -> updateStepConfiguratorField(
                 previousState,
                 internalAction.stepIndex,
                 internalAction.newTextField
             )
+            is InternalAction.RestoreCounterItem -> restoreCounterItem(
+                previousState,
+                internalAction.counterItem
+            )
+            InternalAction.RemoveLastStepField -> removeLastStepField(previousState)
+            InternalAction.AddStepField -> addStepField(previousState)
 
             is InternalAction.OpenEditCounterDialog -> openEditCounterDialog(previousState, internalAction.counter)
             InternalAction.CloseEditCounterDialog -> previousState.copy(editDialog = null)
@@ -56,6 +75,101 @@ class Reducer @Inject constructor() {
             removeIf { it.counterId == counterId }
         }
     )
+
+    private fun updateCounterItemColor(
+        previousState: State,
+        counterId: String,
+        newColor: Color
+    ) = previousState.copy(
+        counterItems = previousState.counterItems.map {
+            if (it.counterId == counterId) it.copy(color = newColor)
+            else it
+        },
+        editDialog = previousState.editDialog?.copy(
+            itemState = previousState.editDialog.itemState.copy(color = newColor),
+            stepConfiguratorState = previousState.editDialog.stepConfiguratorState.copy(btnColor = newColor)
+        )
+    )
+
+    private fun updateCounterItemTitleField(
+        previousState: State,
+        counterId: String,
+        newFieldValue: TextFieldValue
+    ) = previousState.copy(
+        counterItems = previousState.counterItems.map {
+            if (it.counterId == counterId) it.copy(titleField = newFieldValue)
+            else it
+        },
+        editDialog = previousState.editDialog?.copy(
+            itemState = previousState.editDialog.itemState.copy(titleField = newFieldValue)
+        )
+    )
+
+    private fun updateCounterItemValueField(
+        previousState: State,
+        counterId: String,
+        newFieldValue: TextFieldValue
+    ) = previousState.copy(
+        counterItems = previousState.counterItems.map {
+            if (it.counterId == counterId) it.copy(valueField = newFieldValue)
+            else it
+        },
+        editDialog = previousState.editDialog?.copy(
+            itemState = previousState.editDialog.itemState.copy(valueField = newFieldValue)
+        )
+    )
+
+    private fun changeCounterItemValueBy(
+        previousState: State,
+        counterId: String,
+        by: Int
+    ): State {
+        val counterItem = previousState.counterItems.getCounterItemById(counterId)
+        val newValueField = counterItem.valueField.copy(
+            text = ((counterItem.valueField.text.toIntOrNull() ?: 0) + by).toString()
+        )
+        return updateCounterItemValueField(previousState, counterId, newValueField)
+    }
+
+    private fun updateCounterItemSteps(
+        previousState: State,
+        counterId: String,
+        newSteps: List<Int>
+    ) = previousState.copy(
+        counterItems = previousState.counterItems.map {
+            if (it.counterId == counterId) it.copy(steps = newSteps)
+            else it
+        }
+    )
+
+    private fun updateStepConfiguratorField(
+        previousState: State,
+        stepIndex: Int,
+        newFieldValue: TextFieldValue
+    ): State {
+        val newSteps = previousState.editDialog?.stepConfiguratorState?.steps?.mapIndexed { index, fieldValue ->
+            if (index == stepIndex) newFieldValue
+            else fieldValue
+        }
+
+        val newStepConfiguratorState = previousState.editDialog?.stepConfiguratorState?.copy(
+            steps = newSteps!!
+        )
+
+        return previousState.copy(
+            editDialog = previousState.editDialog?.copy(
+                stepConfiguratorState = newStepConfiguratorState!!
+            )
+        )
+    }
+
+    private fun restoreCounterItem(previousState: State, counterItemToRestore: CounterItem) =
+        previousState.copy(
+            counterItems = previousState.counterItems.map {
+                if (it.counterId == counterItemToRestore.counterId) counterItemToRestore
+                else it
+            }
+        )
 
     private fun removeLastStepField(previousState: State): State {
         checkNotNull(previousState.editDialog) { "Cannot remove step field when editDialog is not open" }
@@ -86,73 +200,6 @@ class Reducer @Inject constructor() {
 
         return previousState.copy(
             editDialog = previousState.editDialog.copy(stepConfiguratorState = newStepConfiguratorState)
-        )
-    }
-
-    private fun updateCounterItem(previousState: State, newCounter: Counter): State {
-        val oldCounterItem = previousState.counterItems.getCounterItemById(newCounter.id)
-        val newCounterItem = newCounter.toCounterItem().copy(
-            titleField = oldCounterItem.titleField.copy(text = newCounter.title)
-        )
-
-        return previousState.copy(
-            counterItems = previousState.counterItems.map {
-                if (it.counterId == newCounter.id) newCounterItem
-                else it
-            },
-            editDialog = previousState.editDialog?.copy(
-                itemState = newCounterItem,
-                stepConfiguratorState = StepConfiguratorState(newCounterItem)
-            )
-        )
-    }
-
-    private fun updateCounterItemTitleField(
-        previousState: State,
-        counterId: String,
-        newFieldValue: TextFieldValue
-    ) = previousState.copy(
-        counterItems = previousState.counterItems.map {
-            if (it.counterId == counterId) it.copy(titleField = newFieldValue)
-            else it
-        },
-        editDialog = previousState.editDialog?.copy(
-            itemState = previousState.editDialog.itemState.copy(titleField = newFieldValue)
-        )
-    )
-
-    private fun updateCounterItemValueField(
-        previousState: State,
-        counterId: String,
-        newFieldValue: TextFieldValue
-    ) = previousState.copy(
-        counterItems = previousState.counterItems.map {
-            if (it.counterId == counterId) it.copy(valueField = newFieldValue)
-            else it
-        },
-        editDialog = previousState.editDialog?.copy(
-            itemState = previousState.editDialog.itemState.copy(valueField = newFieldValue)
-        )
-    )
-
-    private fun updateStepConfiguratorField(
-        previousState: State,
-        stepIndex: Int,
-        newFieldValue: TextFieldValue
-    ): State {
-        val newSteps = previousState.editDialog?.stepConfiguratorState?.steps?.mapIndexed { index, fieldValue ->
-            if (index == stepIndex) newFieldValue
-            else fieldValue
-        }
-
-        val newStepConfiguratorState = previousState.editDialog?.stepConfiguratorState?.copy(
-            steps = newSteps!!
-        )
-
-        return previousState.copy(
-            editDialog = previousState.editDialog?.copy(
-                stepConfiguratorState = newStepConfiguratorState!!
-            )
         )
     }
 
