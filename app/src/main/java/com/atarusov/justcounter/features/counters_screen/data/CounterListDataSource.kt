@@ -31,11 +31,6 @@ class CounterListDataSource @Inject constructor(
         }.first()
     }
 
-    override suspend fun getCounterById(counterId: String): Counter {
-        return counterListFlow.first().find { it.id == counterId }
-            ?: throw NoSuchElementException("Counter with id = $counterId wasn't found")
-    }
-
     override suspend fun addCounter(counter: Counter) {
         dataStore.updateData { counterListProto ->
             counterListProto.toBuilder().addCounters(counter.toProto()).build()
@@ -61,6 +56,10 @@ class CounterListDataSource @Inject constructor(
         updateCounter(counterId) { it.setValue(newValue) }
     }
 
+    override suspend fun changeCounterValueBy(counterId: String, by: Int) {
+        updateCounter(counterId) {it.setValue(it.value + by)}
+    }
+
     override suspend fun updateCounterColor(counterId: String, newColor: Color) {
         updateCounter(counterId) { it.setColor(newColor.toArgb()) }
     }
@@ -68,7 +67,6 @@ class CounterListDataSource @Inject constructor(
     override suspend fun updateCounterSteps(counterId: String, newSteps: List<Int>) {
         updateCounter(counterId) { it.clearSteps().addAllSteps(newSteps) }
     }
-
 
     private suspend fun updateCounter(
         counterId: String,

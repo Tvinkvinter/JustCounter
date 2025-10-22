@@ -54,7 +54,7 @@ class Reducer @Inject constructor() {
             InternalAction.RemoveLastStepField -> removeLastStepField(previousState)
             InternalAction.AddStepField -> addStepField(previousState)
 
-            is InternalAction.OpenEditCounterDialog -> openEditCounterDialog(previousState, internalAction.counter)
+            is InternalAction.OpenEditCounterDialog -> openEditCounterDialog(previousState, internalAction.counterId)
             InternalAction.CloseEditCounterDialog -> previousState.copy(editDialog = null)
             InternalAction.SwitchRemoveMode -> switchRemoveMode(previousState)
 
@@ -203,12 +203,11 @@ class Reducer @Inject constructor() {
         )
     }
 
-    private fun openEditCounterDialog(previousState: State, counter: Counter): State {
-        val openDialogForCounterItem = previousState.counterItems.getCounterItemById(counter.id)
+    private fun openEditCounterDialog(previousState: State, counterId: String): State {
+        val openDialogForCounterItem = previousState.counterItems.getCounterItemById(counterId)
         val editDialogState = EditDialogState(
             itemState = openDialogForCounterItem,
             stepConfiguratorState = StepConfiguratorState(openDialogForCounterItem),
-            initialCounterState = counter
         )
 
         return previousState.copy(editDialog = editDialogState)

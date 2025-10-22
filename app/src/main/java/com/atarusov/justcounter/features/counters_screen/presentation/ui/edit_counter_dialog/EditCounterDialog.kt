@@ -54,7 +54,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
-import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.ui.theme.CounterCardColors
@@ -261,8 +260,7 @@ fun EditCounterDialogPreview() {
         EditCounterDialog(
             EditDialogState(
                 itemState = counterItem,
-                stepConfiguratorState = stepConfiguratorState,
-                initialCounterState = Counter("Test", 128, CounterCardColors.red, listOf(1))
+                stepConfiguratorState = stepConfiguratorState
             ), emptyFlow(), {}, {}, {}, {}, {_, _ -> }, {}, {}, {}, {}, {}, {}
         )
     }

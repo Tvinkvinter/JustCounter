@@ -6,7 +6,7 @@ import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.InternalAction
-import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.toCounterItem
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.toCounter
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import kotlinx.coroutines.flow.Flow
@@ -60,10 +60,8 @@ class Actor @Inject constructor(
     }
 
     private fun changeValueBy(counterId: String, by: Int, ) = flow {
-        val oldCounter = repository.getCounterById(counterId)
-        val newValue = oldCounter.value + by
         emit(InternalAction.ChangeCounterItemValueBy(counterId, by))
-        repository.updateCounterValue(counterId, newValue)
+        repository.changeCounterValueBy(counterId, by)
     }
 
     private fun updateCounterTitle(counterId: String, inputTextField: TextFieldValue) = flow {
@@ -110,19 +108,17 @@ class Actor @Inject constructor(
     }
 
     private fun openEditDialog(counterId: String) = flow {
-        val openDialogForCounter = repository.getCounterById(counterId)
-
         emit(InternalAction.ClearFocus)
-        emit(InternalAction.OpenEditCounterDialog(openDialogForCounter))
+        emit(InternalAction.OpenEditCounterDialog(counterId))
     }
 
     private fun closeEditDialog(editDialogState: EditDialogState, restoreInitialState: Boolean) = flow {
         emit(InternalAction.CloseEditCounterDialog)
         if (restoreInitialState) {
-            val counterItemToRestore = editDialogState.getInitialCounterState().toCounterItem()
+            val counterItemToRestore = editDialogState.getInitialCounterItemState()
 
             emit(InternalAction.RestoreCounterItem(counterItemToRestore))
-            repository.setCounter(editDialogState.getInitialCounterState())
+            repository.setCounter(editDialogState.getInitialCounterItemState().toCounter())
             return@flow
         }
 

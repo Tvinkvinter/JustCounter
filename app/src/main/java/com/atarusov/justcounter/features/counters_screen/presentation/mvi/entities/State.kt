@@ -27,3 +27,11 @@ fun Counter.toCounterItem() = CounterItem(
     steps = steps,
     counterId = id
 )
+
+fun CounterItem.toCounter() = Counter(
+    id = counterId,
+    title = titleField.text,
+    value = valueField.text.toIntOrNull() ?: 0,
+    color = color,
+    steps = steps
+)
