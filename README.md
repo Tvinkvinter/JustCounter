@@ -9,3 +9,4 @@ The code isn’t final yet — new features will be added and a general refactor
 - **Core**: Android SDK, Kotlin, Jetpack Compose
 - **Dependency Injection**: Hilt
 - **Asynchronous processing**: Coroutines & Flows
+- **Storage**: DataStore
