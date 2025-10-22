@@ -9,10 +9,7 @@ import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
 import com.atarusov.justcounter.features.counters_screen.domain.toDomain
 import com.atarusov.justcounter.features.counters_screen.domain.toProto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -21,15 +18,11 @@ class CounterListDataSource @Inject constructor(
     val dataStore: DataStore<CounterListProto>
 ) : CounterListRepository {
 
-    override val counterListFlow: Flow<List<Counter>> = dataStore.data.map { counterListProto ->
-        counterListProto.countersList.map { it.toDomain() }
-    }.flowOn(Dispatchers.IO)
-
-    override suspend fun getAllCounters(): List<Counter> {
-        return dataStore.data.map { counterListProto ->
+    override suspend fun getAllCounters(): List<Counter> =
+        dataStore.data.map { counterListProto ->
             counterListProto.countersList.map { it.toDomain() }
         }.first()
-    }
+
 
     override suspend fun addCounter(counter: Counter) {
         dataStore.updateData { counterListProto ->
