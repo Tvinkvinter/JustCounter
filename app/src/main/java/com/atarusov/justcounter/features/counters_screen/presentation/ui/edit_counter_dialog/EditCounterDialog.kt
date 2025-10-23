@@ -56,7 +56,6 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
-import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -65,11 +64,11 @@ import kotlinx.coroutines.flow.emptyFlow
 fun EditCounterDialog(
     state: EditDialogState,
     events: Flow<OneTimeEvent>,
-    onTitleInput: (inputTextField: TextFieldValue) -> Unit,
+    onTitleInput: (inputField: TextFieldValue) -> Unit,
     onTitleInputDone: (input: String) -> Unit,
-    onValueInput: (inputTextField: TextFieldValue) -> Unit,
+    onValueInput: (inputField: TextFieldValue) -> Unit,
     onValueInputDone: (input: String) -> Unit,
-    onStepInput: (index: Int, inputTextField: TextFieldValue) -> Unit,
+    onStepInput: (index: Int, inputField: TextFieldValue) -> Unit,
     onStepInputDone: () -> Unit,
     onRemoveStep: () -> Unit,
     onAddStep: () -> Unit,
@@ -108,7 +107,7 @@ fun EditCounterDialog(
                     color = state.itemState.color
                 ) {
                     TitleTextFieldWithIcon(
-                        titleFieldValue = state.itemState.titleField,
+                        titleField = state.itemState.titleField,
                         onTitleChange = onTitleInput,
                         onInputDone = onTitleInputDone,
                         itemColor = state.itemState.color,
@@ -188,14 +187,14 @@ fun EditCounterDialog(
 
 @Composable
 private fun TitleTextFieldWithIcon(
-    titleFieldValue: TextFieldValue,
-    onTitleChange: (inputTextField: TextFieldValue) -> Unit,
+    titleField: TextFieldValue,
+    onTitleChange: (inputField: TextFieldValue) -> Unit,
     onInputDone: (input: String) -> Unit,
     itemColor: Color,
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
-    var localTitleFieldState by remember(titleFieldValue) { mutableStateOf(titleFieldValue) }
+    var localTitleFieldState by remember(titleField) { mutableStateOf(titleField) }
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -217,7 +216,7 @@ private fun TitleTextFieldWithIcon(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { onInputDone(titleFieldValue.text) }
+                onDone = { onInputDone(titleField.text) }
             ),
             singleLine = true,
             cursorBrush = SolidColor(itemColor.getContrastContentColor())
@@ -232,7 +231,7 @@ private fun TitleTextFieldWithIcon(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(bounded = false, radius = 16.dp),
                 ) {
-                    localTitleFieldState = localTitleFieldState.copy(selection = TextRange(titleFieldValue.text.length))
+                    localTitleFieldState = localTitleFieldState.copy(selection = TextRange(titleField.text.length))
                     focusRequester.requestFocus()
                 },
             tint = itemColor.getContrastContentColor()

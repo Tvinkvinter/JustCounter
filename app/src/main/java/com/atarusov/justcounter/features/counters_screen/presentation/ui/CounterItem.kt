@@ -59,9 +59,9 @@ fun CounterItem(
     onPLusClick: (step: Int) -> Unit,
     onMinusClick: (step: Int) -> Unit,
     onEditClick: () -> Unit,
-    onInputTitle: (inputTextField: TextFieldValue) -> Unit,
+    onInputTitle: (inputField: TextFieldValue) -> Unit,
     onInputTitleDone: (input: String) -> Unit,
-    onInputValue: (inputTextField: TextFieldValue) -> Unit,
+    onInputValue: (inputField: TextFieldValue) -> Unit,
     onInputValueDone: (input: String) -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier

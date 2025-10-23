@@ -89,28 +89,28 @@ class Reducer @Inject constructor() {
     private fun updateCounterItemTitleField(
         previousState: State,
         counterId: String,
-        newFieldValue: TextFieldValue
+        newTextField: TextFieldValue
     ) = previousState.copy(
         counterItems = previousState.counterItems.map {
-            if (it.counterId == counterId) it.copy(titleField = newFieldValue)
+            if (it.counterId == counterId) it.copy(titleField = newTextField)
             else it
         },
         editDialog = previousState.editDialog?.copy(
-            itemState = previousState.editDialog.itemState.copy(titleField = newFieldValue)
+            itemState = previousState.editDialog.itemState.copy(titleField = newTextField)
         )
     )
 
     private fun updateCounterItemValueField(
         previousState: State,
         counterId: String,
-        newFieldValue: TextFieldValue
+        newTextField: TextFieldValue
     ) = previousState.copy(
         counterItems = previousState.counterItems.map {
-            if (it.counterId == counterId) it.copy(valueField = newFieldValue)
+            if (it.counterId == counterId) it.copy(valueField = newTextField)
             else it
         },
         editDialog = previousState.editDialog?.copy(
-            itemState = previousState.editDialog.itemState.copy(valueField = newFieldValue)
+            itemState = previousState.editDialog.itemState.copy(valueField = newTextField)
         )
     )
 
@@ -128,10 +128,10 @@ class Reducer @Inject constructor() {
     private fun updateStepConfiguratorField(
         previousState: State,
         stepIndex: Int,
-        newFieldValue: TextFieldValue
+        newTextField: TextFieldValue
     ): State {
         val newSteps = previousState.editDialog?.stepConfiguratorState?.steps?.mapIndexed { index, fieldValue ->
-            if (index == stepIndex) newFieldValue
+            if (index == stepIndex) newTextField
             else fieldValue
         }
 

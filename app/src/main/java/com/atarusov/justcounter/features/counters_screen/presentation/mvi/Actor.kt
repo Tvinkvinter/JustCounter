@@ -33,11 +33,11 @@ class Actor @Inject constructor(
             Action.RemoveStep -> flowOf(InternalAction.RemoveLastStepField)
             Action.AddStep -> flowOf(InternalAction.AddStepField)
 
-            is Action.TitleInput -> updateCounterTitle(action.counterId, action.inputTextField)
+            is Action.TitleInput -> updateCounterTitle(action.counterId, action.inputField)
             is Action.TitleInputDone -> onTitleInputDone(action.counterId, action.input)
-            is Action.ValueInput -> updateCounterValue(action.counterId, action.inputTextField)
+            is Action.ValueInput -> updateCounterValue(action.counterId, action.inputField)
             is Action.ValueInputDone -> onValueInputDone(action.counterId, action.input)
-            is Action.StepInput -> onStepInput(action.stepIndex, action.input)
+            is Action.StepInput -> onStepInput(action.stepIndex, action.inputField)
             Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
@@ -71,10 +71,10 @@ class Actor @Inject constructor(
         repository.updateCounterValue(counterId, newValue)
     }
 
-    private fun updateCounterTitle(counterId: String, inputTextField: TextFieldValue) = flow {
-        if (inputTextField.text.length <= 12) {
-            emit(InternalAction.UpdateCounterItemTitleField(counterId, inputTextField))
-            repository.updateCounterTitle(counterId, inputTextField.text)
+    private fun updateCounterTitle(counterId: String, inputField: TextFieldValue) = flow {
+        if (inputField.text.length <= 12) {
+            emit(InternalAction.UpdateCounterItemTitleField(counterId, inputField))
+            repository.updateCounterTitle(counterId, inputField.text)
         }
     }
 
@@ -83,18 +83,18 @@ class Actor @Inject constructor(
         else emit(InternalAction.ClearFocus)
     }
 
-    private fun updateCounterValue(counterId: String, inputTextField: TextFieldValue) = flow {
-        val clearedInputText = inputTextField.text.trim()
+    private fun updateCounterValue(counterId: String, inputField: TextFieldValue) = flow {
+        val clearedInputText = inputField.text.trim()
         if (clearedInputText.isEmpty() || clearedInputText == "-") {
-            emit(InternalAction.UpdateCounterItemValueField(counterId, inputTextField))
+            emit(InternalAction.UpdateCounterItemValueField(counterId, inputField))
             repository.updateCounterValue(counterId, 0)
             return@flow
         }
 
         val newValue = clearedInputText.toIntOrNull()
         if (newValue != null && newValue in MIN_VALUE..MAX_VALUE) {
-            val newTextFieldValue = inputTextField.copy(text = newValue.toString())
-            emit(InternalAction.UpdateCounterItemValueField(counterId, newTextFieldValue))
+            val newTextField = inputField.copy(text = newValue.toString())
+            emit(InternalAction.UpdateCounterItemValueField(counterId, newTextField))
             repository.updateCounterValue(counterId, newValue)
         }
     }
@@ -107,9 +107,11 @@ class Actor @Inject constructor(
         repository.updateCounterValue(counterId, valueToSave)
     }
 
-    private fun onStepInput(stepIndex: Int, input: TextFieldValue) = flow {
-        if (input.text.length > MAX_VALUE.toString().length || input.text.contains("-")) return@flow
-        emit(InternalAction.UpdateStepConfiguratorField(stepIndex, input))
+    private fun onStepInput(stepIndex: Int, inputField: TextFieldValue) = flow {
+        if (inputField.text.length > MAX_VALUE.toString().length) return@flow
+        if (inputField.text.contains("-")) return@flow
+
+        emit(InternalAction.UpdateStepConfiguratorField(stepIndex, inputField))
     }
 
     private fun openEditDialog(counterId: String) = flow {
