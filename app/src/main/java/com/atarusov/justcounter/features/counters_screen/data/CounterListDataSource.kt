@@ -49,10 +49,6 @@ class CounterListDataSource @Inject constructor(
         updateCounter(counterId) { it.setValue(newValue) }
     }
 
-    override suspend fun changeCounterValueBy(counterId: String, by: Int) {
-        updateCounter(counterId) {it.setValue(it.value + by)}
-    }
-
     override suspend fun updateCounterColor(counterId: String, newColor: Color) {
         updateCounter(counterId) { it.setColor(newColor.toArgb()) }
     }

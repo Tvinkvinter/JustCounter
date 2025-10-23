@@ -32,11 +32,6 @@ class Reducer @Inject constructor() {
                 internalAction.counterId,
                 internalAction.newTextField
             )
-            is InternalAction.ChangeCounterItemValueBy -> changeCounterItemValueBy(
-                previousState,
-                internalAction.counterId,
-                internalAction.by
-            )
             is InternalAction.UpdateCounterItemSteps -> updateCounterItemSteps(
                 previousState,
                 internalAction.counterId,
@@ -118,18 +113,6 @@ class Reducer @Inject constructor() {
             itemState = previousState.editDialog.itemState.copy(valueField = newFieldValue)
         )
     )
-
-    private fun changeCounterItemValueBy(
-        previousState: State,
-        counterId: String,
-        by: Int
-    ): State {
-        val counterItem = previousState.counterItems.getCounterItemById(counterId)
-        val newValueField = counterItem.valueField.copy(
-            text = ((counterItem.valueField.text.toIntOrNull() ?: 0) + by).toString()
-        )
-        return updateCounterItemValueField(previousState, counterId, newValueField)
-    }
 
     private fun updateCounterItemSteps(
         previousState: State,

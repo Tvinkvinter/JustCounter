@@ -17,7 +17,6 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.UpdateCounterItemColor,
             is InternalAction.UpdateCounterItemTitleField,
             is InternalAction.UpdateCounterItemValueField,
-            is InternalAction.ChangeCounterItemValueBy,
             is InternalAction.UpdateCounterItemSteps,
             is InternalAction.UpdateStepConfiguratorField,
             is InternalAction.RestoreCounterItem,

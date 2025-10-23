@@ -11,7 +11,6 @@ sealed class InternalAction {
     data class UpdateCounterItemColor(val counterId: String, val newColor: Color) : InternalAction()
     data class UpdateCounterItemTitleField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
     data class UpdateCounterItemValueField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
-    data class ChangeCounterItemValueBy(val counterId: String, val by: Int) : InternalAction()
     data class UpdateCounterItemSteps(val counterId: String, val steps: List<Int>) : InternalAction()
     data class UpdateStepConfiguratorField(val stepIndex: Int, val newTextField: TextFieldValue) : InternalAction()
     data class RestoreCounterItem(val counterItem: CounterItem) : InternalAction()

@@ -201,8 +201,12 @@ fun CounterList(
             CounterItem(
                 state = counterItem,
                 removeMode = removeMode,
-                onPLusClick = { step -> onAction(Action.PlusClick(counterItem.counterId, step)) },
-                onMinusClick = { step -> onAction(Action.MinusClick(counterItem.counterId, step)) },
+                onPLusClick = { step ->
+                    onAction(Action.PlusClick(counterItem.counterId, step, counterItem.valueField))
+                },
+                onMinusClick = { step ->
+                    onAction(Action.MinusClick(counterItem.counterId, step, counterItem.valueField))
+                },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counterItem.counterId)) },
                 onInputTitle = { onAction(Action.TitleInput(counterItem.counterId, it)) },
                 onInputTitleDone = { onAction(Action.TitleInputDone(counterItem.counterId, it)) },

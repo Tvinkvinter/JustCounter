@@ -17,6 +17,10 @@ import javax.inject.Inject
 class Actor @Inject constructor(
     val repository: CounterListRepository
 ) {
+    companion object {
+        private const val MIN_VALUE = -999_999_999
+        private const val MAX_VALUE = 999_999_999
+    }
 
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
@@ -24,8 +28,8 @@ class Actor @Inject constructor(
             is Action.RemoveCounter -> removeCounter(action.counterId)
 
             is Action.ChangeColor -> changeCounterColor(action.counterId, action.newColor)
-            is Action.MinusClick -> changeValueBy(action.counterId, -action.step)
-            is Action.PlusClick -> changeValueBy(action.counterId, action.step)
+            is Action.MinusClick -> changeValueBy(action.counterId, -action.step, action.valueField)
+            is Action.PlusClick -> changeValueBy(action.counterId, action.step, action.valueField)
             Action.RemoveStep -> flowOf(InternalAction.RemoveLastStepField)
             Action.AddStep -> flowOf(InternalAction.AddStepField)
 
@@ -59,9 +63,12 @@ class Actor @Inject constructor(
         repository.updateCounterColor(counterId, newColor)
     }
 
-    private fun changeValueBy(counterId: String, by: Int, ) = flow {
-        emit(InternalAction.ChangeCounterItemValueBy(counterId, by))
-        repository.changeCounterValueBy(counterId, by)
+    private fun changeValueBy(counterId: String, by: Int, valueField: TextFieldValue) = flow {
+        val newValue = ((valueField.text.toIntOrNull() ?: 0) + by).coerceIn(MIN_VALUE, MAX_VALUE)
+        val newField = valueField.copy(text = newValue.toString())
+
+        emit(InternalAction.UpdateCounterItemValueField(counterId, newField))
+        repository.updateCounterValue(counterId, newValue)
     }
 
     private fun updateCounterTitle(counterId: String, inputTextField: TextFieldValue) = flow {
@@ -77,25 +84,22 @@ class Actor @Inject constructor(
     }
 
     private fun updateCounterValue(counterId: String, inputTextField: TextFieldValue) = flow {
-        when {
-            inputTextField.text.isBlank() || inputTextField.text == "-" -> {
-                emit(InternalAction.UpdateCounterItemValueField(counterId, inputTextField))
-                repository.updateCounterValue(counterId, 0)
-            }
+        if (inputTextField.text.isBlank() || inputTextField.text == "-") {
+            emit(InternalAction.UpdateCounterItemValueField(counterId, inputTextField))
+            repository.updateCounterValue(counterId, 0)
+            return@flow
+        }
 
-            inputTextField.text.replace("-", "").length <= 9 -> {
-                inputTextField.text.toIntOrNull()?.let { value ->
-                    val newTextFieldValue = inputTextField.copy(text = value.toString())
-                    emit(InternalAction.UpdateCounterItemValueField(counterId, newTextFieldValue))
-                    repository.updateCounterValue(counterId, value)
-                }
-            }
+        val newValue = inputTextField.text.toIntOrNull()
+        if (newValue != null && newValue in MIN_VALUE..MAX_VALUE) {
+            val newTextFieldValue = inputTextField.copy(text = newValue.toString())
+            emit(InternalAction.UpdateCounterItemValueField(counterId, newTextFieldValue))
+            repository.updateCounterValue(counterId, newValue)
         }
     }
 
     private fun onValueInputDone(counterId: String, input: String) = flow {
-        var valueToSave = input.toIntOrNull() ?: 0
-        if (input.isBlank() || input == "-") valueToSave = 0
+        val valueToSave = input.toIntOrNull() ?: 0
 
         emit(InternalAction.ClearFocus)
         emit(InternalAction.UpdateCounterItemValueField(counterId, TextFieldValue(valueToSave.toString())))
@@ -103,7 +107,7 @@ class Actor @Inject constructor(
     }
 
     private fun onStepInput(stepIndex: Int, input: TextFieldValue) = flow {
-        if (input.text.length > 9 || input.text.contains("-")) return@flow
+        if (input.text.length > MAX_VALUE.toString().length || input.text.contains("-")) return@flow
         emit(InternalAction.UpdateStepConfiguratorField(stepIndex, input))
     }
 
