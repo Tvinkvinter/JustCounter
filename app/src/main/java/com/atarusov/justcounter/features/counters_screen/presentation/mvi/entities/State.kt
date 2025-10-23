@@ -5,6 +5,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
+import com.atarusov.justcounter.ui.theme.CounterCardColors
 
 data class State(
     val removeMode: Boolean = false,
@@ -18,7 +19,17 @@ data class CounterItem(
     val color: Color,
     val steps: List<Int>,
     val counterId: String
-)
+) {
+    companion object {
+        fun getPreviewCounterItem(withCustomSteps: Boolean = false) = CounterItem (
+            titleField = TextFieldValue("Tvinkvinter"),
+            valueField = TextFieldValue("128"),
+            color = CounterCardColors.red,
+            steps = if (withCustomSteps) listOf(1, 2, 300) else listOf(1),
+            ""
+        )
+    }
+}
 
 fun Counter.toCounterItem() = CounterItem(
     titleField = TextFieldValue(title, TextRange(title.length)),

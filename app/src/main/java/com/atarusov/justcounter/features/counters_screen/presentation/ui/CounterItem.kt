@@ -294,16 +294,8 @@ private fun ExtraStepButton(
 @Composable
 private fun CounterPreview() {
     JustCounterTheme {
-        val counterItem = CounterItem(
-            titleField = TextFieldValue("Tvinkvinter"),
-            valueField = TextFieldValue("128"),
-            color = CounterCardColors.getRandom(),
-            steps = listOf(1),
-            counterId = ""
-        )
-
         CounterItem(
-            state = counterItem,
+            state = CounterItem.getPreviewCounterItem(),
             removeMode = false,
             onPLusClick = {},
             onMinusClick = {},
@@ -324,16 +316,8 @@ private fun CounterPreview() {
 @Composable
 private fun CounterInRemoveModePreview() {
     JustCounterTheme {
-        val counterItem = CounterItem(
-            titleField = TextFieldValue("Tvinkvinter"),
-            valueField = TextFieldValue("128"),
-            color = CounterCardColors.getRandom(),
-            steps = listOf(1),
-            counterId = ""
-        )
-
         CounterItem(
-            state = counterItem,
+            state = CounterItem.getPreviewCounterItem(),
             removeMode = true,
             onPLusClick = {},
             onMinusClick = {},
@@ -354,16 +338,8 @@ private fun CounterInRemoveModePreview() {
 @Composable
 private fun CounterWithExtraStepsPreview() {
     JustCounterTheme {
-        val counterItem = CounterItem(
-            titleField = TextFieldValue("Tvinkvinter"),
-            valueField = TextFieldValue("128"),
-            color = CounterCardColors.getRandom(),
-            steps = listOf(1, 2, 3),
-            counterId = ""
-        )
-
         CounterItem(
-            state = counterItem,
+            state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
             removeMode = false,
             onPLusClick = {},
             onMinusClick = {},
@@ -384,16 +360,8 @@ private fun CounterWithExtraStepsPreview() {
 @Composable
 private fun CounterWithExtraStepsInRemoveModePreview() {
     JustCounterTheme {
-        val counterItem = CounterItem(
-            titleField = TextFieldValue("Tvinkvinter"),
-            valueField = TextFieldValue("128"),
-            color = CounterCardColors.getRandom(),
-            steps = listOf(1, 2, 3),
-            counterId = ""
-        )
-
         CounterItem(
-            state = counterItem,
+            state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
             removeMode = true,
             onPLusClick = {},
             onMinusClick = {},

@@ -53,7 +53,7 @@ fun ColorPalette(
 
 @Preview
 @Composable
-fun ColorPalettePreview() {
+private fun ColorPalettePreview() {
     JustCounterTheme {
         ColorPalette(
             selectedColor = CounterCardColors.green,

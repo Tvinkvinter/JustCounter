@@ -222,7 +222,7 @@ fun CounterList(
 
 @Composable
 @Preview(showBackground = true)
-fun CounterTopAppBarPreview() {
+private fun CounterTopAppBarPreview() {
     JustCounterTheme {
         Column {
             CounterListTopAppBar(true, {})
@@ -234,7 +234,7 @@ fun CounterTopAppBarPreview() {
 
 @Composable
 @Preview(showBackground = true)
-fun CounterScreenFABPreview() {
+private fun CounterScreenFABPreview() {
     JustCounterTheme {
         CounterListFAB({}, true)
     }

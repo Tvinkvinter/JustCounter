@@ -187,7 +187,7 @@ fun EditCounterDialog(
 }
 
 @Composable
-fun TitleTextFieldWithIcon(
+private fun TitleTextFieldWithIcon(
     titleFieldValue: TextFieldValue,
     onTitleChange: (inputTextField: TextFieldValue) -> Unit,
     onInputDone: (input: String) -> Unit,
@@ -242,19 +242,9 @@ fun TitleTextFieldWithIcon(
 
 @Preview
 @Composable
-fun EditCounterDialogPreview() {
-    val counterItem = CounterItem(
-        titleField = TextFieldValue("Tvinkvinter"),
-        valueField = TextFieldValue("128"),
-        color = CounterCardColors.red,
-        steps = listOf(1),
-        ""
-    )
-
-    val stepConfiguratorState = StepConfiguratorState(
-        steps = listOf(TextFieldValue("1"),TextFieldValue("2"),TextFieldValue("3")),
-        btnColor = counterItem.color
-    )
+private fun EditCounterDialogPreview() {
+    val counterItem = CounterItem.getPreviewCounterItem(withCustomSteps = true)
+    val stepConfiguratorState = StepConfiguratorState(counterItem)
 
     JustCounterTheme {
         EditCounterDialog(

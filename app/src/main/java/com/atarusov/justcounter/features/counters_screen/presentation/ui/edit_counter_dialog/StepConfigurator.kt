@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
@@ -117,19 +118,10 @@ fun StepConfigurator(
 
 @Composable
 @Preview(showBackground = true)
-fun StepConfiguratorPreview() {
-    val stepConfiguratorState = StepConfiguratorState(
-        steps = listOf(
-            TextFieldValue("1"),
-            TextFieldValue("2"),
-            TextFieldValue("3"),
-        ),
-        btnColor = CounterCardColors.green,
-    )
-
+private fun StepConfiguratorPreview() {
     JustCounterTheme {
         StepConfigurator(
-            stepConfiguratorState,
+            StepConfiguratorState(CounterItem.getPreviewCounterItem(withCustomSteps = true)),
             { index, input -> }, {}, {}, {},
             Modifier.width(300.dp)
         )
