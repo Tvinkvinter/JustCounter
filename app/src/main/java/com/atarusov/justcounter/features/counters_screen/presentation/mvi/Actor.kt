@@ -84,13 +84,14 @@ class Actor @Inject constructor(
     }
 
     private fun updateCounterValue(counterId: String, inputTextField: TextFieldValue) = flow {
-        if (inputTextField.text.isBlank() || inputTextField.text == "-") {
+        val clearedInputText = inputTextField.text.trim()
+        if (clearedInputText.isEmpty() || clearedInputText == "-") {
             emit(InternalAction.UpdateCounterItemValueField(counterId, inputTextField))
             repository.updateCounterValue(counterId, 0)
             return@flow
         }
 
-        val newValue = inputTextField.text.toIntOrNull()
+        val newValue = clearedInputText.toIntOrNull()
         if (newValue != null && newValue in MIN_VALUE..MAX_VALUE) {
             val newTextFieldValue = inputTextField.copy(text = newValue.toString())
             emit(InternalAction.UpdateCounterItemValueField(counterId, newTextFieldValue))
@@ -135,8 +136,8 @@ class Actor @Inject constructor(
 
     private fun saveCounterSteps(counterId: String, stepFields: List<TextFieldValue>) = flow {
         var stepsToSave = stepFields.filter {
-            it.text.isNotBlank() && it.text != "0"
-        }.map { it.text.toInt() }
+            it.text.isNotBlank() && it.text.trim() != "0"
+        }.map { it.text.trim().toInt() }
         if (stepsToSave.isEmpty()) stepsToSave = listOf(1)
 
         emit(InternalAction.UpdateCounterItemSteps(counterId, stepsToSave))
