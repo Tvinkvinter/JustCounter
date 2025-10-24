@@ -40,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,20 +48,14 @@ import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.CounterItemCallbacks
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @Composable
 fun CounterItem(
     state: CounterItem,
     removeMode: Boolean,
-    onPLusClick: (step: Int) -> Unit,
-    onMinusClick: (step: Int) -> Unit,
-    onEditClick: () -> Unit,
-    onInputTitle: (inputField: TextFieldValue) -> Unit,
-    onInputTitleDone: (input: String) -> Unit,
-    onInputValue: (inputField: TextFieldValue) -> Unit,
-    onInputValueDone: (input: String) -> Unit,
-    onRemoveClick: () -> Unit,
+    callbacks: CounterItemCallbacks,
     modifier: Modifier = Modifier
 ) {
     val contentAlpha by animateFloatAsState(
@@ -97,7 +90,7 @@ fun CounterItem(
 
                     BasicTextField(
                         value = state.titleField,
-                        onValueChange = onInputTitle,
+                        onValueChange = callbacks.onInputValue,
                         modifier = Modifier
                             .weight(1f)
                             .alpha(contentAlpha),
@@ -111,7 +104,7 @@ fun CounterItem(
                             imeAction = ImeAction.Done
                         ),
                         keyboardActions = KeyboardActions(
-                            onDone = { onInputTitleDone(state.titleField.text) }
+                            onDone = { callbacks.onInputTitleDone(state.titleField.text) }
                         ),
                         singleLine = true,
                         cursorBrush = SolidColor(state.color.getContrastContentColor())
@@ -129,8 +122,8 @@ fun CounterItem(
                             .alpha(if (removeMode) 1f else 0.5f)
                             .clickable(
                                 onClick = {
-                                    if (removeMode) onRemoveClick()
-                                    else onEditClick()
+                                    if (removeMode) callbacks.onRemoveClick()
+                                    else callbacks.onEditClick()
                                 },
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(bounded = false, radius = Dimensions.Radius.medium),
@@ -140,7 +133,7 @@ fun CounterItem(
                 }
                 TextField(
                     value = state.valueField,
-                    onValueChange = onInputValue,
+                    onValueChange = callbacks.onInputValue,
                     modifier = Modifier.alpha(contentAlpha),
                     enabled = !removeMode,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
@@ -152,7 +145,7 @@ fun CounterItem(
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onInputValueDone(state.valueField.text) }
+                        onDone = { callbacks.onInputValueDone(state.valueField.text) }
                     ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
@@ -178,7 +171,7 @@ fun CounterItem(
                         modifier = Modifier
                             .weight(1f)
                             .clickable(
-                                onClick = { onMinusClick(state.steps[0]) },
+                                onClick = { callbacks.onMinusClick(state.steps[0]) },
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                                 enabled = !removeMode
@@ -202,7 +195,7 @@ fun CounterItem(
                         modifier = Modifier
                             .weight(1f)
                             .clickable(
-                                onClick = { onPLusClick(state.steps[0]) },
+                                onClick = { callbacks.onPLusClick(state.steps[0]) },
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                                 enabled = !removeMode
@@ -236,7 +229,7 @@ fun CounterItem(
                         containerColor = state.color,
                         alpha = contentAlpha,
                         enabled = !removeMode,
-                        onClick = { onMinusClick(state.steps[index]) }
+                        onClick = { callbacks.onMinusClick(state.steps[index]) }
                     )
                 }
             }
@@ -247,7 +240,7 @@ fun CounterItem(
                         containerColor = state.color,
                         alpha = contentAlpha,
                         enabled = !removeMode,
-                        onClick = { onPLusClick(state.steps[index]) }
+                        onClick = { callbacks.onPLusClick(state.steps[index]) }
                     )
                 }
             }
@@ -296,14 +289,7 @@ private fun CounterPreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(),
             removeMode = false,
-            onPLusClick = {},
-            onMinusClick = {},
-            onEditClick = {},
-            onInputTitle = {},
-            onInputTitleDone = {},
-            onInputValue = {},
-            onInputValueDone = {},
-            onRemoveClick = {},
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
                 .padding(Dimensions.Spacing.medium)
@@ -318,14 +304,7 @@ private fun CounterInRemoveModePreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(),
             removeMode = true,
-            onPLusClick = {},
-            onMinusClick = {},
-            onEditClick = {},
-            onInputTitle = {},
-            onInputTitleDone = {},
-            onInputValue = {},
-            onInputValueDone = {},
-            onRemoveClick = {},
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
                 .padding(Dimensions.Spacing.medium)
@@ -340,14 +319,7 @@ private fun CounterWithExtraStepsPreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
             removeMode = false,
-            onPLusClick = {},
-            onMinusClick = {},
-            onEditClick = {},
-            onInputTitle = {},
-            onInputTitleDone = {},
-            onInputValue = {},
-            onInputValueDone = {},
-            onRemoveClick = {},
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
                 .padding(Dimensions.Spacing.medium)
@@ -362,14 +334,7 @@ private fun CounterWithExtraStepsInRemoveModePreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
             removeMode = true,
-            onPLusClick = {},
-            onMinusClick = {},
-            onEditClick = {},
-            onInputTitle = {},
-            onInputTitleDone = {},
-            onInputValue = {},
-            onInputValueDone = {},
-            onRemoveClick = {},
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
                 .padding(Dimensions.Spacing.medium)

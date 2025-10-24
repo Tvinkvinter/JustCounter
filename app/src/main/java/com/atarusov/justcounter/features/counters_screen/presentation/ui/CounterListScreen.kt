@@ -35,15 +35,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.atarusov.justcounter.ui.theme.Dimensions
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.CounterItemCallbacks
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.EditCounterDialogCallbacks
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditCounterDialog
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListScreenViewModel
+import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.RemoveRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
@@ -91,9 +93,7 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
         }
 
         state.editDialog?.let { dialogState ->
-            EditCounterDialog(
-                state = dialogState,
-                events = viewModel.screenEvents,
+            val editDialogCallbacks = EditCounterDialogCallbacks (
                 onTitleInput = { input ->
                     viewModel.onAction(Action.TitleInput(dialogState.itemState.counterId, input))
                 },
@@ -117,6 +117,12 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                 },
                 onDismiss = { viewModel.onAction(Action.CloseCounterEditDialog(dialogState, true)) },
                 onConfirm = { viewModel.onAction(Action.CloseCounterEditDialog(dialogState, false)) }
+            )
+
+            EditCounterDialog(
+                state = dialogState,
+                events = viewModel.screenEvents,
+                callbacks = editDialogCallbacks
             )
         }
     }
@@ -199,9 +205,7 @@ fun CounterList(
             items = counterItems,
             key = { it.counterId },
         ) { counterItem ->
-            CounterItem(
-                state = counterItem,
-                removeMode = removeMode,
+            val counterItemCallbacks = CounterItemCallbacks(
                 onPLusClick = { step ->
                     onAction(Action.PlusClick(counterItem.counterId, step, counterItem.valueField))
                 },
@@ -214,7 +218,15 @@ fun CounterList(
                 onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
                 onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId, it)) },
                 onRemoveClick = { onAction(Action.RemoveCounter(counterItem.counterId)) },
-                modifier = Modifier.padding(top = Dimensions.Spacing.small).animateItem()
+            )
+
+            CounterItem(
+                state = counterItem,
+                removeMode = removeMode,
+                callbacks = counterItemCallbacks,
+                modifier = Modifier
+                    .padding(top = Dimensions.Spacing.small)
+                    .animateItem()
             )
         }
     }

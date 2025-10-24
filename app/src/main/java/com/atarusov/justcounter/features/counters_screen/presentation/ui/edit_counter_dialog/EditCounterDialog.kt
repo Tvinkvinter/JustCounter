@@ -56,6 +56,8 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.EditCounterDialogCallbacks
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.StepConfiguratorCallbacks
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import kotlinx.coroutines.flow.Flow
@@ -65,20 +67,10 @@ import kotlinx.coroutines.flow.emptyFlow
 fun EditCounterDialog(
     state: EditDialogState,
     events: Flow<OneTimeEvent>,
-    onTitleInput: (inputField: TextFieldValue) -> Unit,
-    onTitleInputDone: (input: String) -> Unit,
-    onValueInput: (inputField: TextFieldValue) -> Unit,
-    onValueInputDone: (input: String) -> Unit,
-    onStepInput: (index: Int, inputField: TextFieldValue) -> Unit,
-    onStepInputDone: () -> Unit,
-    onRemoveStep: () -> Unit,
-    onAddStep: () -> Unit,
-    onColorSelected: (selectedColor: Color) -> Unit,
-    onDismiss: () -> Unit,
-    onConfirm: (newCounterState: CounterItem) -> Unit
+    callbacks: EditCounterDialogCallbacks
 ) {
     Dialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = callbacks.onDismiss,
         properties = DialogProperties(
             usePlatformDefaultWidth = false
         )
@@ -109,8 +101,8 @@ fun EditCounterDialog(
                 ) {
                     TitleTextFieldWithIcon(
                         titleField = state.itemState.titleField,
-                        onTitleChange = onTitleInput,
-                        onInputDone = onTitleInputDone,
+                        onTitleChange = callbacks.onTitleInput,
+                        onInputDone = callbacks.onTitleInputDone,
                         itemColor = state.itemState.color,
                         modifier = Modifier.padding(vertical = Dimensions.Spacing.extraSmall)
                     )
@@ -118,7 +110,7 @@ fun EditCounterDialog(
 
                 OutlinedTextField(
                     value = state.itemState.valueField,
-                    onValueChange = onValueInput,
+                    onValueChange = callbacks.onValueInput,
                     modifier = Modifier
                         .defaultMinSize(24.dp)
                         .padding(top = Dimensions.Spacing.large),
@@ -131,7 +123,7 @@ fun EditCounterDialog(
                         keyboardType = KeyboardType.Number
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onValueInputDone(state.itemState.valueField.text) }
+                        onDone = { callbacks.onValueInputDone(state.itemState.valueField.text) }
                     ),
                 )
 
@@ -145,10 +137,12 @@ fun EditCounterDialog(
 
                 StepConfigurator(
                     state = state.stepConfiguratorState,
-                    onStepInput = onStepInput,
-                    onStepInputDone = onStepInputDone,
-                    onRemoveStepClick = onRemoveStep,
-                    onAddStepClick = onAddStep,
+                    callbacks = StepConfiguratorCallbacks(
+                        callbacks.onStepInput,
+                        callbacks.onStepInputDone,
+                        callbacks.onRemoveStep,
+                        callbacks.onAddStep
+                    ),
                     modifier = Modifier
                         .padding(horizontal = Dimensions.Spacing.huge - 4.dp)
                         .padding(top = Dimensions.Spacing.extraSmall)
@@ -156,7 +150,7 @@ fun EditCounterDialog(
 
                 ColorPalette(
                     selectedColor = state.itemState.color,
-                    onColorSelected = onColorSelected,
+                    onColorSelected = callbacks.onColorSelected,
                     modifier = Modifier
                         .padding(top = Dimensions.Spacing.large)
                         .padding(horizontal = Dimensions.Spacing.huge - 2.dp)
@@ -169,7 +163,7 @@ fun EditCounterDialog(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     TextButton(
-                        onClick = onDismiss,
+                        onClick = callbacks.onDismiss,
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = state.itemState.color
                         )
@@ -178,7 +172,7 @@ fun EditCounterDialog(
                     }
 
                     Button(
-                        onClick = { onConfirm(state.itemState) },
+                        onClick = { callbacks.onConfirm(state.itemState) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = state.itemState.color
                         ),
@@ -252,13 +246,14 @@ private fun TitleTextFieldWithIcon(
 private fun EditCounterDialogPreview() {
     val counterItem = CounterItem.getPreviewCounterItem(withCustomSteps = true)
     val stepConfiguratorState = StepConfiguratorState(counterItem)
+    val state =
+        EditDialogState(itemState = counterItem, stepConfiguratorState = stepConfiguratorState)
 
     JustCounterTheme {
         EditCounterDialog(
-            EditDialogState(
-                itemState = counterItem,
-                stepConfiguratorState = stepConfiguratorState
-            ), emptyFlow(), {}, {}, {}, {}, {_, _ -> }, {}, {}, {}, {}, {}, {}
+            state = state,
+            events = emptyFlow(),
+            callbacks = EditCounterDialogCallbacks.getEmptyCallbacks()
         )
     }
 }

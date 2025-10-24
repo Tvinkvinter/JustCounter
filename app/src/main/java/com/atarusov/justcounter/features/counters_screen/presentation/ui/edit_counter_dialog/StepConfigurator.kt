@@ -23,13 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
+import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.StepConfiguratorCallbacks
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
@@ -37,10 +37,7 @@ import com.atarusov.justcounter.ui.theme.JustCounterTheme
 @Composable
 fun StepConfigurator(
     state: StepConfiguratorState,
-    onStepInput: (index: Int, input: TextFieldValue) -> Unit,
-    onStepInputDone: () -> Unit,
-    onRemoveStepClick: () -> Unit,
-    onAddStepClick: () -> Unit,
+    callbacks: StepConfiguratorCallbacks,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -48,7 +45,7 @@ fun StepConfigurator(
         modifier = modifier.fillMaxWidth()
     ) {
         FilledIconButton(
-            onClick = onRemoveStepClick,
+            onClick = callbacks.onRemoveStepClick,
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = state.btnColor,
                 contentColor = state.btnColor.getContrastContentColor(),
@@ -69,7 +66,7 @@ fun StepConfigurator(
             state.steps.forEachIndexed { index, step ->
                 BasicTextField(
                     value = step,
-                    onValueChange = { onStepInput(index, it) },
+                    onValueChange = { callbacks.onStepInput(index, it) },
                     modifier = Modifier.size(Dimensions.Size.large),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         textAlign = TextAlign.Center,
@@ -93,14 +90,14 @@ fun StepConfigurator(
                         keyboardType = KeyboardType.Number
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onStepInputDone() }
+                        onDone = { callbacks.onStepInputDone() }
                     )
                 )
             }
         }
 
         FilledIconButton(
-            onClick = onAddStepClick,
+            onClick = callbacks.onAddStepClick,
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = state.btnColor,
                 contentColor = state.btnColor.getContrastContentColor(),
@@ -121,9 +118,9 @@ fun StepConfigurator(
 private fun StepConfiguratorPreview() {
     JustCounterTheme {
         StepConfigurator(
-            StepConfiguratorState(CounterItem.getPreviewCounterItem(withCustomSteps = true)),
-            { index, input -> }, {}, {}, {},
-            Modifier.width(300.dp)
+            state = StepConfiguratorState(CounterItem.getPreviewCounterItem(withCustomSteps = true)),
+            callbacks = StepConfiguratorCallbacks.getEmptyCallbacks(),
+            modifier = Modifier.width(300.dp)
         )
     }
 }

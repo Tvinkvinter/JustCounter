@@ -1,0 +1,18 @@
+package com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks
+
+import androidx.compose.ui.text.input.TextFieldValue
+
+data class CounterItemCallbacks(
+    val onPLusClick: (step: Int) -> Unit,
+    val onMinusClick: (step: Int) -> Unit,
+    val onEditClick: () -> Unit,
+    val onInputTitle: (inputField: TextFieldValue) -> Unit,
+    val onInputTitleDone: (input: String) -> Unit,
+    val onInputValue: (inputField: TextFieldValue) -> Unit,
+    val onInputValueDone: (input: String) -> Unit,
+    val onRemoveClick: () -> Unit,
+) {
+    companion object {
+        fun getEmptyCallbacks() = CounterItemCallbacks({}, {}, {}, {}, {}, {}, {}, {})
+    }
+}
