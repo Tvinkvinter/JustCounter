@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.ui.theme.CounterCardColors
+import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @Composable
@@ -27,7 +28,7 @@ fun ColorPalette(
     FlowRow(
         modifier = modifier.fillMaxWidth().defaultMinSize(120.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(Dimensions.Spacing.xxSmall),
         itemVerticalAlignment = Alignment.CenterVertically,
         maxItemsInEachRow = CounterCardColors.getList().size / 2
     ) {
@@ -36,12 +37,12 @@ fun ColorPalette(
         allColors.forEachIndexed { index, color ->
             val thisColorSelected = color == selectedColor
             Surface(
-                modifier = Modifier.size(52.dp),
+                modifier = Modifier.size(Dimensions.Size.large),
                 shape = CircleShape,
                 color = if (thisColorSelected) Color.White else Color.Transparent,
             ) {
                 Surface(
-                    modifier = Modifier.padding(2.dp),
+                    modifier = Modifier.padding(Dimensions.Spacing.xxSmall),
                     shape = CircleShape,
                     color = color,
                     onClick = { onColorSelected(color) }

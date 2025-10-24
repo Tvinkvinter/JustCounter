@@ -45,11 +45,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
-import com.atarusov.justcounter.ui.theme.CounterCardColors
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @Composable
@@ -75,12 +74,12 @@ fun CounterItem(
         modifier = modifier.width(150.dp),
     ) {
         Card(
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(Dimensions.Radius.medium),
             colors = CardDefaults.cardColors(
                 containerColor = state.color,
                 contentColor = state.color.getContrastContentColor()
             ),
-            elevation = CardDefaults.cardElevation(6.dp),
+            elevation = CardDefaults.cardElevation(Dimensions.Elevation.card),
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -88,12 +87,12 @@ fun CounterItem(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp)
+                        .padding(top = Dimensions.Spacing.extraSmall)
                 ) {
                     Spacer(
                         Modifier
-                            .padding(start = 4.dp)
-                            .size(24.dp)
+                            .padding(start = Dimensions.Spacing.extraSmall)
+                            .size(Dimensions.Size.small)
                     )
 
                     BasicTextField(
@@ -125,8 +124,8 @@ fun CounterItem(
                         ),
                         contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
                         modifier = Modifier
-                            .padding(end = 4.dp)
-                            .size(24.dp)
+                            .padding(end = Dimensions.Spacing.extraSmall)
+                            .size(Dimensions.Size.small)
                             .alpha(if (removeMode) 1f else 0.5f)
                             .clickable(
                                 onClick = {
@@ -134,7 +133,7 @@ fun CounterItem(
                                     else onEditClick()
                                 },
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(bounded = false, radius = 16.dp),
+                                indication = ripple(bounded = false, radius = Dimensions.Radius.medium),
                             ),
                         tint = state.color.getContrastContentColor()
                     )
@@ -169,10 +168,10 @@ fun CounterItem(
                     )
                 )
                 Row(
-                    Modifier.padding(bottom = 4.dp).alpha(contentAlpha),
+                    Modifier.padding(bottom = Dimensions.Spacing.extraSmall).alpha(contentAlpha),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
 
                     BasicText(
                         text = if (state.steps[0] == 1) "−" else "−${state.steps[0]}",
@@ -181,7 +180,7 @@ fun CounterItem(
                             .clickable(
                                 onClick = { onMinusClick(state.steps[0]) },
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(bounded = false, radius = 16.dp),
+                                indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                                 enabled = !removeMode
                             ),
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -191,12 +190,12 @@ fun CounterItem(
                         maxLines = 1,
                         color = { state.color.getContrastContentColor() },
                         autoSize = TextAutoSize.StepBased(
-                            minFontSize = 10.sp,
+                            minFontSize = Dimensions.Typography.minFontSize,
                             maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
                         )
                     )
 
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(Dimensions.Spacing.small))
 
                     BasicText(
                         text = if (state.steps[0] == 1) "+" else "+${state.steps[0]}",
@@ -205,7 +204,7 @@ fun CounterItem(
                             .clickable(
                                 onClick = { onPLusClick(state.steps[0]) },
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(bounded = false, radius = 16.dp),
+                                indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                                 enabled = !removeMode
                             ),
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -215,19 +214,19 @@ fun CounterItem(
                         maxLines = 1,
                         color = { state.color.getContrastContentColor() },
                         autoSize = TextAutoSize.StepBased(
-                            minFontSize = 10.sp,
+                            minFontSize = Dimensions.Typography.minFontSize,
                             maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
                         )
                     )
 
-                    Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
                 }
             }
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp),
+                .padding(top = Dimensions.Spacing.extraSmall),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             for (index in state.steps.indices.reversed()) {
@@ -267,14 +266,14 @@ private fun ExtraStepButton(
     BasicText(
         text = text,
         modifier = Modifier
-            .size(36.dp)
+            .size(Dimensions.Size.medium)
             .background(color = containerColor, shape = CircleShape)
             .alpha(alpha)
             .wrapContentSize()
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(bounded = false, radius = 16.dp),
+                indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                 enabled = enabled
             ),
         style = MaterialTheme.typography.bodyMedium.copy(
@@ -284,7 +283,7 @@ private fun ExtraStepButton(
         maxLines = 1,
         color = { containerColor.getContrastContentColor() },
         autoSize = TextAutoSize.StepBased(
-            minFontSize = 10.sp,
+            minFontSize = Dimensions.Typography.minFontSize,
             maxFontSize = MaterialTheme.typography.bodyMedium.fontSize
         )
     )
@@ -307,7 +306,7 @@ private fun CounterPreview() {
             onRemoveClick = {},
             modifier = Modifier
                 .width(200.dp)
-                .padding(12.dp)
+                .padding(Dimensions.Spacing.medium)
         )
     }
 }
@@ -329,7 +328,7 @@ private fun CounterInRemoveModePreview() {
             onRemoveClick = {},
             modifier = Modifier
                 .width(200.dp)
-                .padding(12.dp)
+                .padding(Dimensions.Spacing.medium)
         )
     }
 }
@@ -351,7 +350,7 @@ private fun CounterWithExtraStepsPreview() {
             onRemoveClick = {},
             modifier = Modifier
                 .width(200.dp)
-                .padding(12.dp)
+                .padding(Dimensions.Spacing.medium)
         )
     }
 }
@@ -373,7 +372,7 @@ private fun CounterWithExtraStepsInRemoveModePreview() {
             onRemoveClick = {},
             modifier = Modifier
                 .width(200.dp)
-                .padding(12.dp)
+                .padding(Dimensions.Spacing.medium)
         )
     }
 }

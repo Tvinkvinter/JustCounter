@@ -56,6 +56,7 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -95,8 +96,8 @@ fun EditCounterDialog(
 
         Card(
             modifier = Modifier.fillMaxWidth(0.9f),
-            elevation = CardDefaults.cardElevation(8.dp),
-            border = BorderStroke(3.dp, state.itemState.color)
+            elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
+            border = BorderStroke(Dimensions.Border.bold, state.itemState.color)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -111,7 +112,7 @@ fun EditCounterDialog(
                         onTitleChange = onTitleInput,
                         onInputDone = onTitleInputDone,
                         itemColor = state.itemState.color,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        modifier = Modifier.padding(vertical = Dimensions.Spacing.extraSmall)
                     )
                 }
 
@@ -120,7 +121,7 @@ fun EditCounterDialog(
                     onValueChange = onValueInput,
                     modifier = Modifier
                         .defaultMinSize(24.dp)
-                        .padding(top = 24.dp),
+                        .padding(top = Dimensions.Spacing.large),
                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
@@ -136,7 +137,9 @@ fun EditCounterDialog(
 
                 Text(
                     text = "Steps:",
-                    modifier = Modifier.align(Alignment.Start).padding(start = 48.dp, top = 12.dp),
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = Dimensions.Spacing.huge, top = Dimensions.Spacing.small),
                     style = MaterialTheme.typography.bodySmall
                 )
 
@@ -146,19 +149,23 @@ fun EditCounterDialog(
                     onStepInputDone = onStepInputDone,
                     onRemoveStepClick = onRemoveStep,
                     onAddStepClick = onAddStep,
-                    modifier = Modifier.padding(horizontal = 48.dp - 4.dp).padding(top = 4.dp)
+                    modifier = Modifier
+                        .padding(horizontal = Dimensions.Spacing.huge - 4.dp)
+                        .padding(top = Dimensions.Spacing.extraSmall)
                 )
 
                 ColorPalette(
                     selectedColor = state.itemState.color,
                     onColorSelected = onColorSelected,
-                    modifier = Modifier.padding(top = 24.dp).padding(horizontal = 48.dp - 2.dp)
+                    modifier = Modifier
+                        .padding(top = Dimensions.Spacing.large)
+                        .padding(horizontal = Dimensions.Spacing.huge - 2.dp)
                 )
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 12.dp),
+                        .padding(vertical = Dimensions.Spacing.small),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     TextButton(
@@ -201,7 +208,7 @@ private fun TitleTextFieldWithIcon(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Spacer(Modifier.size(24.dp))
+        Spacer(Modifier.size(Dimensions.Size.small))
 
         BasicTextField(
             value = localTitleFieldState,
@@ -226,12 +233,13 @@ private fun TitleTextFieldWithIcon(
             painter = painterResource(R.drawable.ic_pencil),
             contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
             modifier = Modifier
-                .size(24.dp)
+                .size(Dimensions.Size.small)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = ripple(bounded = false, radius = 16.dp),
+                    indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                 ) {
-                    localTitleFieldState = localTitleFieldState.copy(selection = TextRange(titleField.text.length))
+                    localTitleFieldState =
+                        localTitleFieldState.copy(selection = TextRange(titleField.text.length))
                     focusRequester.requestFocus()
                 },
             tint = itemColor.getContrastContentColor()

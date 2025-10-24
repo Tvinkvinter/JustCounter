@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.atarusov.justcounter.ui.theme.Dimensions
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
@@ -129,11 +130,11 @@ fun CounterListTopAppBar(
 ) {
     TopAppBar(
         title = { Text("Test") },
-        modifier = Modifier.shadow(4.dp),
+        modifier = Modifier.shadow(Dimensions.Elevation.topAppBar),
         actions = {
             IconButton(
                 onClick = onRemoveModeSwitch,
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(Dimensions.Size.medium),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = if (removeMode) RemoveRed else Color.DarkGray
                 )
@@ -144,7 +145,7 @@ fun CounterListTopAppBar(
                         else R.drawable.ic_trash_can
                     ),
                     contentDescription = stringResource(R.string.counter_screen_add_btn_description),
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(Dimensions.Size.small)
                 )
             }
         },
@@ -189,9 +190,9 @@ fun CounterList(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = Dimensions.Spacing.small),
+        verticalArrangement = Arrangement.spacedBy(Dimensions.Spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(Dimensions.Spacing.small)
     ) {
 
         items(
@@ -213,7 +214,7 @@ fun CounterList(
                 onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
                 onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId, it)) },
                 onRemoveClick = { onAction(Action.RemoveCounter(counterItem.counterId)) },
-                modifier = Modifier.padding(top = 12.dp).animateItem()
+                modifier = Modifier.padding(top = Dimensions.Spacing.small).animateItem()
             )
         }
     }

@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
-import com.atarusov.justcounter.ui.theme.CounterCardColors
+import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +70,7 @@ fun StepConfigurator(
                 BasicTextField(
                     value = step,
                     onValueChange = { onStepInput(index, it) },
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(Dimensions.Size.large),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         textAlign = TextAlign.Center,
                     ),
@@ -80,9 +80,9 @@ fun StepConfigurator(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .border(
-                                    width = if (index == 0) 2.dp else 1.dp,
+                                    width = if (index == 0) Dimensions.Border.medium else Dimensions.Border.thin,
                                     color = if (index == 0) state.btnColor else MaterialTheme.colorScheme.outline,
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(Dimensions.Radius.small)
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
