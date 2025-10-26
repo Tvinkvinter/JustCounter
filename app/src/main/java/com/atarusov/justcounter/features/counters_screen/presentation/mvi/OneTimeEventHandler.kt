@@ -22,9 +22,10 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.RestoreCounterItem,
             InternalAction.RemoveLastStepField,
             InternalAction.AddStepField,
+            is InternalAction.SwapCounters,
+            InternalAction.SwitchRemoveMode,
             is InternalAction.OpenEditCounterDialog,
-            InternalAction.CloseEditCounterDialog,
-            InternalAction.SwitchRemoveMode -> null
+            InternalAction.CloseEditCounterDialog -> null
         }
     }
 }

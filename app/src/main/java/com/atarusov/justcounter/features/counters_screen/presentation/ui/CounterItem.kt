@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
@@ -55,18 +56,19 @@ import com.atarusov.justcounter.ui.theme.JustCounterTheme
 fun CounterItem(
     state: CounterItem,
     removeMode: Boolean,
+    dragMode: Boolean,
     callbacks: CounterItemCallbacks,
     modifier: Modifier = Modifier
 ) {
+    val cardScale by animateFloatAsState(if (dragMode) 1.05f else 1f)
     val contentAlpha by animateFloatAsState(
         targetValue = if (removeMode) 0.5f else 1f,
         animationSpec = tween(durationMillis = 300)
     )
 
-    Column(
-        modifier = modifier.width(150.dp),
-    ) {
+    Column(modifier.width(150.dp)) {
         Card(
+            modifier = Modifier.scale(cardScale),
             shape = RoundedCornerShape(Dimensions.Radius.medium),
             colors = CardDefaults.cardColors(
                 containerColor = state.color,
@@ -289,6 +291,7 @@ private fun CounterPreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(),
             removeMode = false,
+            dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
@@ -304,6 +307,7 @@ private fun CounterInRemoveModePreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(),
             removeMode = true,
+            dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
@@ -319,6 +323,7 @@ private fun CounterWithExtraStepsPreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
             removeMode = false,
+            dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)
@@ -334,6 +339,7 @@ private fun CounterWithExtraStepsInRemoveModePreview() {
         CounterItem(
             state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
             removeMode = true,
+            dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
             modifier = Modifier
                 .width(200.dp)

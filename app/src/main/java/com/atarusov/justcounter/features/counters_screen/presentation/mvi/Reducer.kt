@@ -49,9 +49,10 @@ class Reducer @Inject constructor() {
             InternalAction.RemoveLastStepField -> removeLastStepField(previousState)
             InternalAction.AddStepField -> addStepField(previousState)
 
+            is InternalAction.SwapCounters -> swapCounters(previousState, internalAction.fromIndex, internalAction.toIndex)
+            InternalAction.SwitchRemoveMode -> switchRemoveMode(previousState)
             is InternalAction.OpenEditCounterDialog -> openEditCounterDialog(previousState, internalAction.counterId)
             InternalAction.CloseEditCounterDialog -> previousState.copy(editDialog = null)
-            InternalAction.SwitchRemoveMode -> switchRemoveMode(previousState)
 
             InternalAction.ClearFocus,
             is InternalAction.ShowTitleError -> previousState
@@ -186,14 +187,15 @@ class Reducer @Inject constructor() {
         )
     }
 
-    private fun openEditCounterDialog(previousState: State, counterId: String): State {
-        val openDialogForCounterItem = previousState.counterItems.getCounterItemById(counterId)
-        val editDialogState = EditDialogState(
-            itemState = openDialogForCounterItem,
-            stepConfiguratorState = StepConfiguratorState(openDialogForCounterItem),
-        )
+    private fun swapCounters(previousState: State, fromIndex: Int, toIndex: Int) : State {
+        val newCounterItems = previousState.counterItems.toMutableList()
+        val temp = newCounterItems[fromIndex]
+        newCounterItems[fromIndex] = newCounterItems[toIndex]
+        newCounterItems[toIndex] = temp
 
-        return previousState.copy(editDialog = editDialogState)
+        return previousState.copy(
+            counterItems = newCounterItems
+        )
     }
 
     private fun switchRemoveMode(previousState: State): State {
@@ -207,6 +209,16 @@ class Reducer @Inject constructor() {
             counterItems = correctedCounterItems,
             removeMode = !previousState.removeMode
         )
+    }
+
+    private fun openEditCounterDialog(previousState: State, counterId: String): State {
+        val openDialogForCounterItem = previousState.counterItems.getCounterItemById(counterId)
+        val editDialogState = EditDialogState(
+            itemState = openDialogForCounterItem,
+            stepConfiguratorState = StepConfiguratorState(openDialogForCounterItem),
+        )
+
+        return previousState.copy(editDialog = editDialogState)
     }
 
     private fun List<CounterItem>.getCounterItemById(counterId: String) = find {

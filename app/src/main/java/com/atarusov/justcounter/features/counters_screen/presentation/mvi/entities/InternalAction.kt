@@ -17,9 +17,10 @@ sealed class InternalAction {
     data object RemoveLastStepField : InternalAction()
     data object AddStepField : InternalAction()
 
+    data class SwapCounters(val fromIndex: Int, val toIndex: Int) : InternalAction()
+    data object SwitchRemoveMode : InternalAction()
     data class OpenEditCounterDialog(val counterId: String) : InternalAction()
     data object CloseEditCounterDialog : InternalAction()
-    data object SwitchRemoveMode : InternalAction()
 
     data class ShowTitleError(val counterId: String) : InternalAction()
     data object ClearFocus : InternalAction()

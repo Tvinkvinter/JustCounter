@@ -21,6 +21,7 @@ sealed class Action {
     data object StepInputDone : Action()
 
     data object SwitchRemoveMode : Action()
+    data class SwapCounters(val firstIndex: Int, val secondIndex: Int) : Action()
     data class OpenCounterEditDialog(val counterId: String) : Action()
     data class CloseCounterEditDialog(
         val editDialogState: EditDialogState,

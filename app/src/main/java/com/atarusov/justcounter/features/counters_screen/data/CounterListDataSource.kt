@@ -79,4 +79,16 @@ class CounterListDataSource @Inject constructor(
             counterListProto.toBuilder().removeCounters(itemIndex).build()
         }
     }
+
+    override suspend fun swapCounters(firstIndex: Int, secondIndex: Int) {
+        dataStore.updateData { counterListProto ->
+            val firstCounter = counterListProto.countersList[firstIndex]
+            val secondCounter = counterListProto.countersList[secondIndex]
+
+            counterListProto.toBuilder()
+                .setCounters(firstIndex, secondCounter)
+                .setCounters(secondIndex, firstCounter)
+                .build()
+        }
+    }
 }

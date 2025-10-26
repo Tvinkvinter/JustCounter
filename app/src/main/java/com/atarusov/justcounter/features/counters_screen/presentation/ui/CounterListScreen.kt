@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -29,8 +31,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,6 +53,8 @@ import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.RemoveRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 @Composable
 fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
@@ -191,7 +197,16 @@ fun CounterList(
     counterItems: List<CounterItem>,
     onAction: (action: Action) -> Unit
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
+
+    val lazyGridState = rememberLazyGridState()
+    val reorderableLazyGridState =
+        rememberReorderableLazyGridState(lazyGridState) { first, second ->
+            onAction(Action.SwapCounters(first.index, second.index))
+        }
+
     LazyVerticalGrid(
+        state = lazyGridState,
         columns = GridCells.Adaptive(150.dp),
         modifier = Modifier
             .fillMaxSize()
@@ -220,14 +235,28 @@ fun CounterList(
                 onRemoveClick = { onAction(Action.RemoveCounter(counterItem.counterId)) },
             )
 
-            CounterItem(
-                state = counterItem,
-                removeMode = removeMode,
-                callbacks = counterItemCallbacks,
-                modifier = Modifier
-                    .padding(top = Dimensions.Spacing.small)
-                    .animateItem()
-            )
+            ReorderableItem(
+                state = reorderableLazyGridState,
+                key = counterItem.counterId
+            ) { isDragging ->
+                CounterItem(
+                    state = counterItem,
+                    removeMode = removeMode,
+                    dragMode = isDragging,
+                    callbacks = counterItemCallbacks,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = Dimensions.Spacing.small)
+                        .longPressDraggableHandle(
+                            onDragStarted = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            },
+                            onDragStopped = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                            },
+                        )
+                )
+            }
         }
     }
 }

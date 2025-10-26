@@ -41,6 +41,7 @@ class Actor @Inject constructor(
             Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
+            is Action.SwapCounters -> swapCounters(action.firstIndex, action.secondIndex)
             is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
             is Action.CloseCounterEditDialog ->
                 closeEditDialog(action.editDialogState, action.restoreInitialItemState)
@@ -112,6 +113,11 @@ class Actor @Inject constructor(
         if (inputField.text.contains("-")) return@flow
 
         emit(InternalAction.UpdateStepConfiguratorField(stepIndex, inputField))
+    }
+
+    private fun swapCounters(firstIndex: Int, secondIndex: Int) = flow {
+        emit(InternalAction.SwapCounters(firstIndex, secondIndex))
+        repository.swapCounters(firstIndex, secondIndex)
     }
 
     private fun openEditDialog(counterId: String) = flow {

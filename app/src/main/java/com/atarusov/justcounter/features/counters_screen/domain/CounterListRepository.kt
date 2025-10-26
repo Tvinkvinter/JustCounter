@@ -11,4 +11,5 @@ interface CounterListRepository {
     suspend fun updateCounterColor(counterId: String, newColor: Color)
     suspend fun updateCounterSteps(counterId: String, newSteps: List<Int>)
     suspend fun removeCounter(counterId: String)
+    suspend fun swapCounters(firstIndex: Int, secondIndex: Int)
 }
