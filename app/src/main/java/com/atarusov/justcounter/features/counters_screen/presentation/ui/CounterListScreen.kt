@@ -228,8 +228,6 @@ fun CounterList(
                     onAction(Action.MinusClick(counterItem.counterId, step, counterItem.valueField))
                 },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counterItem.counterId)) },
-                onInputTitle = { onAction(Action.TitleInput(counterItem.counterId, it)) },
-                onInputTitleDone = { onAction(Action.TitleInputDone(counterItem.counterId, it)) },
                 onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
                 onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId, it)) },
                 onRemoveClick = { onAction(Action.RemoveCounter(counterItem.counterId)) },

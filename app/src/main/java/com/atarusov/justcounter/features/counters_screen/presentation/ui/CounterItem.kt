@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.TextAutoSize
@@ -25,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.ripple
@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -90,26 +89,17 @@ fun CounterItem(
                             .size(Dimensions.Size.small)
                     )
 
-                    BasicTextField(
-                        value = state.titleField,
-                        onValueChange = callbacks.onInputValue,
+                    Text(
+                        text = state.titleField.text,
                         modifier = Modifier
                             .weight(1f)
                             .alpha(contentAlpha),
-                        enabled = !removeMode,
-                        textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = state.color.getContrastContentColor(),
+                        maxLines = 1,
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = state.color.getContrastContentColor(),
                             textAlign = TextAlign.Center,
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { callbacks.onInputTitleDone(state.titleField.text) }
-                        ),
-                        singleLine = true,
-                        cursorBrush = SolidColor(state.color.getContrastContentColor())
+                        )
                     )
 
                     Icon(
