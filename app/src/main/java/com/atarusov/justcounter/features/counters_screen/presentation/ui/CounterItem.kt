@@ -253,8 +253,9 @@ private fun ExtraStepButton(
         modifier = Modifier
             .size(Dimensions.Size.medium)
             .background(color = containerColor, shape = CircleShape)
-            .alpha(alpha)
+            .padding(horizontal = Dimensions.Spacing.xxSmall)
             .wrapContentSize()
+            .alpha(alpha)
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
