@@ -11,4 +11,27 @@
     <string name="counter_screen_edit_title_btn_description">Edit title</string>
     <string name="counter_screen_edit_plus_btn_description">Add custom step</string>
     <string name="counter_screen_edit_minus_btn_description">Remove last custom step</string>
+
+    <string-array name="default_counter_names">
+        <item>Fox</item>
+        <item>Bunny</item>
+        <item>Penguin</item>
+        <item>Frog</item>
+        <item>Hedgehog</item>
+        <item>Squirrel</item>
+        <item>Panda</item>
+        <item>Kitten</item>
+        <item>Tiger</item>
+        <item>Wolf</item>
+        <item>Donkey</item>
+        <item>Bear</item>
+        <item>Tortoise</item>
+        <item>Owl</item>
+        <item>Llama</item>
+        <item>Giraffe</item>
+        <item>Monkey</item>
+        <item>Rabbit</item>
+        <item>Seal</item>
+        <item>Deer</item>
+    </string-array>
 </resources>

@@ -22,6 +22,8 @@ class Actor @Inject constructor(
         private const val MAX_VALUE = 999_999_999
     }
 
+    @Inject lateinit var defaultCounterTitles: List<String>
+
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
             Action.AddCounter -> createNewCounter()
@@ -49,7 +51,13 @@ class Actor @Inject constructor(
     }
 
     private fun createNewCounter() = flow {
-        val newCounter = Counter("test", 0, CounterCardColors.getRandom(), listOf(1))
+        val newCounter = Counter(
+            title = defaultCounterTitles.random(),
+            value = 0,
+            color = CounterCardColors.getRandom(),
+            steps = listOf(1)
+        )
+
         emit(InternalAction.AddCounterItem(newCounter))
         repository.addCounter(newCounter)
     }
