@@ -3,11 +3,12 @@
 
     <string name="counter_edit_dialog_btn_cancel">Cancel</string>
     <string name="counter_edit_dialog_btn_save">Save</string>
-    <string name="counter_screen_empty_title_error">Title can\'t be empty</string>
-    <string name="counter_screen_drag_tip">Long press a title to move counter</string>
+    <string name="counter_edit_dialog_title_hint"> Title</string>
+    <string name="counter_screen_empty_title_tip">Counter title is empty. Are you sure you won’t get confused later? 😊</string>
 
     <string name="counter_screen_edit_btn_description">Edit</string>
     <string name="counter_screen_add_btn_description">Create new counter</string>
+    <string name="counter_screen_drag_tip">Long press a title to move counter</string>
 
     <string name="counter_screen_edit_title_btn_description">Edit title</string>
     <string name="counter_screen_edit_plus_btn_description">Add custom step</string>

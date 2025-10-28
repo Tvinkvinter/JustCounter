@@ -72,9 +72,9 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                     val errorMessage = context.getString(R.string.counter_screen_drag_tip)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
-                is OneTimeEvent.ShowTitleInputError -> {
-                    val errorMessage = context.getString(R.string.counter_screen_empty_title_error)
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                is OneTimeEvent.ShowEmptyTitleTip -> {
+                    val errorMessage = context.getString(R.string.counter_screen_empty_title_tip)
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                 }
             }
         }

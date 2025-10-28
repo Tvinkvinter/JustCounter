@@ -2,7 +2,7 @@ package com.atarusov.justcounter.features.counters_screen.presentation.mvi
 
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.InternalAction
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
-import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent.ShowTitleInputError
+import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent.ShowEmptyTitleTip
 import javax.inject.Inject
 
 class OneTimeEventHandler @Inject constructor() {
@@ -10,7 +10,7 @@ class OneTimeEventHandler @Inject constructor() {
         return when (internalAction) {
             InternalAction.ClearFocus -> OneTimeEvent.ClearFocus
             InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
-            InternalAction.ShowTitleError -> ShowTitleInputError
+            InternalAction.ShowEmptyTitleTip -> ShowEmptyTitleTip
 
             is InternalAction.LoadCounterItems,
             is InternalAction.AddCounterItem,

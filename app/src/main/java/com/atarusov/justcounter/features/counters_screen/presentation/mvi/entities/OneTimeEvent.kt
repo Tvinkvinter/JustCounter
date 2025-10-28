@@ -3,5 +3,5 @@ package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entit
 sealed class OneTimeEvent {
     object ClearFocus : OneTimeEvent()
     object ShowDragTip : OneTimeEvent()
-    object ShowTitleInputError : OneTimeEvent()
+    object ShowEmptyTitleTip : OneTimeEvent()
 }

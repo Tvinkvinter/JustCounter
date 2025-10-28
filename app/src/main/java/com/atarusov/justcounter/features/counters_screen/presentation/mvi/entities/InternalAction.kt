@@ -24,5 +24,5 @@ sealed class InternalAction {
 
     data object ClearFocus : InternalAction()
     data object ShowDragTip: InternalAction()
-    data object ShowTitleError : InternalAction()
+    data object ShowEmptyTitleTip : InternalAction()
 }

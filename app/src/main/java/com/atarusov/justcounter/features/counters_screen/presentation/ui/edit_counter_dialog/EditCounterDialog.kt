@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -83,7 +84,7 @@ fun EditCounterDialog(
                     OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
 
                     OneTimeEvent.ShowDragTip,
-                    is OneTimeEvent.ShowTitleInputError -> null
+                    is OneTimeEvent.ShowEmptyTitleTip -> null
                 }
             }
         }
@@ -222,7 +223,22 @@ private fun TitleTextFieldWithIcon(
                 onDone = { onInputDone(titleField.text) }
             ),
             singleLine = true,
-            cursorBrush = SolidColor(itemColor.getContrastContentColor())
+            cursorBrush = SolidColor(itemColor.getContrastContentColor()),
+            decorationBox = { innerTextField ->
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (localTitleFieldState.text.isBlank()) {
+                        Text(
+                            text = stringResource(R.string.counter_edit_dialog_title_hint),
+                            color = itemColor.getContrastContentColor().copy(alpha = 0.5f),
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                    }
+
+                    innerTextField()
+                }
+            }
         )
 
         Icon(
