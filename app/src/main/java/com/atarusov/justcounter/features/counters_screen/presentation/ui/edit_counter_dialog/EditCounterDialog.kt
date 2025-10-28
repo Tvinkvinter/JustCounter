@@ -81,6 +81,8 @@ fun EditCounterDialog(
             events.collect { event ->
                 when (event) {
                     OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+
+                    OneTimeEvent.ShowDragTip,
                     is OneTimeEvent.ShowTitleInputError -> null
                 }
             }

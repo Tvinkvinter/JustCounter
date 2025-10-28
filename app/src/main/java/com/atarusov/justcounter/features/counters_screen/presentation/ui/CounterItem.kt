@@ -44,11 +44,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.CounterItemCallbacks
+import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @Composable
@@ -93,7 +93,12 @@ fun CounterItem(
                         text = state.titleField.text,
                         modifier = Modifier
                             .weight(1f)
-                            .alpha(contentAlpha),
+                            .alpha(contentAlpha)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                                onClick = callbacks.onTitleTap
+                            ),
                         color = state.color.getContrastContentColor(),
                         maxLines = 1,
                         style = MaterialTheme.typography.titleMedium.copy(
@@ -118,7 +123,10 @@ fun CounterItem(
                                     else callbacks.onEditClick()
                                 },
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(bounded = false, radius = Dimensions.Radius.medium),
+                                indication = ripple(
+                                    bounded = false,
+                                    radius = Dimensions.Radius.medium
+                                ),
                             ),
                         tint = state.color.getContrastContentColor()
                     )

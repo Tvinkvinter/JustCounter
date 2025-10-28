@@ -8,8 +8,9 @@ import javax.inject.Inject
 class OneTimeEventHandler @Inject constructor() {
     fun handleEvent(internalAction: InternalAction): OneTimeEvent? {
         return when (internalAction) {
-            is InternalAction.ShowTitleError -> ShowTitleInputError(internalAction.counterId)
             InternalAction.ClearFocus -> OneTimeEvent.ClearFocus
+            InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
+            is InternalAction.ShowTitleError -> ShowTitleInputError(internalAction.counterId)
 
             is InternalAction.LoadCounterItems,
             is InternalAction.AddCounterItem,

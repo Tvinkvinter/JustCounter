@@ -24,4 +24,5 @@ sealed class InternalAction {
 
     data class ShowTitleError(val counterId: String) : InternalAction()
     data object ClearFocus : InternalAction()
+    data object ShowDragTip: InternalAction()
 }

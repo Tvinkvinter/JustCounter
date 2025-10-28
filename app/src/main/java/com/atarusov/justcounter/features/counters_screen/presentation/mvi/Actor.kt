@@ -43,6 +43,7 @@ class Actor @Inject constructor(
             Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
+            Action.TitleTap -> flowOf(InternalAction.ShowDragTip)
             is Action.SwapCounters -> swapCounters(action.firstIndex, action.secondIndex)
             is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
             is Action.CloseCounterEditDialog ->

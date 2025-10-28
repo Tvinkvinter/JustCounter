@@ -68,6 +68,10 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
         viewModel.screenEvents.collect { event ->
             when (event) {
                 OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+                OneTimeEvent.ShowDragTip -> {
+                    val errorMessage = context.getString(R.string.counter_screen_drag_tip)
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                }
                 is OneTimeEvent.ShowTitleInputError -> {
                     val errorMessage = context.getString(R.string.counter_screen_empty_title_error)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
@@ -227,6 +231,7 @@ fun CounterList(
                 onMinusClick = { step ->
                     onAction(Action.MinusClick(counterItem.counterId, step, counterItem.valueField))
                 },
+                onTitleTap = { onAction(Action.TitleTap) },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counterItem.counterId)) },
                 onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
                 onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId, it)) },

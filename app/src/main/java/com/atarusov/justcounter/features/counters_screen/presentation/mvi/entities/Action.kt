@@ -20,6 +20,7 @@ sealed class Action {
     data class StepInput(val counterId: String, val stepIndex: Int, val inputField: TextFieldValue) : Action()
     data object StepInputDone : Action()
 
+    object TitleTap : Action()
     data object SwitchRemoveMode : Action()
     data class SwapCounters(val firstIndex: Int, val secondIndex: Int) : Action()
     data class OpenCounterEditDialog(val counterId: String) : Action()
