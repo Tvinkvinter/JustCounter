@@ -107,9 +107,7 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
                 onTitleInput = { input ->
                     viewModel.onAction(Action.TitleInput(dialogState.itemState.counterId, input))
                 },
-                onTitleInputDone = { input ->
-                    viewModel.onAction(Action.TitleInputDone(dialogState.itemState.counterId, input))
-                },
+                onTitleInputDone = { input -> viewModel.onAction(Action.TitleInputDone(input)) },
                 onValueInput = { input ->
                     viewModel.onAction(Action.ValueInput(dialogState.itemState.counterId, input))
                 },

@@ -56,8 +56,7 @@ class Reducer @Inject constructor() {
 
             InternalAction.ClearFocus,
             InternalAction.ShowDragTip,
-            is InternalAction.ShowTitleError -> previousState
-
+            InternalAction.ShowTitleError -> previousState
         }
 
     private fun loadCounterItems(previousState: State, counters: List<Counter>) =

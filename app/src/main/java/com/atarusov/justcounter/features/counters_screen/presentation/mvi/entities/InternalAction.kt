@@ -22,7 +22,7 @@ sealed class InternalAction {
     data class OpenEditCounterDialog(val counterId: String) : InternalAction()
     data object CloseEditCounterDialog : InternalAction()
 
-    data class ShowTitleError(val counterId: String) : InternalAction()
     data object ClearFocus : InternalAction()
     data object ShowDragTip: InternalAction()
+    data object ShowTitleError : InternalAction()
 }

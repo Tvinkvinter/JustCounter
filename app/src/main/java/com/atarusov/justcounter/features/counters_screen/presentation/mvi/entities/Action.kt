@@ -14,7 +14,7 @@ sealed class Action {
     data object RemoveStep: Action()
     data object AddStep : Action()
     data class TitleInput(val counterId: String, val inputField: TextFieldValue) : Action()
-    data class TitleInputDone(val counterId: String, val input: String) : Action()
+    data class TitleInputDone(val input: String) : Action()
     data class ValueInput(val counterId: String, val inputField: TextFieldValue) : Action()
     data class ValueInputDone(val counterId: String, val input: String) : Action()
     data class StepInput(val counterId: String, val stepIndex: Int, val inputField: TextFieldValue) : Action()

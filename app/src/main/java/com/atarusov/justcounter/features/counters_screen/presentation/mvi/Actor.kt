@@ -36,7 +36,7 @@ class Actor @Inject constructor(
             Action.AddStep -> flowOf(InternalAction.AddStepField)
 
             is Action.TitleInput -> updateCounterTitle(action.counterId, action.inputField)
-            is Action.TitleInputDone -> onTitleInputDone(action.counterId, action.input)
+            is Action.TitleInputDone -> onTitleInputDone(action.input)
             is Action.ValueInput -> updateCounterValue(action.counterId, action.inputField)
             is Action.ValueInputDone -> onValueInputDone(action.counterId, action.input)
             is Action.StepInput -> onStepInput(action.stepIndex, action.inputField)
@@ -88,8 +88,8 @@ class Actor @Inject constructor(
         }
     }
 
-    private fun onTitleInputDone(counterId: String, input: String) = flow {
-        if (input.isBlank()) emit(InternalAction.ShowTitleError(counterId))
+    private fun onTitleInputDone(input: String) = flow {
+        if (input.isBlank()) emit(InternalAction.ShowTitleError)
         else emit(InternalAction.ClearFocus)
     }
 
@@ -145,7 +145,7 @@ class Actor @Inject constructor(
         }
 
         with(editDialogState) {
-            onTitleInputDone(itemState.counterId, itemState.titleField.text).collect(::emit)
+            onTitleInputDone(itemState.titleField.text).collect(::emit)
             onValueInputDone(itemState.counterId, itemState.valueField.text).collect(::emit)
             saveCounterSteps(itemState.counterId, stepConfiguratorState.steps).collect(::emit)
         }

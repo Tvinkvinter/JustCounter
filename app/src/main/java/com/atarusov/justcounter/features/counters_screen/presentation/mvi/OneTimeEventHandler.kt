@@ -10,7 +10,7 @@ class OneTimeEventHandler @Inject constructor() {
         return when (internalAction) {
             InternalAction.ClearFocus -> OneTimeEvent.ClearFocus
             InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
-            is InternalAction.ShowTitleError -> ShowTitleInputError(internalAction.counterId)
+            InternalAction.ShowTitleError -> ShowTitleInputError
 
             is InternalAction.LoadCounterItems,
             is InternalAction.AddCounterItem,
