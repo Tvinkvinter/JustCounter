@@ -24,6 +24,7 @@ object Dimensions {
         val small = 4.dp
         val medium = 12.dp
         val large = 16.dp
+        val extraLarge = 20.dp
     }
 
     object Border {
@@ -33,6 +34,7 @@ object Dimensions {
     }
     
     object Elevation {
+        val fab = 2.dp
         val topAppBar = 4.dp
         val card = 6.dp
         val dialog = 8.dp

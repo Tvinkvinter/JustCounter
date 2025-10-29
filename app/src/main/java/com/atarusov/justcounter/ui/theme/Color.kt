@@ -13,6 +13,9 @@ val Pink40 = Color(0xFF7D5260)
 
 val RemoveRed = Color(0xDFFF3B30)
 
+val FABContainerColor = Color(0xFFFFC75F)
+val FABContentColor = Color(0xFF4B3F2F)
+
 val TransparentTextSelectionColors = TextSelectionColors(
     handleColor = Color.Transparent,
     backgroundColor = Color.Transparent

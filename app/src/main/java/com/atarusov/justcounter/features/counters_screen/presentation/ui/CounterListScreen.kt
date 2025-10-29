@@ -14,9 +14,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -49,6 +51,8 @@ import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbac
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditCounterDialog
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
+import com.atarusov.justcounter.ui.theme.FABContainerColor
+import com.atarusov.justcounter.ui.theme.FABContentColor
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.RemoveRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
@@ -187,7 +191,11 @@ fun CounterListFAB(
 
     FloatingActionButton(
         onClick = onClick,
-        modifier = modifier.offset(x=0.dp, y=offsetY)
+        modifier = modifier.offset(x = 0.dp, y = offsetY),
+        containerColor = FABContainerColor,
+        contentColor = FABContentColor,
+        elevation = FloatingActionButtonDefaults.elevation(Dimensions.Elevation.fab),
+        shape = RoundedCornerShape(Dimensions.Radius.extraLarge)
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_plus),
@@ -211,6 +219,7 @@ fun CounterList(
 
     LazyVerticalGrid(
         state = lazyGridState,
+        contentPadding = PaddingValues(bottom = 100.dp),
         columns = GridCells.Adaptive(150.dp),
         modifier = Modifier
             .fillMaxSize()
