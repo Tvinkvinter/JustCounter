@@ -36,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -50,6 +52,8 @@ import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entiti
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.CounterItemCallbacks
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
+import sh.calvin.reorderable.DragGestureDetector
+import sh.calvin.reorderable.ReorderableCollectionItemScope
 
 @Composable
 fun CounterItem(
@@ -57,8 +61,11 @@ fun CounterItem(
     removeMode: Boolean,
     dragMode: Boolean,
     callbacks: CounterItemCallbacks,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    reorderableScope: ReorderableCollectionItemScope? = null
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
+
     val cardScale by animateFloatAsState(if (dragMode) 1.05f else 1f)
     val contentAlpha by animateFloatAsState(
         targetValue = if (removeMode) 0.5f else 1f,
@@ -98,6 +105,18 @@ fun CounterItem(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = callbacks.onTitleTap
+                            ).then(
+                                reorderableScope?.run {
+                                    Modifier.draggableHandle(
+                                        onDragStarted = {
+                                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        },
+                                        onDragStopped = {
+                                            hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                                        },
+                                        dragGestureDetector = DragGestureDetector.LongPress
+                                    )
+                                } ?: Modifier
                             ),
                         color = state.color.getContrastContentColor(),
                         maxLines = 1,

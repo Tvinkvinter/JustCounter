@@ -31,10 +31,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -199,8 +197,6 @@ fun CounterList(
     counterItems: List<CounterItem>,
     onAction: (action: Action) -> Unit
 ) {
-    val hapticFeedback = LocalHapticFeedback.current
-
     val lazyGridState = rememberLazyGridState()
     val reorderableLazyGridState =
         rememberReorderableLazyGridState(lazyGridState) { first, second ->
@@ -247,15 +243,8 @@ fun CounterList(
                     callbacks = counterItemCallbacks,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = Dimensions.Spacing.small)
-                        .longPressDraggableHandle(
-                            onDragStarted = {
-                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                            },
-                            onDragStopped = {
-                                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                            },
-                        )
+                        .padding(top = Dimensions.Spacing.small),
+                    reorderableScope = this,
                 )
             }
         }
