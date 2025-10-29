@@ -155,14 +155,16 @@ fun EditCounterDialog(
                     selectedColor = state.itemState.color,
                     onColorSelected = callbacks.onColorSelected,
                     modifier = Modifier
-                        .padding(top = Dimensions.Spacing.large)
-                        .padding(horizontal = Dimensions.Spacing.huge - 2.dp)
+                        .padding(
+                            horizontal = Dimensions.Spacing.huge - 2.dp,
+                            vertical = Dimensions.Spacing.large
+                        )
                 )
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = Dimensions.Spacing.small),
+                        .padding(bottom = Dimensions.Spacing.small),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     TextButton(
