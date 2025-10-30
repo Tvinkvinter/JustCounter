@@ -8,9 +8,13 @@ import com.atarusov.justcounter.ui.theme.CounterColor
 data class EditDialogState(
     val itemState: CounterItem,
     val stepConfiguratorState: StepConfiguratorState,
+    private var initialCounterItemState: CounterItem? = null
 ) {
-    private val initialCounterItemState = itemState
-    fun getInitialCounterItemState() = initialCounterItemState
+    init {
+        if (initialCounterItemState == null) initialCounterItemState = itemState
+    }
+
+    fun getInitialCounterItemState() = initialCounterItemState!!
 }
 
 data class StepConfiguratorState(
