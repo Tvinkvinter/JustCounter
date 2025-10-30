@@ -9,14 +9,21 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class Bootstrapper @Inject constructor(
-    val repository: CounterListRepository
+    val repository: CounterListRepository,
+    val defaultCounterTitles: List<String>
 ) {
     fun bootstrap(): Flow<InternalAction> = flow {
         val counters = repository.getAllCounters()
         emit(InternalAction.LoadCounterItems(counters))
 
         if (counters.isEmpty()) {
-            val newCounter = Counter("First Counter", 0, CounterColorProvider.getRandomColor(), listOf(1)) // todo: change counter name
+            val newCounter = Counter(
+                defaultCounterTitles.random(),
+                0,
+                CounterColorProvider.getRandomColor(),
+                listOf(1)
+            )
+
             repository.addCounter(newCounter)
             emit(InternalAction.AddCounterItem(newCounter))
         }
