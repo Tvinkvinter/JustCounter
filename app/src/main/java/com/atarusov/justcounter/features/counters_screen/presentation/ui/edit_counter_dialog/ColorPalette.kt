@@ -15,14 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.atarusov.justcounter.ui.theme.CounterCardColors
+import com.atarusov.justcounter.ui.theme.CounterColor
+import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @Composable
 fun ColorPalette(
-    selectedColor: Color,
-    onColorSelected: (selectedColor: Color) -> Unit,
+    selectedColor: CounterColor,
+    onColorSelected: (selectedColor: CounterColor) -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -30,9 +31,9 @@ fun ColorPalette(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalArrangement = Arrangement.spacedBy(Dimensions.Spacing.xxSmall),
         itemVerticalAlignment = Alignment.CenterVertically,
-        maxItemsInEachRow = CounterCardColors.getList().size / 2
+        maxItemsInEachRow = CounterColorProvider.getAllColors().size / 2
     ) {
-        val allColors = CounterCardColors.getList()
+        val allColors = CounterColorProvider.getAllColors()
 
         allColors.forEachIndexed { index, color ->
             val thisColorSelected = color == selectedColor
@@ -44,7 +45,7 @@ fun ColorPalette(
                 Surface(
                     modifier = Modifier.padding(Dimensions.Spacing.xxSmall),
                     shape = CircleShape,
-                    color = color,
+                    color = CounterColorProvider.getColor(color),
                     onClick = { onColorSelected(color) }
                 ) {}
             }
@@ -57,7 +58,7 @@ fun ColorPalette(
 private fun ColorPalettePreview() {
     JustCounterTheme {
         ColorPalette(
-            selectedColor = CounterCardColors.green,
+            selectedColor = CounterColorProvider.getRandomColor(),
             onColorSelected = {},
             modifier = Modifier.width(300.dp)
         )

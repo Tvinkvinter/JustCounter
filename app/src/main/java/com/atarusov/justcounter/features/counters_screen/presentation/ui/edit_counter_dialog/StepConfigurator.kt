@@ -30,6 +30,7 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.StepConfiguratorCallbacks
+import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
@@ -40,6 +41,8 @@ fun StepConfigurator(
     callbacks: StepConfiguratorCallbacks,
     modifier: Modifier = Modifier
 ) {
+    val btnColor = CounterColorProvider.getColor(state.btnColor)
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
@@ -47,9 +50,9 @@ fun StepConfigurator(
         FilledIconButton(
             onClick = callbacks.onRemoveStepClick,
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = state.btnColor,
-                contentColor = state.btnColor.getContrastContentColor(),
-                disabledContainerColor = state.btnColor
+                containerColor = btnColor,
+                contentColor = btnColor.getContrastContentColor(),
+                disabledContainerColor = btnColor
             ),
             enabled = state.removeBtnEnabled
         ) {
@@ -79,7 +82,7 @@ fun StepConfigurator(
                                 .fillMaxSize()
                                 .border(
                                     width = if (index == 0) Dimensions.Border.medium else Dimensions.Border.thin,
-                                    color = if (index == 0) state.btnColor else MaterialTheme.colorScheme.outline,
+                                    color = if (index == 0) btnColor else MaterialTheme.colorScheme.outline,
                                     shape = RoundedCornerShape(Dimensions.Radius.small)
                                 ),
                             contentAlignment = Alignment.Center
@@ -100,9 +103,9 @@ fun StepConfigurator(
         FilledIconButton(
             onClick = callbacks.onAddStepClick,
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = state.btnColor,
-                contentColor = state.btnColor.getContrastContentColor(),
-                disabledContainerColor = state.btnColor
+                containerColor = btnColor,
+                contentColor = btnColor.getContrastContentColor(),
+                disabledContainerColor = btnColor
             ),
             enabled = state.addBtnEnabled
         ) {

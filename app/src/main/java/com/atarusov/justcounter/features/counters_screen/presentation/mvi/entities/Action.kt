@@ -1,14 +1,14 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
+import com.atarusov.justcounter.ui.theme.CounterColor
 
 sealed class Action {
     data object AddCounter : Action()
     data class RemoveCounter(val counterId: String) : Action()
 
-    data class ChangeColor(val counterId: String, val newColor: Color) : Action()
+    data class ChangeColor(val counterId: String, val newColor: CounterColor) : Action()
     data class MinusClick(val counterId: String, val step: Int, val valueField: TextFieldValue) : Action()
     data class PlusClick(val counterId: String, val step: Int, val valueField: TextFieldValue) : Action()
     data object RemoveStep: Action()

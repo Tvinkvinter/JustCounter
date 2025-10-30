@@ -1,7 +1,5 @@
 package com.atarusov.justcounter.features.counters_screen.data
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.datastore.core.DataStore
 import com.atarusov.justcounter.CounterListProto
 import com.atarusov.justcounter.CounterProto
@@ -49,8 +47,8 @@ class CounterListDataSource @Inject constructor(
         updateCounter(counterId) { it.setValue(newValue) }
     }
 
-    override suspend fun updateCounterColor(counterId: String, newColor: Color) {
-        updateCounter(counterId) { it.setColor(newColor.toArgb()) }
+    override suspend fun updateCounterColor(counterId: String, newColor: String) {
+        updateCounter(counterId) { it.setColor(newColor) }
     }
 
     override suspend fun updateCounterSteps(counterId: String, newSteps: List<Int>) {

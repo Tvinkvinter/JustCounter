@@ -59,6 +59,7 @@ import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entiti
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.EditCounterDialogCallbacks
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.StepConfiguratorCallbacks
+import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import kotlinx.coroutines.flow.Flow
@@ -70,6 +71,8 @@ fun EditCounterDialog(
     events: Flow<OneTimeEvent>,
     callbacks: EditCounterDialogCallbacks
 ) {
+    val itemColor = CounterColorProvider.getColor(state.itemState.color)
+
     Dialog(
         onDismissRequest = callbacks.onDismiss,
         properties = DialogProperties(
@@ -92,7 +95,7 @@ fun EditCounterDialog(
         Card(
             modifier = Modifier.fillMaxWidth(0.9f),
             elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
-            border = BorderStroke(Dimensions.Border.bold, state.itemState.color)
+            border = BorderStroke(Dimensions.Border.bold, itemColor)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -100,13 +103,13 @@ fun EditCounterDialog(
             ) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = state.itemState.color
+                    color = itemColor
                 ) {
                     TitleTextFieldWithIcon(
                         titleField = state.itemState.titleField,
                         onTitleChange = callbacks.onTitleInput,
                         onInputDone = callbacks.onTitleInputDone,
-                        itemColor = state.itemState.color,
+                        itemColor = itemColor,
                         modifier = Modifier.padding(vertical = Dimensions.Spacing.extraSmall)
                     )
                 }
@@ -120,7 +123,7 @@ fun EditCounterDialog(
                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = state.itemState.color
+                        focusedBorderColor = itemColor
                     ),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
@@ -170,7 +173,7 @@ fun EditCounterDialog(
                     TextButton(
                         onClick = callbacks.onDismiss,
                         colors = ButtonDefaults.textButtonColors(
-                            contentColor = state.itemState.color
+                            contentColor = itemColor
                         )
                     ) {
                         Text(stringResource(R.string.counter_edit_dialog_btn_cancel))
@@ -179,13 +182,13 @@ fun EditCounterDialog(
                     Button(
                         onClick = { callbacks.onConfirm(state.itemState) },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = state.itemState.color
+                            containerColor = itemColor
                         ),
                         contentPadding = PaddingValues()
                     ) {
                         Text(
                             text = stringResource(R.string.counter_edit_dialog_btn_save),
-                            color = state.itemState.color.getContrastContentColor()
+                            color = itemColor.getContrastContentColor()
                         )
                     }
                 }

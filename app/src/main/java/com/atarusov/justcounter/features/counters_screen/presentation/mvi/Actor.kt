@@ -1,6 +1,5 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.domain.CounterListRepository
@@ -8,7 +7,8 @@ import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entiti
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.InternalAction
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.toCounter
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
-import com.atarusov.justcounter.ui.theme.CounterCardColors
+import com.atarusov.justcounter.ui.theme.CounterColor
+import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -55,7 +55,7 @@ class Actor @Inject constructor(
         val newCounter = Counter(
             title = defaultCounterTitles.random(),
             value = 0,
-            color = CounterCardColors.getRandom(),
+            color = CounterColorProvider.getRandomColor(),
             steps = listOf(1)
         )
 
@@ -68,9 +68,9 @@ class Actor @Inject constructor(
         repository.removeCounter(counterId)
     }
 
-    private fun changeCounterColor(counterId: String, newColor: Color) = flow<InternalAction> {
+    private fun changeCounterColor(counterId: String, newColor: CounterColor) = flow<InternalAction> {
         emit(InternalAction.UpdateCounterItemColor(counterId, newColor))
-        repository.updateCounterColor(counterId, newColor)
+        repository.updateCounterColor(counterId, newColor.name)
     }
 
     private fun changeValueBy(counterId: String, by: Int, valueField: TextFieldValue) = flow {

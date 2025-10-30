@@ -1,11 +1,11 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
-import com.atarusov.justcounter.ui.theme.CounterCardColors
+import com.atarusov.justcounter.ui.theme.CounterColor
+import com.atarusov.justcounter.ui.theme.CounterColorProvider
 
 data class State(
     val removeMode: Boolean = false,
@@ -16,7 +16,7 @@ data class State(
 data class CounterItem(
     val titleField: TextFieldValue,
     val valueField: TextFieldValue,
-    val color: Color,
+    val color: CounterColor,
     val steps: List<Int>,
     val counterId: String
 ) {
@@ -24,7 +24,7 @@ data class CounterItem(
         fun getPreviewCounterItem(withCustomSteps: Boolean = false) = CounterItem (
             titleField = TextFieldValue("Tvinkvinter"),
             valueField = TextFieldValue("128"),
-            color = CounterCardColors.red,
+            color = CounterColorProvider.getRandomColor(),
             steps = if (withCustomSteps) listOf(1, 2, 300) else listOf(1),
             ""
         )

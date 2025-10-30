@@ -1,8 +1,8 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
+import com.atarusov.justcounter.ui.theme.CounterColor
 
 data class EditCounterDialogCallbacks(
     val onTitleInput: (inputField: TextFieldValue) -> Unit,
@@ -13,7 +13,7 @@ data class EditCounterDialogCallbacks(
     val onStepInputDone: () -> Unit,
     val onRemoveStep: () -> Unit,
     val onAddStep: () -> Unit,
-    val onColorSelected: (selectedColor: Color) -> Unit,
+    val onColorSelected: (selectedColor: CounterColor) -> Unit,
     val onDismiss: () -> Unit,
     val onConfirm: (newCounterState: CounterItem) -> Unit
 ) {

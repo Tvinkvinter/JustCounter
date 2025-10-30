@@ -1,6 +1,5 @@
 package com.atarusov.justcounter.features.counters_screen.presentation.mvi
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.features.counters_screen.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
@@ -9,6 +8,7 @@ import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entiti
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.toCounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditDialogState
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.StepConfiguratorState
+import com.atarusov.justcounter.ui.theme.CounterColor
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {
@@ -75,7 +75,7 @@ class Reducer @Inject constructor() {
     private fun updateCounterItemColor(
         previousState: State,
         counterId: String,
-        newColor: Color
+        newColor: CounterColor
     ) = previousState.copy(
         counterItems = previousState.counterItems.map {
             if (it.counterId == counterId) it.copy(color = newColor)
