@@ -86,8 +86,9 @@ fun EditCounterDialog(
                 when (event) {
                     OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
 
+                    OneTimeEvent.ScrollDown,
                     OneTimeEvent.ShowDragTip,
-                    is OneTimeEvent.ShowEmptyTitleTip -> null
+                    OneTimeEvent.ShowEmptyTitleTip -> null
                 }
             }
         }

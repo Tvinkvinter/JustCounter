@@ -23,6 +23,7 @@ sealed class InternalAction {
     data object CloseEditCounterDialog : InternalAction()
 
     data object ClearFocus : InternalAction()
+    data object ScrollDown : InternalAction()
     data object ShowDragTip: InternalAction()
     data object ShowEmptyTitleTip : InternalAction()
 }

@@ -55,6 +55,7 @@ class Reducer @Inject constructor() {
             InternalAction.CloseEditCounterDialog -> previousState.copy(editDialog = null)
 
             InternalAction.ClearFocus,
+            InternalAction.ScrollDown,
             InternalAction.ShowDragTip,
             InternalAction.ShowEmptyTitleTip -> previousState
         }

@@ -60,6 +60,7 @@ class Actor @Inject constructor(
         )
 
         emit(InternalAction.AddCounterItem(newCounter))
+        emit(InternalAction.ScrollDown)
         repository.addCounter(newCounter)
     }
 

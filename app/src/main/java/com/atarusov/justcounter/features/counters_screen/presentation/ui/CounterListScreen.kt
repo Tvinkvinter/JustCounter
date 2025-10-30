@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -63,11 +64,14 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val lazyGridState = rememberLazyGridState()
 
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
             when (event) {
                 OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+                OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counterItems.lastIndex)
+
                 OneTimeEvent.ShowDragTip -> {
                     val errorMessage = context.getString(R.string.counter_screen_drag_tip)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
@@ -95,6 +99,7 @@ fun CounterListScreen(viewModel: CounterListScreenViewModel = hiltViewModel()) {
             },
         ) { paddingValues ->
             CounterList(
+                lazyGridState = lazyGridState,
                 paddingValues = paddingValues,
                 removeMode = state.removeMode,
                 counterItems = state.counterItems,
@@ -198,12 +203,12 @@ fun CounterListFAB(
 
 @Composable
 fun CounterList(
+    lazyGridState: LazyGridState,
     paddingValues: PaddingValues,
     removeMode: Boolean,
     counterItems: List<CounterItem>,
     onAction: (action: Action) -> Unit
 ) {
-    val lazyGridState = rememberLazyGridState()
     val reorderableLazyGridState =
         rememberReorderableLazyGridState(lazyGridState) { first, second ->
             onAction(Action.SwapCounters(first.index, second.index))
