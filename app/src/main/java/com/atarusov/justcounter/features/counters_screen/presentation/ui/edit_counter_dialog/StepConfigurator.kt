@@ -70,6 +70,7 @@ fun StepConfigurator(
                     modifier = Modifier.size(Dimensions.Size.large),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurface
                     ),
                     singleLine = true,
                     decorationBox = { innerTextField ->

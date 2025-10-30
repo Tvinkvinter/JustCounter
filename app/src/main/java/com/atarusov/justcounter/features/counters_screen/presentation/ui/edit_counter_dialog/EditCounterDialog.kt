@@ -183,7 +183,10 @@ fun EditCounterDialog(
                         ),
                         contentPadding = PaddingValues()
                     ) {
-                        Text(stringResource(R.string.counter_edit_dialog_btn_save))
+                        Text(
+                            text = stringResource(R.string.counter_edit_dialog_btn_save),
+                            color = state.itemState.color.getContrastContentColor()
+                        )
                     }
                 }
             }

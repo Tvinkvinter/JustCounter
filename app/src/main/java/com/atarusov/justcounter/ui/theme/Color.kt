@@ -3,23 +3,14 @@ package com.atarusov.justcounter.ui.theme
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val black = Color(0xFF2A2A2D)
+val white = Color(0xFFFFFFFF)
+val lightGrey = Color(0xFFECECEC)
+val darkGrey = Color(0xFF3B3B3F)
+val extraDarkGrey = Color(0xFF414144)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-val RemoveRed = Color(0xDFFF3B30)
-
-val FABContainerColor = Color(0xFFFFC75F)
-val FABContentColor = Color(0xFF4B3F2F)
-
-val TransparentTextSelectionColors = TextSelectionColors(
-    handleColor = Color.Transparent,
-    backgroundColor = Color.Transparent
-)
+val lightOrange = Color(0xFFFFC75F)
+val dangerRed = Color(0xDFFF3B30)
 
 object CounterCardColors {
     val blue = Color(0xFF3B82F6) // синий
@@ -36,3 +27,8 @@ object CounterCardColors {
     fun getList() = listOf(blue, cyan, green, yellow, orange, red, pink, violet, brown, gray)
     fun getRandom() = getList().random()
 }
+
+val TransparentTextSelectionColors = TextSelectionColors(
+    handleColor = Color.Transparent,
+    backgroundColor = Color.Transparent
+)

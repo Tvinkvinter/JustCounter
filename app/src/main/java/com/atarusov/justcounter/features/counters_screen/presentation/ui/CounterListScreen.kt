@@ -33,7 +33,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -51,10 +50,8 @@ import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbac
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_counter_dialog.EditCounterDialog
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
-import com.atarusov.justcounter.ui.theme.FABContainerColor
-import com.atarusov.justcounter.ui.theme.FABContentColor
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
-import com.atarusov.justcounter.ui.theme.RemoveRed
+import com.atarusov.justcounter.ui.theme.dangerRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
@@ -158,7 +155,7 @@ fun CounterListTopAppBar(
                 onClick = onRemoveModeSwitch,
                 modifier = Modifier.size(Dimensions.Size.medium),
                 colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = if (removeMode) RemoveRed else Color.DarkGray
+                    contentColor = if (removeMode) dangerRed else MaterialTheme.colorScheme.onSurface
                 )
             ) {
                 Icon(
@@ -171,9 +168,6 @@ fun CounterListTopAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White
-        ),
         scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     )
 }
@@ -192,8 +186,6 @@ fun CounterListFAB(
     FloatingActionButton(
         onClick = onClick,
         modifier = modifier.offset(x = 0.dp, y = offsetY),
-        containerColor = FABContainerColor,
-        contentColor = FABContentColor,
         elevation = FloatingActionButtonDefaults.elevation(Dimensions.Elevation.fab),
         shape = RoundedCornerShape(Dimensions.Radius.extraLarge)
     ) {
