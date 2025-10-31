@@ -29,6 +29,18 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        create("releaseDebug") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".releaseDebug"
+            versionNameSuffix = "-releaseDebug"
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
 
     compileOptions {
