@@ -36,7 +36,7 @@ object Dimensions {
     object Elevation {
         val fab = 2.dp
         val topAppBar = 4.dp
-        val card = 6.dp
+        val card = 2.dp
         val dialog = 8.dp
     }
     
