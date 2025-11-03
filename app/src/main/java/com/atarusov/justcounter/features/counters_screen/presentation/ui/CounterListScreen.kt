@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
@@ -52,8 +53,8 @@ import com.atarusov.justcounter.features.counters_screen.presentation.ui.edit_co
 import com.atarusov.justcounter.features.counters_screen.presentation.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
-import com.atarusov.justcounter.ui.theme.dangerRed
 import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
+import com.atarusov.justcounter.ui.theme.dangerRed
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
@@ -158,7 +159,9 @@ fun CounterListTopAppBar(
         actions = {
             IconButton(
                 onClick = onRemoveModeSwitch,
-                modifier = Modifier.size(Dimensions.Size.medium),
+                modifier = Modifier
+                    .padding(end = Dimensions.Spacing.small)
+                    .size(Dimensions.Size.medium),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = if (removeMode) dangerRed else MaterialTheme.colorScheme.onSurface
                 )
@@ -216,14 +219,14 @@ fun CounterList(
 
     LazyVerticalGrid(
         state = lazyGridState,
-        contentPadding = PaddingValues(bottom = 100.dp),
+        contentPadding = PaddingValues(top = Dimensions.Spacing.small, bottom = 100.dp),
         columns = GridCells.Adaptive(150.dp),
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = Dimensions.Spacing.small),
+            .padding(horizontal = Dimensions.Spacing.medium),
         verticalArrangement = Arrangement.spacedBy(Dimensions.Spacing.small),
-        horizontalArrangement = Arrangement.spacedBy(Dimensions.Spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(Dimensions.Spacing.small, Alignment.CenterHorizontally)
     ) {
 
         items(
@@ -253,9 +256,7 @@ fun CounterList(
                     removeMode = removeMode,
                     dragMode = isDragging,
                     callbacks = counterItemCallbacks,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Dimensions.Spacing.small),
+                    modifier = Modifier.fillMaxWidth(),
                     reorderableScope = this,
                 )
             }
@@ -272,7 +273,6 @@ private fun CounterTopAppBarPreview() {
             CounterListTopAppBar(true, {})
             CounterListTopAppBar(false, {})
         }
-
     }
 }
 

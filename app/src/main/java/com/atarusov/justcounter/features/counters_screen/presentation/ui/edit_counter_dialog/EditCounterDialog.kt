@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -94,12 +96,12 @@ fun EditCounterDialog(
         }
 
         Card(
-            modifier = Modifier.fillMaxWidth(0.9f),
+            modifier = Modifier.width(IntrinsicSize.Max),
             elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
             border = BorderStroke(Dimensions.Border.bold, itemColor)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Surface(
@@ -210,7 +212,7 @@ private fun TitleTextFieldWithIcon(
     var localTitleFieldState by remember(titleField) { mutableStateOf(titleField) }
 
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -268,7 +270,7 @@ private fun TitleTextFieldWithIcon(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun EditCounterDialogPreview() {
     val counterItem = CounterItem.getPreviewCounterItem(withCustomSteps = true)

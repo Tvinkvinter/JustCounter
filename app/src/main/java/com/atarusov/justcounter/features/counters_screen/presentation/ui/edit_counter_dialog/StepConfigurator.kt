@@ -4,10 +4,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
@@ -44,8 +46,8 @@ fun StepConfigurator(
     val btnColor = CounterColorProvider.getColor(state.btnColor)
 
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier.fillMaxWidth()
+        horizontalArrangement = Arrangement.spacedBy(Dimensions.Spacing.extraSmall),
+        modifier = modifier.widthIn(min= 2 * Dimensions.Size.large +  3 * Dimensions.Size.large + 5 * Dimensions.Spacing.extraSmall)
     ) {
         FilledIconButton(
             onClick = callbacks.onRemoveStepClick,
@@ -64,7 +66,7 @@ fun StepConfigurator(
 
         Row(
             modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             state.steps.forEachIndexed { index, step ->
                 BasicTextField(
@@ -97,6 +99,8 @@ fun StepConfigurator(
                         onDone = { callbacks.onStepInputDone() }
                     )
                 )
+
+                if (index != state.steps.lastIndex) Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
             }
         }
 
