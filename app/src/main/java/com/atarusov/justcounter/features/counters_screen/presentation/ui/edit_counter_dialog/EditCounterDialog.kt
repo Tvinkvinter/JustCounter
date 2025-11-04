@@ -187,7 +187,7 @@ fun EditCounterDialog(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = itemColor
                         ),
-                        contentPadding = PaddingValues()
+                        contentPadding = PaddingValues(horizontal = Dimensions.Spacing.medium)
                     ) {
                         Text(
                             text = stringResource(R.string.edit_dialog_save_btn),
