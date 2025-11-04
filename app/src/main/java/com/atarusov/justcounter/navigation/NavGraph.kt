@@ -12,7 +12,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.CounterScreen.route, //todo(): перейти на классы?
+        startDestination = Screen.CounterScreen.route,
     ) {
         composable(
             route = Screen.CounterScreen.route,
