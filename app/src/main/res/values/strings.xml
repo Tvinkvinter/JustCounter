@@ -1,38 +1,64 @@
 <resources>
-    <string name="app_name">Just Counter</string>
+    <string name="app_name" translatable="false">Just Counter</string>
 
     <string name="counter_screen_edit_btn_description">Edit counter</string>
-    <string name="counter_screen_add_btn_description">Create new counter</string>
+    <string name="counter_screen_add_btn_description">Add new counter</string>
     <string name="counter_screen_drag_tip">Long press a title to move counter</string>
     <string name="counter_screen_empty_title_tip">Counter title is empty. Are you sure you won’t get confused later? 😊</string>
 
-    <string name="edit_dialog_title_hint"> Title</string>
+    <string name="edit_dialog_title_hint">Title</string>
     <string name="edit_dialog_edit_title_btn_description">Edit title</string>
     <string name="edit_dialog_plus_btn_description">Add custom step</string>
     <string name="edit_dialog_minus_btn_description">Remove last custom step</string>
     <string name="edit_dialog_cancel_btn">Cancel</string>
     <string name="edit_dialog_save_btn">Save</string>
+    <string name="edit_dialog_steps_text">Steps:</string>
+
+    <string name="default_counter_name_fox">Fox</string>
+    <string name="default_counter_name_bunny">Bunny</string>
+    <string name="default_counter_name_penguin">Penguin</string>
+    <string name="default_counter_name_frog">Frog</string>
+    <string name="default_counter_name_hedgehog">Hedgehog</string>
+    <string name="default_counter_name_squirrel">Squirrel</string>
+    <string name="default_counter_name_panda">Panda</string>
+    <string name="default_counter_name_kitten">Kitten</string>
+    <string name="default_counter_name_tiger">Tiger</string>
+    <string name="default_counter_name_wolf">Wolf</string>
+    <string name="default_counter_name_donkey">Donkey</string>
+    <string name="default_counter_name_bear">Bear</string>
+    <string name="default_counter_name_tortoise">Tortoise</string>
+    <string name="default_counter_name_owl">Owl</string>
+    <string name="default_counter_name_llama">Llama</string>
+    <string name="default_counter_name_giraffe">Giraffe</string>
+    <string name="default_counter_name_monkey">Monkey</string>
+    <string name="default_counter_name_rabbit">Rabbit</string>
+    <string name="default_counter_name_seal">Seal</string>
+    <string name="default_counter_name_deer">Deer</string>
+    <string name="default_counter_name_capybara">Capybara</string>
+    <string name="default_counter_name_fennec_fox">Fennec fox</string>
 
     <string-array name="default_counter_names">
-        <item>Fox</item>
-        <item>Bunny</item>
-        <item>Penguin</item>
-        <item>Frog</item>
-        <item>Hedgehog</item>
-        <item>Squirrel</item>
-        <item>Panda</item>
-        <item>Kitten</item>
-        <item>Tiger</item>
-        <item>Wolf</item>
-        <item>Donkey</item>
-        <item>Bear</item>
-        <item>Tortoise</item>
-        <item>Owl</item>
-        <item>Llama</item>
-        <item>Giraffe</item>
-        <item>Monkey</item>
-        <item>Rabbit</item>
-        <item>Seal</item>
-        <item>Deer</item>
+        <item>@string/default_counter_name_fox</item>
+        <item>@string/default_counter_name_bunny</item>
+        <item>@string/default_counter_name_penguin</item>
+        <item>@string/default_counter_name_frog</item>
+        <item>@string/default_counter_name_hedgehog</item>
+        <item>@string/default_counter_name_squirrel</item>
+        <item>@string/default_counter_name_panda</item>
+        <item>@string/default_counter_name_kitten</item>
+        <item>@string/default_counter_name_tiger</item>
+        <item>@string/default_counter_name_wolf</item>
+        <item>@string/default_counter_name_donkey</item>
+        <item>@string/default_counter_name_bear</item>
+        <item>@string/default_counter_name_tortoise</item>
+        <item>@string/default_counter_name_owl</item>
+        <item>@string/default_counter_name_llama</item>
+        <item>@string/default_counter_name_giraffe</item>
+        <item>@string/default_counter_name_monkey</item>
+        <item>@string/default_counter_name_rabbit</item>
+        <item>@string/default_counter_name_seal</item>
+        <item>@string/default_counter_name_deer</item>
+        <item>@string/default_counter_name_capybara</item>
+        <item>@string/default_counter_name_fennec_fox</item>
     </string-array>
 </resources>

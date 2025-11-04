@@ -137,7 +137,7 @@ fun EditCounterDialog(
                 )
 
                 Text(
-                    text = "Steps:",
+                    text = stringResource(R.string.edit_dialog_steps_text),
                     modifier = Modifier
                         .align(Alignment.Start)
                         .padding(start = Dimensions.Spacing.huge, top = Dimensions.Spacing.small),

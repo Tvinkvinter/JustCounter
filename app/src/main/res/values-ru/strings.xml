@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="counter_screen_edit_btn_description">Редактировать счетчик</string>
+    <string name="counter_screen_add_btn_description">Добавить новый счетчик</string>
+    <string name="counter_screen_drag_tip">Нажмите и удерживайте название счетчика, чтобы его переместить</string>
+    <string name="counter_screen_empty_title_tip">Название счётчика пустое. Уверены, что потом не запутаетесь? 😊</string>
+
+    <string name="edit_dialog_title_hint">Название</string>
+    <string name="edit_dialog_edit_title_btn_description">Редактировать название</string>
+    <string name="edit_dialog_steps_text">Шаги:</string>
+    <string name="edit_dialog_plus_btn_description">Добавить свой шаг</string>
+    <string name="edit_dialog_minus_btn_description">Удалить последний шаг</string>
+    <string name="edit_dialog_cancel_btn">Отмена</string>
+    <string name="edit_dialog_save_btn">Сохранить</string>
+
+    <string name="default_counter_name_fox">Лиса</string>
+    <string name="default_counter_name_bunny">Кролик</string>
+    <string name="default_counter_name_penguin">Пингвин</string>
+    <string name="default_counter_name_frog">Лягушка</string>
+    <string name="default_counter_name_hedgehog">Ёж</string>
+    <string name="default_counter_name_squirrel">Белка</string>
+    <string name="default_counter_name_panda">Панда</string>
+    <string name="default_counter_name_kitten">Котёнок</string>
+    <string name="default_counter_name_tiger">Тигр</string>
+    <string name="default_counter_name_wolf">Волк</string>
+    <string name="default_counter_name_donkey">Осёл</string>
+    <string name="default_counter_name_bear">Медведь</string>
+    <string name="default_counter_name_tortoise">Черепаха</string>
+    <string name="default_counter_name_owl">Сова</string>
+    <string name="default_counter_name_llama">Лама</string>
+    <string name="default_counter_name_giraffe">Жираф</string>
+    <string name="default_counter_name_monkey">Обезьяна</string>
+    <string name="default_counter_name_rabbit">Заяц</string>
+    <string name="default_counter_name_seal">Тюлень</string>
+    <string name="default_counter_name_deer">Олень</string>
+    <string name="default_counter_name_capybara">Капибара</string>
+    <string name="default_counter_name_fennec_fox">Фенек</string>
+
+</resources>

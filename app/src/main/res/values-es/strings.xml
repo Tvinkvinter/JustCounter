@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="counter_screen_edit_btn_description">Editar contador</string>
+    <string name="counter_screen_add_btn_description">Añadir nuevo contador</string>
+    <string name="counter_screen_drag_tip">Mantén presionado el título para mover el contador</string>
+    <string name="counter_screen_empty_title_tip">El título del contador está vacío. ¿Seguro que no te confundirás más tarde? 😊</string>
+
+    <string name="edit_dialog_title_hint">Título</string>
+    <string name="edit_dialog_edit_title_btn_description">Editar título</string>
+    <string name="edit_dialog_steps_text">Pasos:</string>
+    <string name="edit_dialog_plus_btn_description">Agregar paso propio</string>
+    <string name="edit_dialog_minus_btn_description">Quitar el último paso</string>
+    <string name="edit_dialog_cancel_btn">Cancelar</string>
+    <string name="edit_dialog_save_btn">Guardar</string>
+
+    <string name="default_counter_name_fox">Zorro</string>
+    <string name="default_counter_name_bunny">Conejo</string>
+    <string name="default_counter_name_penguin">Pingüino</string>
+    <string name="default_counter_name_frog">Rana</string>
+    <string name="default_counter_name_hedgehog">Erizo</string>
+    <string name="default_counter_name_squirrel">Ardilla</string>
+    <string name="default_counter_name_panda">Panda</string>
+    <string name="default_counter_name_kitten">Gatito</string>
+    <string name="default_counter_name_tiger">Tigre</string>
+    <string name="default_counter_name_wolf">Lobo</string>
+    <string name="default_counter_name_donkey">Burro</string>
+    <string name="default_counter_name_bear">Oso</string>
+    <string name="default_counter_name_tortoise">Tortuga</string>
+    <string name="default_counter_name_owl">Búho</string>
+    <string name="default_counter_name_llama">Llama</string>
+    <string name="default_counter_name_giraffe">Jirafa</string>
+    <string name="default_counter_name_monkey">Mono</string>
+    <string name="default_counter_name_rabbit">Liebre</string>
+    <string name="default_counter_name_seal">Foca</string>
+    <string name="default_counter_name_deer">Ciervo</string>
+    <string name="default_counter_name_capybara">Capibara</string>
+    <string name="default_counter_name_fennec_fox">Fennec</string>
+
+</resources>
