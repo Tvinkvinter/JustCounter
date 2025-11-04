@@ -60,7 +60,7 @@ fun StepConfigurator(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_minus),
-                contentDescription = stringResource(R.string.counter_screen_edit_minus_btn_description)
+                contentDescription = stringResource(R.string.edit_dialog_minus_btn_description)
             )
         }
 
@@ -115,7 +115,7 @@ fun StepConfigurator(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_plus),
-                contentDescription = stringResource(R.string.counter_screen_edit_plus_btn_description),
+                contentDescription = stringResource(R.string.edit_dialog_plus_btn_description),
             )
         }
     }

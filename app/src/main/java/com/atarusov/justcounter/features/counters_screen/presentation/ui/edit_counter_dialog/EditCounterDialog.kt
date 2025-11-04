@@ -179,7 +179,7 @@ fun EditCounterDialog(
                             contentColor = itemColor
                         )
                     ) {
-                        Text(stringResource(R.string.counter_edit_dialog_btn_cancel))
+                        Text(stringResource(R.string.edit_dialog_cancel_btn))
                     }
 
                     Button(
@@ -190,7 +190,7 @@ fun EditCounterDialog(
                         contentPadding = PaddingValues()
                     ) {
                         Text(
-                            text = stringResource(R.string.counter_edit_dialog_btn_save),
+                            text = stringResource(R.string.edit_dialog_save_btn),
                             color = itemColor.getContrastContentColor()
                         )
                     }
@@ -241,7 +241,7 @@ private fun TitleTextFieldWithIcon(
                 ) {
                     if (localTitleFieldState.text.isBlank()) {
                         Text(
-                            text = stringResource(R.string.counter_edit_dialog_title_hint),
+                            text = stringResource(R.string.edit_dialog_title_hint),
                             color = itemColor.getContrastContentColor().copy(alpha = 0.5f),
                             style = MaterialTheme.typography.titleLarge,
                         )
@@ -254,7 +254,7 @@ private fun TitleTextFieldWithIcon(
 
         Icon(
             painter = painterResource(R.drawable.ic_pencil),
-            contentDescription = stringResource(R.string.counter_screen_edit_btn_description),
+            contentDescription = stringResource(R.string.edit_dialog_edit_title_btn_description),
             modifier = Modifier
                 .size(Dimensions.Size.small)
                 .clickable(

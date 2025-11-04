@@ -1,18 +1,17 @@
 <resources>
     <string name="app_name">Just Counter</string>
 
-    <string name="counter_edit_dialog_btn_cancel">Cancel</string>
-    <string name="counter_edit_dialog_btn_save">Save</string>
-    <string name="counter_edit_dialog_title_hint"> Title</string>
-    <string name="counter_screen_empty_title_tip">Counter title is empty. Are you sure you won’t get confused later? 😊</string>
-
-    <string name="counter_screen_edit_btn_description">Edit</string>
+    <string name="counter_screen_edit_btn_description">Edit counter</string>
     <string name="counter_screen_add_btn_description">Create new counter</string>
     <string name="counter_screen_drag_tip">Long press a title to move counter</string>
+    <string name="counter_screen_empty_title_tip">Counter title is empty. Are you sure you won’t get confused later? 😊</string>
 
-    <string name="counter_screen_edit_title_btn_description">Edit title</string>
-    <string name="counter_screen_edit_plus_btn_description">Add custom step</string>
-    <string name="counter_screen_edit_minus_btn_description">Remove last custom step</string>
+    <string name="edit_dialog_title_hint"> Title</string>
+    <string name="edit_dialog_edit_title_btn_description">Edit title</string>
+    <string name="edit_dialog_plus_btn_description">Add custom step</string>
+    <string name="edit_dialog_minus_btn_description">Remove last custom step</string>
+    <string name="edit_dialog_cancel_btn">Cancel</string>
+    <string name="edit_dialog_save_btn">Save</string>
 
     <string-array name="default_counter_names">
         <item>Fox</item>
