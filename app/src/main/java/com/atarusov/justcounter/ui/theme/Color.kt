@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 
 val black = Color(0xFF2A2A2D)
 val white = Color(0xFFFFFFFF)
@@ -13,6 +14,8 @@ val extraDarkGrey = Color(0xFF414144)
 
 val lightOrange = Color(0xFFFFC75F)
 val dangerRed = Color(0xDFFF3B30)
+
+fun Color.getContrastContentColor() = if (this.luminance() < 0.5f) white else black
 
 enum class CounterColor {
     Blue, Cyan, Green, Yellow, Orange, Red, Pink, Purple, Brown, Gray
