@@ -2,6 +2,7 @@ package com.atarusov.justcounter.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
@@ -15,8 +16,6 @@ val extraDarkGrey = Color(0xFF414144)
 val lightOrange = Color(0xFFFFC75F)
 val dangerRed = Color(0xDFFF3B30)
 
-fun Color.getContrastContentColor() = if (this.luminance() < 0.5f) white else black
-
 enum class CounterColor {
     Blue, Cyan, Green, Yellow, Orange, Red, Pink, Purple, Brown, Gray
 }
@@ -24,29 +23,29 @@ enum class CounterColor {
 object CounterColorProvider {
 
     private val light = mapOf(
-        CounterColor.Blue to Color(0xFF60A5FA), // blue
-        CounterColor.Cyan to Color(0xFF31E2FD), // cyan
-        CounterColor.Green to Color(0xFF34D399), // green
-        CounterColor.Yellow to Color(0xFFFEEA5D), // yellow
-        CounterColor.Orange to Color(0xFFFB923C), // orange
-        CounterColor.Red to Color(0xFFF65454), // red
-        CounterColor.Pink to Color(0xFFF472B6), // pink
-        CounterColor.Purple to Color(0xFF9D74FA), // purple
-        CounterColor.Brown to Color(0xFF9C704F), // brown
-        CounterColor.Gray to Color(0xFFB0B7C3)  // gray
+        CounterColor.Blue to Color(0xFF60A5FA),
+        CounterColor.Cyan to Color(0xFF33CDD3),
+        CounterColor.Green to Color(0xFF34D399),
+        CounterColor.Yellow to Color(0xFFFEEA5D),
+        CounterColor.Orange to Color(0xFFFB923C),
+        CounterColor.Red to Color(0xFFF65454),
+        CounterColor.Pink to Color(0xFFF472B6),
+        CounterColor.Purple to Color(0xFF9D74FA),
+        CounterColor.Brown to Color(0xFF9C704F),
+        CounterColor.Gray to Color(0xFFB0B7C3)
     )
 
     private val dark = mapOf(
-        CounterColor.Blue to Color(0xFF85B8FF), // blue
-        CounterColor.Cyan to Color(0xFF6DE9FF), // cyan
-        CounterColor.Green to Color(0xFF5EDFAC), // green
-        CounterColor.Yellow to Color(0xFFFFF27A), // yellow
-        CounterColor.Orange to Color(0xFFFFAB6B), // orange
-        CounterColor.Red to Color(0xFFFF7A7A), // red
-        CounterColor.Pink to Color(0xFFFF84C1), // pink
-        CounterColor.Purple to Color(0xFFB397FF), // purple
-        CounterColor.Brown to Color(0xFFB49071), // brown
-        CounterColor.Gray to Color(0xFFC0C5CC)  // gray
+        CounterColor.Blue to Color(0xFF85B8FF),
+        CounterColor.Cyan to Color(0xFF6DE9FF),
+        CounterColor.Green to Color(0xFF5EDFAC),
+        CounterColor.Yellow to Color(0xFFFFF27A),
+        CounterColor.Orange to Color(0xFFFFAB6B),
+        CounterColor.Red to Color(0xFFFF7A7A),
+        CounterColor.Pink to Color(0xFFFF84C1),
+        CounterColor.Purple to Color(0xFFB397FF),
+        CounterColor.Brown to Color(0xFFB99678),
+        CounterColor.Gray to Color(0xFFC0C5CC)
     )
 
     fun getAllColors() = CounterColor.entries
@@ -65,3 +64,18 @@ val TransparentTextSelectionColors = TextSelectionColors(
     handleColor = Color.Transparent,
     backgroundColor = Color.Transparent
 )
+
+@Composable
+fun Color.getReadableContentColor(): Color {
+    val baseColor = MaterialTheme.colorScheme.inverseOnSurface
+    if (baseColor.getReadability(this) >= 1.5) return baseColor
+
+    return if (isSystemInDarkTheme()) white else extraDarkGrey
+}
+
+fun Color.getReadability(backgroundColor: Color): Double {
+    val l1 = this.luminance()
+    val l2 = backgroundColor.luminance()
+    val (bright, dark) = if (l1 > l2) l1 to l2 else l2 to l1
+    return (bright + 0.05) / (dark + 0.05)
+}

@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.ui.theme.getContrastContentColor
+import com.atarusov.justcounter.ui.theme.getReadableContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.StepConfiguratorCallbacks
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
@@ -53,7 +53,7 @@ fun StepConfigurator(
             onClick = callbacks.onRemoveStepClick,
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = btnColor,
-                contentColor = btnColor.getContrastContentColor(),
+                contentColor = btnColor.getReadableContentColor(),
                 disabledContainerColor = btnColor
             ),
             enabled = state.removeBtnEnabled
@@ -108,7 +108,7 @@ fun StepConfigurator(
             onClick = callbacks.onAddStepClick,
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = btnColor,
-                contentColor = btnColor.getContrastContentColor(),
+                contentColor = btnColor.getReadableContentColor(),
                 disabledContainerColor = btnColor
             ),
             enabled = state.addBtnEnabled

@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.ui.theme.getContrastContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.EditCounterDialogCallbacks
@@ -64,6 +63,8 @@ import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbac
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
+import com.atarusov.justcounter.ui.theme.getReadability
+import com.atarusov.justcounter.ui.theme.getReadableContentColor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -173,11 +174,13 @@ fun EditCounterDialog(
                         .padding(bottom = Dimensions.Spacing.small),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    val backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                    val textButtonColor = if (itemColor.getReadability(backgroundColor) > 1.5) itemColor
+                                          else MaterialTheme.colorScheme.onSurface
+
                     TextButton(
                         onClick = callbacks.onDismiss,
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = itemColor
-                        )
+                        colors = ButtonDefaults.textButtonColors(contentColor = textButtonColor)
                     ) {
                         Text(stringResource(R.string.edit_dialog_cancel_btn))
                     }
@@ -191,7 +194,7 @@ fun EditCounterDialog(
                     ) {
                         Text(
                             text = stringResource(R.string.edit_dialog_save_btn),
-                            color = itemColor.getContrastContentColor()
+                            color = itemColor.getReadableContentColor()
                         )
                     }
                 }
@@ -223,7 +226,7 @@ private fun TitleTextFieldWithIcon(
             onValueChange = onTitleChange,
             modifier = Modifier.focusRequester(focusRequester),
             textStyle = MaterialTheme.typography.titleLarge.copy(
-                color = itemColor.getContrastContentColor(),
+                color = itemColor.getReadableContentColor(),
                 textAlign = TextAlign.Center
             ),
             keyboardOptions = KeyboardOptions(
@@ -234,7 +237,7 @@ private fun TitleTextFieldWithIcon(
                 onDone = { onInputDone(titleField.text) }
             ),
             singleLine = true,
-            cursorBrush = SolidColor(itemColor.getContrastContentColor()),
+            cursorBrush = SolidColor(itemColor.getReadableContentColor()),
             decorationBox = { innerTextField ->
                 Box(
                     contentAlignment = Alignment.Center,
@@ -242,7 +245,7 @@ private fun TitleTextFieldWithIcon(
                     if (localTitleFieldState.text.isBlank()) {
                         Text(
                             text = stringResource(R.string.edit_dialog_title_hint),
-                            color = itemColor.getContrastContentColor().copy(alpha = 0.5f),
+                            color = itemColor.getReadableContentColor().copy(alpha = 0.5f),
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }
@@ -265,7 +268,7 @@ private fun TitleTextFieldWithIcon(
                         localTitleFieldState.copy(selection = TextRange(titleField.text.length))
                     focusRequester.requestFocus()
                 },
-            tint = itemColor.getContrastContentColor()
+            tint = itemColor.getReadableContentColor()
         )
     }
 }

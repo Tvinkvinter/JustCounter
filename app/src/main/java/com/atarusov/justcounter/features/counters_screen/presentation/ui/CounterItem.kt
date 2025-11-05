@@ -47,7 +47,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.ui.theme.getContrastContentColor
+import com.atarusov.justcounter.ui.theme.getReadableContentColor
 import com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.callbacks.CounterItemCallbacks
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
@@ -74,6 +74,7 @@ fun CounterItem(
     )
 
     val itemColor = CounterColorProvider.getColor(state.color)
+    val contentColor = itemColor.getReadableContentColor()
 
     Column(modifier.width(150.dp)) {
         Card(
@@ -81,7 +82,7 @@ fun CounterItem(
             shape = RoundedCornerShape(Dimensions.Radius.medium),
             colors = CardDefaults.cardColors(
                 containerColor = itemColor,
-                contentColor = itemColor.getContrastContentColor()
+                contentColor = contentColor
             ),
             elevation = CardDefaults.cardElevation(Dimensions.Elevation.card),
         ) {
@@ -121,10 +122,10 @@ fun CounterItem(
                                     )
                                 } ?: Modifier
                             ),
-                        color = itemColor.getContrastContentColor(),
+                        color = contentColor,
                         maxLines = 1,
                         style = MaterialTheme.typography.titleMedium.copy(
-                            color = itemColor.getContrastContentColor(),
+                            color = contentColor,
                             textAlign = TextAlign.Center,
                         )
                     )
@@ -150,7 +151,7 @@ fun CounterItem(
                                     radius = Dimensions.Radius.medium
                                 ),
                             ),
-                        tint = itemColor.getContrastContentColor()
+                        tint = contentColor
                     )
                 }
                 TextField(
@@ -173,13 +174,13 @@ fun CounterItem(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
                         disabledContainerColor = Color.Transparent,
-                        focusedTextColor = itemColor.getContrastContentColor(),
-                        unfocusedTextColor = itemColor.getContrastContentColor(),
-                        disabledTextColor = itemColor.getContrastContentColor(),
+                        focusedTextColor = contentColor,
+                        unfocusedTextColor = contentColor,
+                        disabledTextColor = contentColor,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent,
-                        cursorColor = itemColor.getContrastContentColor()
+                        cursorColor = contentColor
                     )
                 )
                 Row(
@@ -203,7 +204,7 @@ fun CounterItem(
                         ),
                         overflow = TextOverflow.MiddleEllipsis,
                         maxLines = 1,
-                        color = { itemColor.getContrastContentColor() },
+                        color = { contentColor },
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = Dimensions.Typography.minFontSize,
                             maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
@@ -227,7 +228,7 @@ fun CounterItem(
                         ),
                         overflow = TextOverflow.MiddleEllipsis,
                         maxLines = 1,
-                        color = { itemColor.getContrastContentColor() },
+                        color = { contentColor },
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = Dimensions.Typography.minFontSize,
                             maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
@@ -249,6 +250,7 @@ fun CounterItem(
                     ExtraStepButton(
                         text = "-${state.steps[index]}",
                         containerColor = itemColor,
+                        contentColor = contentColor,
                         alpha = contentAlpha,
                         enabled = !removeMode,
                         onClick = { callbacks.onMinusClick(state.steps[index]) }
@@ -260,6 +262,7 @@ fun CounterItem(
                     ExtraStepButton(
                         text = "+${state.steps[index]}",
                         containerColor = itemColor,
+                        contentColor = contentColor,
                         alpha = contentAlpha,
                         enabled = !removeMode,
                         onClick = { callbacks.onPLusClick(state.steps[index]) }
@@ -274,6 +277,7 @@ fun CounterItem(
 private fun ExtraStepButton(
     text: String,
     containerColor: Color,
+    contentColor: Color,
     alpha: Float,
     enabled: Boolean,
     onClick: () -> Unit
@@ -297,7 +301,7 @@ private fun ExtraStepButton(
         ),
         overflow = TextOverflow.MiddleEllipsis,
         maxLines = 1,
-        color = { containerColor.getContrastContentColor() },
+        color = { contentColor },
         autoSize = TextAutoSize.StepBased(
             minFontSize = Dimensions.Typography.minFontSize,
             maxFontSize = MaterialTheme.typography.bodyMedium.fontSize
