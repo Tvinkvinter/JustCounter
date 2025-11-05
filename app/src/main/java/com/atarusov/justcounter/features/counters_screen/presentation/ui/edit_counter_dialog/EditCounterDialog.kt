@@ -182,7 +182,9 @@ fun EditCounterDialog(
                         onClick = callbacks.onDismiss,
                         colors = ButtonDefaults.textButtonColors(contentColor = textButtonColor)
                     ) {
-                        Text(stringResource(R.string.edit_dialog_cancel_btn))
+                        Text(
+                            text = stringResource(R.string.edit_dialog_cancel_btn),
+                        )
                     }
 
                     Button(

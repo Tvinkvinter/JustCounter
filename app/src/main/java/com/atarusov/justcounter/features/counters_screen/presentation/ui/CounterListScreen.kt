@@ -152,7 +152,7 @@ fun CounterListTopAppBar(
         title = {
             Text(
                 text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.headlineLarge
             )
         },
         modifier = Modifier.shadow(Dimensions.Elevation.topAppBar),

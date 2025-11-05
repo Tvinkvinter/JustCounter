@@ -8,46 +8,62 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.atarusov.justcounter.R
 
-val DMSans = FontFamily(
-    Font(R.font.dm_sans_regular, weight = FontWeight.Normal),
-    Font(R.font.dm_sans_black, weight = FontWeight.Black)
+val Rubik = FontFamily(
+    Font(R.font.rubik_medium, weight = FontWeight.Medium)
 )
 
 val QuickSand = FontFamily(
-    Font(R.font.quicksand_semibold, weight = FontWeight.SemiBold)
+    Font(R.font.quicksand_bold, weight = FontWeight.Bold),
 )
 
-// Set of Material typography styles to start with
+val DMSans = FontFamily(
+    Font(R.font.dm_sans_black, weight = FontWeight.Black)
+)
+
 val Typography = Typography(
+    labelLarge = TextStyle(
+        fontFamily = Rubik,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 14.sp,
+        letterSpacing = 0.5.sp
+    ),
     bodySmall = TextStyle(
         fontFamily = QuickSand,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 18.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = QuickSand,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = QuickSand,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     titleMedium = TextStyle(
-        fontFamily = DMSans,
+        fontFamily = Rubik,
         fontWeight = FontWeight.Black,
         fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
+        fontFamily = Rubik,
+        fontWeight = FontWeight.Black,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 1.sp
+    ),
+    headlineLarge = TextStyle(
         fontFamily = DMSans,
         fontWeight = FontWeight.Black,
         fontSize = 22.sp,
