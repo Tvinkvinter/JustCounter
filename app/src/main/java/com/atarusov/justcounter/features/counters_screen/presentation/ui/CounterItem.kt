@@ -285,7 +285,7 @@ private fun ExtraStepButton(
     BasicText(
         text = text,
         modifier = Modifier
-            .size(Dimensions.Size.medium)
+            .size(Dimensions.Size.extraMedium)
             .background(color = containerColor, shape = CircleShape)
             .padding(horizontal = Dimensions.Spacing.xxSmall)
             .wrapContentSize()
@@ -299,7 +299,7 @@ private fun ExtraStepButton(
         style = MaterialTheme.typography.bodyMedium.copy(
             textAlign = TextAlign.Center,
         ),
-        overflow = TextOverflow.MiddleEllipsis,
+        overflow = TextOverflow.Ellipsis,
         maxLines = 1,
         color = { contentColor },
         autoSize = TextAutoSize.StepBased(

@@ -17,6 +17,7 @@ object Dimensions {
     object Size {
         val small = 24.dp
         val medium = 32.dp
+        val extraMedium = 36.dp
         val large = 48.dp
     }
 
