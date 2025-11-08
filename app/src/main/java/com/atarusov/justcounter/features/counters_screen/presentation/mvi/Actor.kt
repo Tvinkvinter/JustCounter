@@ -39,7 +39,7 @@ class Actor @Inject constructor(
             is Action.TitleInputDone -> flowOf(InternalAction.ClearFocus)
             is Action.ValueInput -> updateCounterValue(action.counterId, action.inputField)
             is Action.ValueInputDone -> onValueInputDone(action.counterId, action.input)
-            is Action.StepInput -> onStepInput(action.stepIndex, action.inputField)
+            is Action.StepInput -> updateStep(action.stepIndex, action.inputField)
             Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
@@ -92,7 +92,8 @@ class Actor @Inject constructor(
     private fun updateCounterValue(counterId: String, inputField: TextFieldValue) = flow {
         val clearedInputText = inputField.text.trim()
         if (clearedInputText.isEmpty() || clearedInputText == "-") {
-            emit(InternalAction.UpdateCounterItemValueField(counterId, inputField))
+            val newTextField = inputField.copy(text = clearedInputText)
+            emit(InternalAction.UpdateCounterItemValueField(counterId, newTextField))
             repository.updateCounterValue(counterId, 0)
             return@flow
         }
@@ -113,11 +114,17 @@ class Actor @Inject constructor(
         repository.updateCounterValue(counterId, valueToSave)
     }
 
-    private fun onStepInput(stepIndex: Int, inputField: TextFieldValue) = flow {
-        if (inputField.text.length > MAX_VALUE.toString().length) return@flow
-        if (inputField.text.contains("-")) return@flow
+    private fun updateStep(stepIndex: Int, inputField: TextFieldValue) = flow {
+        val clearedInputText = inputField.text.trim()
 
-        emit(InternalAction.UpdateStepConfiguratorField(stepIndex, inputField))
+        if (clearedInputText.length > MAX_VALUE.toString().length) return@flow
+        if (clearedInputText.isNotEmpty() && inputField.text.toUIntOrNull() == null) return@flow
+
+        val newTextFieldValue = if (clearedInputText.isEmpty()) clearedInputText
+                                else clearedInputText.toUInt().toString()
+        val newTextField = inputField.copy(text = newTextFieldValue)
+
+        emit(InternalAction.UpdateStepConfiguratorField(stepIndex, newTextField))
     }
 
     private fun swapCounters(firstIndex: Int, secondIndex: Int) = flow {
