@@ -45,6 +45,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,6 +53,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -215,8 +217,17 @@ private fun TitleTextFieldWithIcon(
     itemColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val density = LocalDensity.current
     val focusRequester = remember { FocusRequester() }
     var localTitleFieldState by remember(titleField) { mutableStateOf(titleField) }
+
+    val titleFieldHint = stringResource(R.string.edit_dialog_title_hint)
+    val textMeasurer = rememberTextMeasurer()
+    val textLayoutResult = textMeasurer.measure(
+        text = localTitleFieldState.text.ifEmpty { titleFieldHint },
+        style = MaterialTheme.typography.titleLarge,
+        maxLines = 1
+    )
 
     Row(
         modifier = modifier.height(Dimensions.Size.medium),
@@ -228,10 +239,13 @@ private fun TitleTextFieldWithIcon(
         BasicTextField(
             value = localTitleFieldState,
             onValueChange = onTitleChange,
-            modifier = Modifier.focusRequester(focusRequester).fillMaxHeight(),
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .fillMaxHeight()
+                .padding(horizontal = Dimensions.Spacing.small)
+                .width(with(density) { textLayoutResult.size.width.toDp() }),
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = itemColor.getReadableContentColor(),
-                textAlign = TextAlign.Center
             ),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -243,12 +257,10 @@ private fun TitleTextFieldWithIcon(
             singleLine = true,
             cursorBrush = SolidColor(itemColor.getReadableContentColor()),
             decorationBox = { innerTextField ->
-                Box(
-                    contentAlignment = Alignment.Center,
-                ) {
+                Box(contentAlignment = Alignment.Center) {
                     if (localTitleFieldState.text.isBlank()) {
                         Text(
-                            text = stringResource(R.string.edit_dialog_title_hint),
+                            text = titleFieldHint,
                             color = itemColor.getReadableContentColor().copy(alpha = 0.5f),
                             style = MaterialTheme.typography.titleLarge,
                         )
