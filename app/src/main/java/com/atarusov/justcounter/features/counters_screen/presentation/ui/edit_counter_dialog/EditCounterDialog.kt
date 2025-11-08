@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -217,7 +219,7 @@ private fun TitleTextFieldWithIcon(
     var localTitleFieldState by remember(titleField) { mutableStateOf(titleField) }
 
     Row(
-        modifier = modifier,
+        modifier = modifier.height(Dimensions.Size.medium),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -226,7 +228,7 @@ private fun TitleTextFieldWithIcon(
         BasicTextField(
             value = localTitleFieldState,
             onValueChange = onTitleChange,
-            modifier = Modifier.focusRequester(focusRequester),
+            modifier = Modifier.focusRequester(focusRequester).fillMaxHeight(),
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = itemColor.getReadableContentColor(),
                 textAlign = TextAlign.Center
