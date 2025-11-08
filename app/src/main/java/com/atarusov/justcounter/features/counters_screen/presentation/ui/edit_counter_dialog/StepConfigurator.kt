@@ -83,7 +83,7 @@ fun StepConfigurator(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .border(
-                                    width = if (index == 0) Dimensions.Border.medium else Dimensions.Border.thin,
+                                    width = if (index == 0) Dimensions.Border.bold else Dimensions.Border.thin,
                                     color = if (index == 0) btnColor else MaterialTheme.colorScheme.outline,
                                     shape = RoundedCornerShape(Dimensions.Radius.small)
                                 ),

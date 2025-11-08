@@ -30,7 +30,6 @@ object Dimensions {
 
     object Border {
         val thin = 1.dp
-        val medium = 2.dp
         val bold = 3.dp
     }
     
