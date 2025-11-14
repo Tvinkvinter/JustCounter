@@ -1,8 +1,17 @@
 # JustCounter 🧮
-A minimalist counter for everything — from scores to sports sets and beyond.
+Just Counter is a simple and convenient click counter app that helps you keep score in games, count glasses of water, or even manage your money!
 
-## 🚧 The app is in development 🚧
-The code isn’t final yet — new features will be added and a general refactor is planned.
+## Implemented features ⚙️
+- Add/remove counters
+- Edit title, value, custom steps and color of the counters
+- Reorder counters by dragging
+- Light & Dark mode
+
+## Screens 📱
+<img width="200" src="https://github.com/user-attachments/assets/9015a817-8139-4c15-baf8-1bee31c661cd" />
+<img width="200" src="https://github.com/user-attachments/assets/658d3b89-10f4-4a71-aa02-95d6fa8084c1" />
+<img width="200" src="https://github.com/user-attachments/assets/810cbc7f-4807-49d6-9933-93c1018a3132" />
+<img width="200" src="https://github.com/user-attachments/assets/68f1622f-6b34-44df-a90b-db7f8354e463" />
 
 ## Technologies and Patterns ⚒️
 - **Architecture**: Clean Architecture, MVI
