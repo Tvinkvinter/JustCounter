@@ -5,6 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.atarusov.justcounter.features.counters_screen.presentation.ui.CounterListScreen
+import kotlinx.serialization.Serializable
+
+@Serializable
+object CounterListScreen
 
 @Composable
 fun SetupNavGraph(
@@ -12,12 +16,8 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.CounterScreen.route,
+        startDestination = CounterListScreen,
     ) {
-        composable(
-            route = Screen.CounterScreen.route,
-        ) {
-            CounterListScreen()
-        }
+        composable<CounterListScreen> { CounterListScreen() }
     }
 }
