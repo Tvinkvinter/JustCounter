@@ -1,8 +1,0 @@
-package com.atarusov.justcounter.features.counters_screen.presentation.mvi.entities
-
-sealed class OneTimeEvent {
-    object ClearFocus : OneTimeEvent()
-    object ScrollDown: OneTimeEvent()
-    object ShowDragTip : OneTimeEvent()
-    object ShowEmptyTitleTip : OneTimeEvent()
-}
