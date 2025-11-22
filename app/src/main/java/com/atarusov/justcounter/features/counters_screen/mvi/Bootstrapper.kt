@@ -23,10 +23,10 @@ class Bootstrapper @Inject constructor(
                 )
 
                 repository.addCounter(newCounter)
-                emit(InternalAction.AddCounterItem(newCounter))
+                emit(InternalAction.AddCounter(newCounter))
             }
 
-            emit(InternalAction.LoadCounterItems(it))
+            emit(InternalAction.LoadCounters(it))
         }
     }
 }

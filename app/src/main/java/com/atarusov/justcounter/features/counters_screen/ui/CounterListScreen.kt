@@ -44,8 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
+import com.atarusov.justcounter.domain.Counter
 import com.atarusov.justcounter.features.counters_screen.mvi.entities.Action
-import com.atarusov.justcounter.features.counters_screen.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counters_screen.mvi.entities.State
 import com.atarusov.justcounter.features.counters_screen.ui.callbacks.CounterItemCallbacks
@@ -77,7 +77,7 @@ fun CounterListScreen(
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
                 OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
-                OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counterItems.lastIndex)
+                OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counters.lastIndex)
                 is OneTimeEvent.OpenEditCounterDialog -> onNavigateToEditDialog(event.counterId)
             }
         }
@@ -115,7 +115,7 @@ private fun CounterListScreenUI(
                 lazyGridState = lazyGridState,
                 paddingValues = paddingValues,
                 removeMode = state.removeMode,
-                counterItems = state.counterItems,
+                counters = state.counters,
                 onAction = onAction
             )
         }
@@ -189,7 +189,7 @@ private fun CounterList(
     lazyGridState: LazyGridState,
     paddingValues: PaddingValues,
     removeMode: Boolean,
-    counterItems: List<CounterItem>,
+    counters: List<Counter>,
     onAction: (action: Action) -> Unit
 ) {
     val reorderableLazyGridState =
@@ -210,29 +210,27 @@ private fun CounterList(
     ) {
 
         items(
-            items = counterItems,
-            key = { it.counterId },
-        ) { counterItem ->
+            items = counters,
+            key = { it.id },
+        ) { counter ->
             val counterItemCallbacks = CounterItemCallbacks(
                 onPLusClick = { step ->
-                    onAction(Action.PlusClick(counterItem.counterId, step, counterItem.valueField))
+                    onAction(Action.PlusClick(counter.id, counter.value, step))
                 },
                 onMinusClick = { step ->
-                    onAction(Action.MinusClick(counterItem.counterId, step, counterItem.valueField))
+                    onAction(Action.MinusClick(counter.id, counter.value, step))
                 },
                 onTitleTap = { onAction(Action.TitleTap) },
-                onEditClick = { onAction(Action.OpenCounterEditDialog(counterItem.counterId)) },
-                onInputValue = { onAction(Action.ValueInput(counterItem.counterId, it)) },
-                onInputValueDone = { onAction(Action.ValueInputDone(counterItem.counterId, it)) },
-                onRemoveClick = { onAction(Action.RemoveCounter(counterItem.counterId)) },
+                onEditClick = { onAction(Action.OpenCounterEditDialog(counter.id)) },
+                onRemoveClick = { onAction(Action.RemoveCounter(counter.id)) },
             )
 
             ReorderableItem(
                 state = reorderableLazyGridState,
-                key = counterItem.counterId
+                key = counter.id
             ) { isDragging ->
                 CounterItem(
-                    state = counterItem,
+                    state = counter,
                     removeMode = removeMode,
                     dragMode = isDragging,
                     callbacks = counterItemCallbacks,

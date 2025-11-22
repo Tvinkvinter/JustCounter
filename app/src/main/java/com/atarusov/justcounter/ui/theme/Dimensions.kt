@@ -10,6 +10,7 @@ object Dimensions {
         val extraSmall = 4.dp
         val small = 8.dp
         val medium = 12.dp
+        val extraMedium = 16.dp
         val large = 24.dp
         val huge = 32.dp
     }

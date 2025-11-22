@@ -1,13 +1,12 @@
 package com.atarusov.justcounter.features.counters_screen.mvi.entities
 
-import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.domain.Counter
 
 sealed class InternalAction {
-    data class LoadCounterItems(val counters: List<Counter>) : InternalAction()
-    data class AddCounterItem(val counter: Counter) : InternalAction()
-    data class RemoveCounterItem(val counterId: String) : InternalAction()
-    data class UpdateCounterItemValueField(val counterId: String, val newTextField: TextFieldValue) : InternalAction()
+    data class LoadCounters(val counters: List<Counter>) : InternalAction()
+    data class AddCounter(val counter: Counter) : InternalAction()
+    data class RemoveCounter(val counterId: String) : InternalAction()
+    data class UpdateCounterValue(val counterId: String, val newValue: Int) : InternalAction()
     data class SwapCounters(val fromIndex: Int, val toIndex: Int) : InternalAction()
     data object ShowDragTip: InternalAction()
 

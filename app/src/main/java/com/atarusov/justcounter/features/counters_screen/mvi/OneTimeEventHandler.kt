@@ -12,10 +12,10 @@ class OneTimeEventHandler @Inject constructor() {
             InternalAction.ScrollDown -> OneTimeEvent.ScrollDown
             is InternalAction.OpenEditCounterDialog -> OneTimeEvent.OpenEditCounterDialog(internalAction.counterId)
 
-            is InternalAction.LoadCounterItems,
-            is InternalAction.AddCounterItem,
-            is InternalAction.RemoveCounterItem,
-            is InternalAction.UpdateCounterItemValueField,
+            is InternalAction.LoadCounters,
+            is InternalAction.AddCounter,
+            is InternalAction.RemoveCounter,
+            is InternalAction.UpdateCounterValue,
             is InternalAction.SwapCounters,
             InternalAction.SwitchRemoveMode -> null
         }

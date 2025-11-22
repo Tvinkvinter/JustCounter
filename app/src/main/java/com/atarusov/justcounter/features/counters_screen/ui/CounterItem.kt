@@ -17,16 +17,12 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,25 +36,24 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.ui.theme.getReadableContentColor
-import com.atarusov.justcounter.features.counters_screen.mvi.entities.CounterItem
+import com.atarusov.justcounter.domain.Counter
+import com.atarusov.justcounter.features.counters_screen.mvi.entities.getPreviewCounter
 import com.atarusov.justcounter.features.counters_screen.ui.callbacks.CounterItemCallbacks
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
+import com.atarusov.justcounter.ui.theme.getReadableContentColor
 import sh.calvin.reorderable.DragGestureDetector
 import sh.calvin.reorderable.ReorderableCollectionItemScope
 
 @Composable
 fun CounterItem(
-    state: CounterItem,
+    state: Counter,
     removeMode: Boolean,
     dragMode: Boolean,
     callbacks: CounterItemCallbacks,
@@ -102,7 +97,7 @@ fun CounterItem(
                     )
 
                     Text(
-                        text = state.titleField.text,
+                        text = state.title,
                         modifier = Modifier
                             .weight(1f)
                             .alpha(contentAlpha)
@@ -156,34 +151,14 @@ fun CounterItem(
                         tint = contentColor
                     )
                 }
-                TextField(
-                    value = state.valueField,
-                    onValueChange = callbacks.onInputValue,
-                    modifier = Modifier.alpha(contentAlpha),
-                    enabled = !removeMode,
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(
+                Text(
+                    text = state.value.toString(),
+                    modifier = Modifier.alpha(contentAlpha).padding(vertical = Dimensions.Spacing.extraMedium),
+                    style = MaterialTheme.typography.bodyLarge.copy(
                         textAlign = TextAlign.Center
                     ),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { callbacks.onInputValueDone(state.valueField.text) }
-                    ),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        focusedTextColor = contentColor,
-                        unfocusedTextColor = contentColor,
-                        disabledTextColor = contentColor,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        cursorColor = contentColor
-                    )
+                    textAlign = TextAlign.Center,
+                    maxLines = 1
                 )
                 Row(
                     Modifier.padding(bottom = Dimensions.Spacing.extraSmall).alpha(contentAlpha),
@@ -316,7 +291,7 @@ private fun ExtraStepButton(
 private fun CounterPreview() {
     JustCounterTheme {
         CounterItem(
-            state = CounterItem.getPreviewCounterItem(),
+            state = getPreviewCounter(),
             removeMode = false,
             dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
@@ -332,7 +307,7 @@ private fun CounterPreview() {
 private fun CounterInRemoveModePreview() {
     JustCounterTheme {
         CounterItem(
-            state = CounterItem.getPreviewCounterItem(),
+            state = getPreviewCounter(),
             removeMode = true,
             dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
@@ -348,7 +323,7 @@ private fun CounterInRemoveModePreview() {
 private fun CounterWithExtraStepsPreview() {
     JustCounterTheme {
         CounterItem(
-            state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
+            state = getPreviewCounter(withCustomSteps = true),
             removeMode = false,
             dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
@@ -364,7 +339,7 @@ private fun CounterWithExtraStepsPreview() {
 private fun CounterWithExtraStepsInRemoveModePreview() {
     JustCounterTheme {
         CounterItem(
-            state = CounterItem.getPreviewCounterItem(withCustomSteps = true),
+            state = getPreviewCounter(withCustomSteps = true),
             removeMode = true,
             dragMode = false,
             callbacks = CounterItemCallbacks.getEmptyCallbacks(),
