@@ -5,11 +5,20 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.domain.Counter
 import com.atarusov.justcounter.ui.theme.CounterColor
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 data class State(
     val removeMode: Boolean = false,
     val counterItems: List<CounterItem> = listOf(),
-)
+) {
+    companion object {
+        fun getPreviewState(removeMode: Boolean) = State(
+            removeMode = removeMode,
+            counterItems = List(12) { CounterItem.getPreviewCounterItem() }
+        )
+    }
+}
 
 data class CounterItem(
     val titleField: TextFieldValue,
@@ -19,12 +28,13 @@ data class CounterItem(
     val counterId: String
 ) {
     companion object {
+        @OptIn(ExperimentalUuidApi::class)
         fun getPreviewCounterItem(withCustomSteps: Boolean = false) = CounterItem (
             titleField = TextFieldValue("Tvinkvinter"),
             valueField = TextFieldValue("128"),
             color = CounterColorProvider.getRandomColor(),
             steps = if (withCustomSteps) listOf(1, 2, 300) else listOf(1),
-            counterId = ""
+            counterId = Uuid.random().toString()
         )
     }
 }

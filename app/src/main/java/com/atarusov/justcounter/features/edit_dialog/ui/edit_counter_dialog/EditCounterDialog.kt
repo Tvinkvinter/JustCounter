@@ -57,6 +57,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -65,10 +66,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.features.edit_dialog.mvi.entities.Action
 import com.atarusov.justcounter.features.edit_dialog.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.edit_dialog.mvi.entities.State
 import com.atarusov.justcounter.features.edit_dialog.ui.callbacks.StepConfiguratorCallbacks
 import com.atarusov.justcounter.features.edit_dialog.viewModel.EditCounterDialogViewModel
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
+import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.getReadability
 import com.atarusov.justcounter.ui.theme.getReadableContentColor
 
@@ -81,7 +84,6 @@ fun EditCounterDialog(
     val focusManager = LocalFocusManager.current
 
     val state by viewModel.screenState.collectAsStateWithLifecycle()
-    val itemColor = CounterColorProvider.getColor(state.color)
 
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
@@ -98,15 +100,28 @@ fun EditCounterDialog(
         }
     }
 
+    EditCounterDialogUI(
+        state = state,
+        onAction = viewModel::onAction
+    )
+}
+
+@Composable
+private fun EditCounterDialogUI(
+    state: State,
+    onAction: (Action) -> Unit,
+) {
+    val counterColor = CounterColorProvider.getColor(state.color)
+
     Dialog(
-        onDismissRequest = { viewModel.onAction(Action.CloseCounterEditDialog(state, false)) },
+        onDismissRequest = { onAction(Action.CloseCounterEditDialog(state, false)) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
 
         Card(
             modifier = Modifier.width(IntrinsicSize.Max),
             elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
-            border = BorderStroke(Dimensions.Border.bold, itemColor)
+            border = BorderStroke(Dimensions.Border.bold, counterColor)
         ) {
             Column(
                 modifier = Modifier,
@@ -114,35 +129,33 @@ fun EditCounterDialog(
             ) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = itemColor
+                    color = counterColor
                 ) {
                     TitleTextFieldWithIcon(
                         titleField = state.titleField,
-                        onTitleChange = { viewModel.onAction(Action.TitleInput(it)) },
-                        onInputDone = { viewModel.onAction(Action.TitleInputDone(it)) },
-                        itemColor = itemColor,
+                        onTitleChange = { onAction(Action.TitleInput(it)) },
+                        onInputDone = { onAction(Action.TitleInputDone(it)) },
+                        itemColor = counterColor,
                         modifier = Modifier.padding(vertical = Dimensions.Spacing.extraSmall)
                     )
                 }
 
                 OutlinedTextField(
                     value = state.valueField,
-                    onValueChange = { viewModel.onAction(Action.ValueInput(it)) },
+                    onValueChange = { onAction(Action.ValueInput(it)) },
                     modifier = Modifier
                         .defaultMinSize(24.dp)
                         .padding(top = Dimensions.Spacing.large),
                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = itemColor
+                        focusedBorderColor = counterColor
                     ),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = {
-                            viewModel.onAction(Action.ValueInputDone(state.valueField.text))
-                        }
+                        onDone = { onAction(Action.ValueInputDone(state.valueField.text)) }
                     ),
                 )
 
@@ -158,11 +171,11 @@ fun EditCounterDialog(
                     state = state.stepConfiguratorState,
                     callbacks = StepConfiguratorCallbacks(
                         onStepInput = { index, textField ->
-                            viewModel.onAction(Action.StepInput(index, textField))
+                            onAction(Action.StepInput(index, textField))
                         },
-                        onStepInputDone = { viewModel.onAction(Action.StepInputDone) },
-                        onRemoveStepClick = { viewModel.onAction(Action.RemoveStep) },
-                        onAddStepClick = { viewModel.onAction(Action.AddStep) }
+                        onStepInputDone = { onAction(Action.StepInputDone) },
+                        onRemoveStepClick = { onAction(Action.RemoveStep) },
+                        onAddStepClick = { onAction(Action.AddStep) }
                     ),
                     modifier = Modifier
                         .padding(horizontal = Dimensions.Spacing.huge - 4.dp)
@@ -171,7 +184,7 @@ fun EditCounterDialog(
 
                 ColorPalette(
                     selectedColor = state.color,
-                    onColorSelected = { viewModel.onAction(Action.ChangeColor(it)) },
+                    onColorSelected = { onAction(Action.ChangeColor(it)) },
                     modifier = Modifier
                         .padding(
                             horizontal = Dimensions.Spacing.huge - 2.dp,
@@ -186,13 +199,11 @@ fun EditCounterDialog(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     val backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                    val textButtonColor = if (itemColor.getReadability(backgroundColor) > 1.5) itemColor
-                                          else MaterialTheme.colorScheme.onSurface
+                    val textButtonColor = if (counterColor.getReadability(backgroundColor) > 1.5) counterColor
+                    else MaterialTheme.colorScheme.onSurface
 
                     TextButton(
-                        onClick = {
-                            viewModel.onAction(Action.CloseCounterEditDialog(state, false))
-                        },
+                        onClick = { onAction(Action.CloseCounterEditDialog(state, false)) },
                         colors = ButtonDefaults.textButtonColors(contentColor = textButtonColor)
                     ) {
                         Text(
@@ -201,17 +212,15 @@ fun EditCounterDialog(
                     }
 
                     Button(
-                        onClick = {
-                            viewModel.onAction(Action.CloseCounterEditDialog(state, true))
-                        },
+                        onClick = { onAction(Action.CloseCounterEditDialog(state, true)) },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = itemColor
+                            containerColor = counterColor
                         ),
                         contentPadding = PaddingValues(horizontal = Dimensions.Spacing.medium)
                     ) {
                         Text(
                             text = stringResource(R.string.edit_dialog_save_btn),
-                            color = itemColor.getReadableContentColor()
+                            color = counterColor.getReadableContentColor()
                         )
                     }
                 }
@@ -296,6 +305,17 @@ private fun TitleTextFieldWithIcon(
                     focusRequester.requestFocus()
                 },
             tint = itemColor.getReadableContentColor()
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun EditCounterDialogPreview() {
+    JustCounterTheme {
+        EditCounterDialogUI(
+            state = State.getPreviewState(),
+            onAction = {}
         )
     }
 }

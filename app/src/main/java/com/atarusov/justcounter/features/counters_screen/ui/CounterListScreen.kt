@@ -47,6 +47,7 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.features.counters_screen.mvi.entities.Action
 import com.atarusov.justcounter.features.counters_screen.mvi.entities.CounterItem
 import com.atarusov.justcounter.features.counters_screen.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.counters_screen.mvi.entities.State
 import com.atarusov.justcounter.features.counters_screen.ui.callbacks.CounterItemCallbacks
 import com.atarusov.justcounter.features.counters_screen.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
@@ -81,17 +82,31 @@ fun CounterListScreen(
             }
         }
     }
+
+    CounterListScreenUI(
+        state = state,
+        onAction = viewModel::onAction,
+        lazyGridState = lazyGridState
+    )
+}
+
+@Composable
+private fun CounterListScreenUI(
+    state: State,
+    onAction: (Action) -> Unit,
+    lazyGridState: LazyGridState
+) {
     CompositionLocalProvider(LocalTextSelectionColors provides TransparentTextSelectionColors) {
         Scaffold(
             topBar = {
                 CounterListTopAppBar(
                     removeMode = state.removeMode,
-                    onRemoveModeSwitch = { viewModel.onAction(Action.SwitchRemoveMode) }
+                    onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
                 )
             },
             floatingActionButton = {
                 CounterListFAB(
-                    onClick = { viewModel.onAction(Action.AddCounter) },
+                    onClick = { onAction(Action.AddCounter) },
                     isVisible = !state.removeMode
                 )
             },
@@ -101,7 +116,7 @@ fun CounterListScreen(
                 paddingValues = paddingValues,
                 removeMode = state.removeMode,
                 counterItems = state.counterItems,
-                onAction = { viewModel.onAction(it) }
+                onAction = onAction
             )
         }
     }
@@ -109,7 +124,7 @@ fun CounterListScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CounterListTopAppBar(
+private fun CounterListTopAppBar(
     removeMode: Boolean,
     onRemoveModeSwitch: () -> Unit
 ) {
@@ -146,7 +161,7 @@ fun CounterListTopAppBar(
 }
 
 @Composable
-fun CounterListFAB(
+private fun CounterListFAB(
     onClick: () -> Unit,
     isVisible: Boolean,
     modifier: Modifier = Modifier
@@ -170,7 +185,7 @@ fun CounterListFAB(
 }
 
 @Composable
-fun CounterList(
+private fun CounterList(
     lazyGridState: LazyGridState,
     paddingValues: PaddingValues,
     removeMode: Boolean,
@@ -246,5 +261,17 @@ private fun CounterTopAppBarPreview() {
 private fun CounterScreenFABPreview() {
     JustCounterTheme {
         CounterListFAB({}, true)
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun CounterListScreenPreview() {
+    JustCounterTheme {
+        CounterListScreenUI(
+            state = State.getPreviewState(false),
+            onAction = {},
+            lazyGridState = LazyGridState()
+        )
     }
 }

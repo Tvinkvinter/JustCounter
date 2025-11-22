@@ -28,6 +28,19 @@ data class State(
         stepConfiguratorState = StepConfiguratorState(listOf(TextFieldValue("1")), CounterColor.Blue),
         counterId =  "",
     )
+
+    companion object {
+        fun getPreviewState() = State(
+            titleField = TextFieldValue("Tvinkvinter"),
+            valueField = TextFieldValue("128"),
+            color = CounterColor.Blue,
+            stepConfiguratorState = StepConfiguratorState(
+                steps = listOf(TextFieldValue("1"), TextFieldValue("2"), TextFieldValue("128")),
+                btnColor = CounterColor.Blue
+            ),
+            counterId = "",
+        )
+    }
 }
 
 data class StepConfiguratorState(
