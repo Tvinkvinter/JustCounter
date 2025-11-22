@@ -15,6 +15,7 @@ class Actor @Inject constructor(
     val repository: CounterListRepository
 ) {
     companion object {
+        private const val MAX_TITLE_LENGTH = 24
         private const val MIN_VALUE = -999_999_999
         private const val MAX_VALUE = 999_999_999
     }
@@ -37,7 +38,7 @@ class Actor @Inject constructor(
     }
 
     private fun updateCounterTitle(inputField: TextFieldValue) = flow {
-        if (inputField.text.length <= 12)
+        if (inputField.text.length <= MAX_TITLE_LENGTH)
             emit(InternalAction.UpdateCounterItemTitleField(inputField))
     }
 

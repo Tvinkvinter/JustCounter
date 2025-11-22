@@ -92,7 +92,8 @@ fun CounterItem(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = Dimensions.Spacing.extraSmall)
+                        .padding(top = Dimensions.Spacing.extraSmall),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Spacer(
                         Modifier
@@ -124,6 +125,7 @@ fun CounterItem(
                             ),
                         color = contentColor,
                         maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = contentColor,
                             textAlign = TextAlign.Center,
