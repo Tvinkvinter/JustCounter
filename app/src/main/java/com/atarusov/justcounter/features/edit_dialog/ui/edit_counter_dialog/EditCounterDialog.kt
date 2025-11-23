@@ -278,7 +278,7 @@ private fun TitleTextFieldWithIcon(
             cursorBrush = SolidColor(itemColor.getReadableContentColor()),
             decorationBox = { innerTextField ->
                 Box(contentAlignment = Alignment.Center) {
-                    if (localTitleFieldState.text.isBlank()) {
+                    if (localTitleFieldState.text.isEmpty()) {
                         Text(
                             text = titleFieldHint,
                             color = itemColor.getReadableContentColor().copy(alpha = 0.5f),
