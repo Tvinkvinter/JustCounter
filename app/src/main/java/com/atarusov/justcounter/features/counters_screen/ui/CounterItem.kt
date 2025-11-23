@@ -29,9 +29,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -74,8 +73,10 @@ fun CounterItem(
     Column(modifier.width(150.dp)) {
         Card(
             modifier = Modifier
-                .scale(cardScale)
-                .clickable(
+                .graphicsLayer {
+                    scaleX = cardScale
+                    scaleY = cardScale
+                }.clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = callbacks.onCounterTap
@@ -116,7 +117,9 @@ fun CounterItem(
 
                     Text(
                         text = state.title,
-                        modifier = Modifier.weight(1f).alpha(contentAlpha),
+                        modifier = Modifier
+                            .weight(1f)
+                            .graphicsLayer { alpha = contentAlpha },
                         color = contentColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -135,7 +138,7 @@ fun CounterItem(
                         modifier = Modifier
                             .padding(end = Dimensions.Spacing.extraSmall)
                             .size(Dimensions.Size.small)
-                            .alpha(if (removeMode) 1f else 0.5f)
+                            .graphicsLayer { alpha = if (removeMode) 1f else 0.5f }
                             .clickable(
                                 onClick = {
                                     if (removeMode) callbacks.onRemoveClick()
@@ -152,7 +155,9 @@ fun CounterItem(
                 }
                 Text(
                     text = state.value.toString(),
-                    modifier = Modifier.alpha(contentAlpha).padding(vertical = Dimensions.Spacing.extraMedium),
+                    modifier = Modifier
+                        .graphicsLayer { alpha = contentAlpha }
+                        .padding(vertical = Dimensions.Spacing.extraMedium),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         textAlign = TextAlign.Center
                     ),
@@ -160,7 +165,9 @@ fun CounterItem(
                     maxLines = 1
                 )
                 Row(
-                    Modifier.padding(bottom = Dimensions.Spacing.extraSmall).alpha(contentAlpha),
+                    Modifier
+                        .padding(bottom = Dimensions.Spacing.extraSmall)
+                        .graphicsLayer { alpha = contentAlpha },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
@@ -227,7 +234,7 @@ fun CounterItem(
                         text = "-${state.steps[index]}",
                         containerColor = itemColor,
                         contentColor = contentColor,
-                        alpha = contentAlpha,
+                        contentAlpha = contentAlpha,
                         enabled = !removeMode,
                         onClick = { callbacks.onMinusClick(state.steps[index]) }
                     )
@@ -239,7 +246,7 @@ fun CounterItem(
                         text = "+${state.steps[index]}",
                         containerColor = itemColor,
                         contentColor = contentColor,
-                        alpha = contentAlpha,
+                        contentAlpha = contentAlpha,
                         enabled = !removeMode,
                         onClick = { callbacks.onPLusClick(state.steps[index]) }
                     )
@@ -254,7 +261,7 @@ private fun ExtraStepButton(
     text: String,
     containerColor: Color,
     contentColor: Color,
-    alpha: Float,
+    contentAlpha: Float,
     enabled: Boolean,
     onClick: () -> Unit
 ) {
@@ -265,7 +272,7 @@ private fun ExtraStepButton(
             .background(color = containerColor, shape = CircleShape)
             .padding(horizontal = Dimensions.Spacing.xxSmall)
             .wrapContentSize()
-            .alpha(alpha)
+            .graphicsLayer { alpha = contentAlpha }
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
