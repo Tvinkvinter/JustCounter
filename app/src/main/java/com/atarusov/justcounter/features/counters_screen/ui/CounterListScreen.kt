@@ -214,13 +214,13 @@ private fun CounterList(
             key = { it.id },
         ) { counter ->
             val counterItemCallbacks = CounterItemCallbacks(
+                onCounterTap = { onAction(Action.TitleTap) },
                 onPLusClick = { step ->
                     onAction(Action.PlusClick(counter.id, counter.value, step))
                 },
                 onMinusClick = { step ->
                     onAction(Action.MinusClick(counter.id, counter.value, step))
                 },
-                onTitleTap = { onAction(Action.TitleTap) },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counter.id)) },
                 onRemoveClick = { onAction(Action.RemoveCounter(counter.id)) },
             )

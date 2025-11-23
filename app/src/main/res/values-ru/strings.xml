@@ -2,7 +2,7 @@
 <resources>
     <string name="counter_screen_edit_btn_description">Редактировать счетчик</string>
     <string name="counter_screen_add_btn_description">Добавить новый счетчик</string>
-    <string name="counter_screen_drag_tip">Нажмите и удерживайте название счетчика, чтобы его переместить</string>
+    <string name="counter_screen_drag_tip">Нажмите и удерживайте, чтобы переместить счётчик</string>
     <string name="counter_screen_empty_title_tip">Название счётчика пустое. Уверены, что потом не запутаетесь? 😊</string>
 
     <string name="edit_dialog_title_hint">Название</string>

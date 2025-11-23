@@ -73,7 +73,25 @@ fun CounterItem(
 
     Column(modifier.width(150.dp)) {
         Card(
-            modifier = Modifier.scale(cardScale),
+            modifier = Modifier
+                .scale(cardScale)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = callbacks.onCounterTap
+                ).then(
+                    reorderableScope?.run {
+                        Modifier.draggableHandle(
+                            onDragStarted = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            },
+                            onDragStopped = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                            },
+                            dragGestureDetector = DragGestureDetector.LongPress
+                        )
+                    } ?: Modifier
+                ),
             shape = RoundedCornerShape(Dimensions.Radius.medium),
             colors = CardDefaults.cardColors(
                 containerColor = itemColor,
@@ -98,26 +116,7 @@ fun CounterItem(
 
                     Text(
                         text = state.title,
-                        modifier = Modifier
-                            .weight(1f)
-                            .alpha(contentAlpha)
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = callbacks.onTitleTap
-                            ).then(
-                                reorderableScope?.run {
-                                    Modifier.draggableHandle(
-                                        onDragStarted = {
-                                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                                        },
-                                        onDragStopped = {
-                                            hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                                        },
-                                        dragGestureDetector = DragGestureDetector.LongPress
-                                    )
-                                } ?: Modifier
-                            ),
+                        modifier = Modifier.weight(1f).alpha(contentAlpha),
                         color = contentColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
