@@ -59,6 +59,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -117,14 +118,12 @@ private fun EditCounterDialogUI(
         onDismissRequest = { onAction(Action.CloseCounterEditDialog(state, false)) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
-
         Card(
             modifier = Modifier.width(IntrinsicSize.Max),
             elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
             border = BorderStroke(Dimensions.Border.bold, counterColor)
         ) {
             Column(
-                modifier = Modifier,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Surface(
@@ -263,7 +262,13 @@ private fun TitleTextFieldWithIcon(
                 .focusRequester(focusRequester)
                 .fillMaxHeight()
                 .padding(horizontal = Dimensions.Spacing.small)
-                .width(with(density) { textLayoutResult.size.width.toDp() }),
+                .width(
+                    with(density) {
+                        min(
+                            textLayoutResult.size.width.toDp(),
+                            Dimensions.Size.maxEditCounterDialogTitleWidth
+                        )
+                    }),
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = itemColor.getReadableContentColor(),
             ),

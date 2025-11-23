@@ -20,6 +20,8 @@ object Dimensions {
         val medium = 32.dp
         val extraMedium = 36.dp
         val large = 48.dp
+
+        val maxEditCounterDialogTitleWidth = 220.dp
     }
 
     object Radius {
