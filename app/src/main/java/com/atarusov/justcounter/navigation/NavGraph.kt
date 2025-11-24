@@ -7,13 +7,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import com.atarusov.justcounter.features.counters_screen.ui.CounterListScreen
 import com.atarusov.justcounter.features.edit_dialog.ui.edit_counter_dialog.EditCounterDialog
+import com.atarusov.justcounter.ui.theme.CounterColor
 import kotlinx.serialization.Serializable
 
 @Serializable
-object CounterListScreen
+object CounterListScreenRoute
 
 @Serializable
-data class EditCounterDialog(val counterId: String)
+data class EditCounterDialogRoute(
+    val title: String,
+    val value: Int,
+    val color: CounterColor,
+    val steps: List<Int>,
+    val counterId: String
+)
 
 @Composable
 fun SetupNavGraph(
@@ -21,15 +28,20 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = CounterListScreen,
+        startDestination = CounterListScreenRoute,
     ) {
-        composable<CounterListScreen> {
+        composable<CounterListScreenRoute> {
             CounterListScreen(
-                onNavigateToEditDialog = { navController.navigate(EditCounterDialog(it)) }
+                onNavigateToEditDialog = { counter ->
+                    val route = EditCounterDialogRoute(
+                        counter.title, counter.value, counter.color, counter.steps, counter.id
+                    )
+                    navController.navigate(route)
+                }
             )
         }
 
-        dialog<EditCounterDialog> {
+        dialog<EditCounterDialogRoute> {
             EditCounterDialog(onEditDialogClose = { navController.popBackStack() })
         }
     }

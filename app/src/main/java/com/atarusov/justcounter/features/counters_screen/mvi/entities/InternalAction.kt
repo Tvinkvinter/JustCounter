@@ -13,5 +13,5 @@ sealed class InternalAction {
     data object SwitchRemoveMode : InternalAction()
     data object ClearFocus : InternalAction()
     data object ScrollDown : InternalAction()
-    data class OpenEditCounterDialog(val counterId: String) : InternalAction()
+    data class OpenEditCounterDialog(val counter: Counter) : InternalAction()
 }

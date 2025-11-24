@@ -57,7 +57,7 @@ import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 @Composable
 fun CounterListScreen(
-    onNavigateToEditDialog: (counterId: String) -> Unit,
+    onNavigateToEditDialog: (counter: Counter) -> Unit,
     viewModel: CounterListScreenViewModel = hiltViewModel()
 ) {
 
@@ -76,7 +76,7 @@ fun CounterListScreen(
                 }
                 OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
                 OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counters.lastIndex)
-                is OneTimeEvent.OpenEditCounterDialog -> onNavigateToEditDialog(event.counterId)
+                is OneTimeEvent.OpenEditCounterDialog -> onNavigateToEditDialog(event.counter)
             }
         }
     }
@@ -217,7 +217,7 @@ private fun CounterList(
                 onMinusClick = { step ->
                     onAction(Action.MinusClick(counter.id, counter.value, step))
                 },
-                onEditClick = { onAction(Action.OpenCounterEditDialog(counter.id)) },
+                onEditClick = { onAction(Action.OpenCounterEditDialog(counter)) },
                 onRemoveClick = { onAction(Action.RemoveCounter(counter.id)) },
             )
 

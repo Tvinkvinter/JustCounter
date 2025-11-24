@@ -10,7 +10,8 @@ class OneTimeEventHandler @Inject constructor() {
             InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
             InternalAction.ClearFocus -> OneTimeEvent.ClearFocus
             InternalAction.ScrollDown -> OneTimeEvent.ScrollDown
-            is InternalAction.OpenEditCounterDialog -> OneTimeEvent.OpenEditCounterDialog(internalAction.counterId)
+            is InternalAction.OpenEditCounterDialog ->
+                OneTimeEvent.OpenEditCounterDialog(internalAction.counter)
 
             is InternalAction.LoadCounters,
             is InternalAction.AddCounter,

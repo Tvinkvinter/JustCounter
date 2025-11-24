@@ -86,34 +86,30 @@ fun EditCounterDialog(
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
-    Dialog(
-        onDismissRequest = { viewModel.onAction(Action.CloseCounterEditDialog(state, false)) },
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        val context = LocalContext.current
-        val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
-        LaunchedEffect(Unit) {
-            viewModel.screenEvents.collect { event ->
-                when (event) {
-                    OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+    LaunchedEffect(Unit) {
+        viewModel.screenEvents.collect { event ->
+            when (event) {
+                OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
 
-                    is OneTimeEvent.ShowEmptyTitleTip -> {
-                        val errorMessage =
-                            context.getString(R.string.counter_screen_empty_title_tip)
-                        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
-                    }
-
-                    OneTimeEvent.CloseEditDialog -> onEditDialogClose()
+                is OneTimeEvent.ShowEmptyTitleTip -> {
+                    val errorMessage =
+                        context.getString(R.string.counter_screen_empty_title_tip)
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                 }
+
+                OneTimeEvent.CloseEditDialog -> onEditDialogClose()
             }
         }
-        CompositionLocalProvider(LocalTextSelectionColors provides TransparentTextSelectionColors) {
-            EditCounterDialogContent(
-                state = state,
-                onAction = viewModel::onAction
-            )
-        }
+    }
+
+    CompositionLocalProvider(LocalTextSelectionColors provides TransparentTextSelectionColors) {
+        EditCounterDialogContent(
+            state = state,
+            onAction = viewModel::onAction
+        )
     }
 }
 

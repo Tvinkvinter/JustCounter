@@ -1,5 +1,7 @@
 package com.atarusov.justcounter.features.counters_screen.mvi.entities
 
+import com.atarusov.justcounter.domain.Counter
+
 sealed class Action {
     data object AddCounter : Action()
     data class RemoveCounter(val counterId: String) : Action()
@@ -9,5 +11,5 @@ sealed class Action {
     object TitleTap : Action()
 
     data object SwitchRemoveMode : Action()
-    data class OpenCounterEditDialog(val counterId: String) : Action()
+    data class OpenCounterEditDialog(val counter: Counter) : Action()
 }

@@ -30,7 +30,7 @@ class Actor @Inject constructor(
             Action.TitleTap -> flowOf(InternalAction.ShowDragTip)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
-            is Action.OpenCounterEditDialog -> openEditDialog(action.counterId)
+            is Action.OpenCounterEditDialog -> openEditDialog(action.counter)
         }
     }
 
@@ -65,8 +65,8 @@ class Actor @Inject constructor(
         repository.swapCounters(firstIndex, secondIndex)
     }
 
-    private fun openEditDialog(counterId: String) = flow {
+    private fun openEditDialog(counter: Counter) = flow {
         emit(InternalAction.ClearFocus)
-        emit(InternalAction.OpenEditCounterDialog(counterId))
+        emit(InternalAction.OpenEditCounterDialog(counter))
     }
 }
