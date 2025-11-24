@@ -81,147 +81,149 @@ fun EditCounterDialog(
     onEditDialogClose: () -> Unit,
     viewModel: EditCounterDialogViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
-
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.screenEvents.collect { event ->
-            when (event) {
-                OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+    Dialog(
+        onDismissRequest = { viewModel.onAction(Action.CloseCounterEditDialog(state, false)) },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        val context = LocalContext.current
+        val focusManager = LocalFocusManager.current
 
-                is OneTimeEvent.ShowEmptyTitleTip -> {
-                    val errorMessage = context.getString(R.string.counter_screen_empty_title_tip)
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        LaunchedEffect(Unit) {
+            viewModel.screenEvents.collect { event ->
+                when (event) {
+                    OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
+
+                    is OneTimeEvent.ShowEmptyTitleTip -> {
+                        val errorMessage =
+                            context.getString(R.string.counter_screen_empty_title_tip)
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+                    }
+
+                    OneTimeEvent.CloseEditDialog -> onEditDialogClose()
                 }
-
-                OneTimeEvent.CloseEditDialog -> onEditDialogClose()
             }
         }
-    }
 
-    EditCounterDialogUI(
-        state = state,
-        onAction = viewModel::onAction
-    )
+        EditCounterDialogContent(
+            state = state,
+            onAction = viewModel::onAction
+        )
+    }
 }
 
 @Composable
-private fun EditCounterDialogUI(
+private fun EditCounterDialogContent(
     state: State,
     onAction: (Action) -> Unit,
 ) {
     val counterColor = CounterColorProvider.getColor(state.color)
 
-    Dialog(
-        onDismissRequest = { onAction(Action.CloseCounterEditDialog(state, false)) },
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+    Card(
+        modifier = Modifier.width(IntrinsicSize.Max),
+        elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
+        border = BorderStroke(Dimensions.Border.bold, counterColor)
     ) {
-        Card(
-            modifier = Modifier.width(IntrinsicSize.Max),
-            elevation = CardDefaults.cardElevation(Dimensions.Elevation.dialog),
-            border = BorderStroke(Dimensions.Border.bold, counterColor)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = counterColor
             ) {
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = counterColor
+                TitleTextFieldWithIcon(
+                    titleField = state.titleField,
+                    onTitleChange = { onAction(Action.TitleInput(it)) },
+                    onInputDone = { onAction(Action.TitleInputDone(it)) },
+                    itemColor = counterColor,
+                    modifier = Modifier.padding(vertical = Dimensions.Spacing.extraSmall)
+                )
+            }
+
+            OutlinedTextField(
+                value = state.valueField,
+                onValueChange = { onAction(Action.ValueInput(it)) },
+                modifier = Modifier
+                    .defaultMinSize(24.dp)
+                    .padding(top = Dimensions.Spacing.large),
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = counterColor
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { onAction(Action.ValueInputDone(state.valueField.text)) }
+                ),
+            )
+
+            Text(
+                text = stringResource(R.string.edit_dialog_steps_text),
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(start = Dimensions.Spacing.huge, top = Dimensions.Spacing.small),
+                style = MaterialTheme.typography.bodySmall
+            )
+
+            StepConfigurator(
+                state = state.stepConfiguratorState,
+                callbacks = StepConfiguratorCallbacks(
+                    onStepInput = { index, textField ->
+                        onAction(Action.StepInput(index, textField))
+                    },
+                    onStepInputDone = { onAction(Action.StepInputDone) },
+                    onRemoveStepClick = { onAction(Action.RemoveStep) },
+                    onAddStepClick = { onAction(Action.AddStep) }
+                ),
+                modifier = Modifier
+                    .padding(horizontal = Dimensions.Spacing.huge - 4.dp)
+                    .padding(top = Dimensions.Spacing.extraSmall)
+            )
+
+            ColorPalette(
+                selectedColor = state.color,
+                onColorSelected = { onAction(Action.ChangeColor(it)) },
+                modifier = Modifier
+                    .padding(
+                        horizontal = Dimensions.Spacing.huge - 2.dp,
+                        vertical = Dimensions.Spacing.large
+                    )
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = Dimensions.Spacing.small),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                val backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                val textButtonColor =
+                    if (counterColor.getReadability(backgroundColor) > 1.5) counterColor
+                    else MaterialTheme.colorScheme.onSurface
+
+                TextButton(
+                    onClick = { onAction(Action.CloseCounterEditDialog(state, false)) },
+                    colors = ButtonDefaults.textButtonColors(contentColor = textButtonColor)
                 ) {
-                    TitleTextFieldWithIcon(
-                        titleField = state.titleField,
-                        onTitleChange = { onAction(Action.TitleInput(it)) },
-                        onInputDone = { onAction(Action.TitleInputDone(it)) },
-                        itemColor = counterColor,
-                        modifier = Modifier.padding(vertical = Dimensions.Spacing.extraSmall)
+                    Text(
+                        text = stringResource(R.string.edit_dialog_cancel_btn),
                     )
                 }
 
-                OutlinedTextField(
-                    value = state.valueField,
-                    onValueChange = { onAction(Action.ValueInput(it)) },
-                    modifier = Modifier
-                        .defaultMinSize(24.dp)
-                        .padding(top = Dimensions.Spacing.large),
-                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = counterColor
+                Button(
+                    onClick = { onAction(Action.CloseCounterEditDialog(state, true)) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = counterColor
                     ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { onAction(Action.ValueInputDone(state.valueField.text)) }
-                    ),
-                )
-
-                Text(
-                    text = stringResource(R.string.edit_dialog_steps_text),
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(start = Dimensions.Spacing.huge, top = Dimensions.Spacing.small),
-                    style = MaterialTheme.typography.bodySmall
-                )
-
-                StepConfigurator(
-                    state = state.stepConfiguratorState,
-                    callbacks = StepConfiguratorCallbacks(
-                        onStepInput = { index, textField ->
-                            onAction(Action.StepInput(index, textField))
-                        },
-                        onStepInputDone = { onAction(Action.StepInputDone) },
-                        onRemoveStepClick = { onAction(Action.RemoveStep) },
-                        onAddStepClick = { onAction(Action.AddStep) }
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = Dimensions.Spacing.huge - 4.dp)
-                        .padding(top = Dimensions.Spacing.extraSmall)
-                )
-
-                ColorPalette(
-                    selectedColor = state.color,
-                    onColorSelected = { onAction(Action.ChangeColor(it)) },
-                    modifier = Modifier
-                        .padding(
-                            horizontal = Dimensions.Spacing.huge - 2.dp,
-                            vertical = Dimensions.Spacing.large
-                        )
-                )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = Dimensions.Spacing.small),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    contentPadding = PaddingValues(horizontal = Dimensions.Spacing.medium)
                 ) {
-                    val backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                    val textButtonColor = if (counterColor.getReadability(backgroundColor) > 1.5) counterColor
-                    else MaterialTheme.colorScheme.onSurface
-
-                    TextButton(
-                        onClick = { onAction(Action.CloseCounterEditDialog(state, false)) },
-                        colors = ButtonDefaults.textButtonColors(contentColor = textButtonColor)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.edit_dialog_cancel_btn),
-                        )
-                    }
-
-                    Button(
-                        onClick = { onAction(Action.CloseCounterEditDialog(state, true)) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = counterColor
-                        ),
-                        contentPadding = PaddingValues(horizontal = Dimensions.Spacing.medium)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.edit_dialog_save_btn),
-                            color = counterColor.getReadableContentColor()
-                        )
-                    }
+                    Text(
+                        text = stringResource(R.string.edit_dialog_save_btn),
+                        color = counterColor.getReadableContentColor()
+                    )
                 }
             }
         }
@@ -318,9 +320,14 @@ private fun TitleTextFieldWithIcon(
 @Preview(showBackground = true)
 private fun EditCounterDialogPreview() {
     JustCounterTheme {
-        EditCounterDialogUI(
-            state = State.getPreviewState(),
-            onAction = {}
-        )
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            EditCounterDialogContent(
+                state = State.getPreviewState(),
+                onAction = {}
+            )
+        }
     }
 }
