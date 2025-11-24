@@ -20,7 +20,6 @@ class Reducer @Inject constructor() {
             InternalAction.SwitchRemoveMode -> previousState.copy(removeMode = !previousState.removeMode)
 
             InternalAction.ShowDragTip,
-            InternalAction.ClearFocus,
             InternalAction.ScrollDown,
             is InternalAction.OpenEditCounterDialog -> previousState
         }

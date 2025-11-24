@@ -8,7 +8,6 @@ class OneTimeEventHandler @Inject constructor() {
     fun handleEvent(internalAction: InternalAction): OneTimeEvent? {
         return when (internalAction) {
             InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
-            InternalAction.ClearFocus -> OneTimeEvent.ClearFocus
             InternalAction.ScrollDown -> OneTimeEvent.ScrollDown
             is InternalAction.OpenEditCounterDialog ->
                 OneTimeEvent.OpenEditCounterDialog(internalAction.counter)

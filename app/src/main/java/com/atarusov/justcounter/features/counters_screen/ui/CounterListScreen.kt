@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,8 +59,6 @@ fun CounterListScreen(
     onNavigateToEditDialog: (counter: Counter) -> Unit,
     viewModel: CounterListScreenViewModel = hiltViewModel()
 ) {
-
-    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
     val state by viewModel.screenState.collectAsStateWithLifecycle()
@@ -74,7 +71,6 @@ fun CounterListScreen(
                     val errorMessage = context.getString(R.string.counter_screen_drag_tip)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
-                OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
                 OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counters.lastIndex)
                 is OneTimeEvent.OpenEditCounterDialog -> onNavigateToEditDialog(event.counter)
             }
