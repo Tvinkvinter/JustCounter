@@ -154,7 +154,8 @@ private fun EditCounterDialogContent(
                 textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = counterColor
+                    focusedBorderColor = counterColor,
+                    cursorColor = MaterialTheme.colorScheme.onSurface
                 ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number

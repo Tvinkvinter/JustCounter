@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,7 +46,7 @@ fun StepConfigurator(
     callbacks: StepConfiguratorCallbacks,
     modifier: Modifier = Modifier
 ) {
-    val btnColor = CounterColorProvider.getColor(state.btnColor)
+    val itemColor = CounterColorProvider.getColor(state.btnColor)
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimensions.Spacing.extraSmall),
@@ -54,9 +55,9 @@ fun StepConfigurator(
         FilledIconButton(
             onClick = callbacks.onRemoveStepClick,
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = btnColor,
-                contentColor = btnColor.getReadableContentColor(),
-                disabledContainerColor = btnColor
+                containerColor = itemColor,
+                contentColor = itemColor.getReadableContentColor(),
+                disabledContainerColor = itemColor
             ),
             enabled = state.removeBtnEnabled
         ) {
@@ -79,27 +80,28 @@ fun StepConfigurator(
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurface
                     ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { callbacks.onStepInputDone() }
+                    ),
                     singleLine = true,
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
                     decorationBox = { innerTextField ->
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .border(
                                     width = if (index == 0) Dimensions.Border.bold else Dimensions.Border.thin,
-                                    color = if (index == 0) btnColor else MaterialTheme.colorScheme.outline,
+                                    color = if (index == 0) itemColor else MaterialTheme.colorScheme.outline,
                                     shape = RoundedCornerShape(Dimensions.Radius.small)
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
                             innerTextField()
                         }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { callbacks.onStepInputDone() }
-                    )
+                    }
                 )
 
                 if (index != state.steps.lastIndex) Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
@@ -109,9 +111,9 @@ fun StepConfigurator(
         FilledIconButton(
             onClick = callbacks.onAddStepClick,
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = btnColor,
-                contentColor = btnColor.getReadableContentColor(),
-                disabledContainerColor = btnColor
+                containerColor = itemColor,
+                contentColor = itemColor.getReadableContentColor(),
+                disabledContainerColor = itemColor
             ),
             enabled = state.addBtnEnabled
         ) {
