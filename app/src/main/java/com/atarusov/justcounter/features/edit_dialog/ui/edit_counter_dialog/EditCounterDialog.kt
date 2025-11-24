@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -35,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,6 +75,7 @@ import com.atarusov.justcounter.features.edit_dialog.viewModel.EditCounterDialog
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
+import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
 import com.atarusov.justcounter.ui.theme.getReadability
 import com.atarusov.justcounter.ui.theme.getReadableContentColor
 
@@ -105,11 +108,12 @@ fun EditCounterDialog(
                 }
             }
         }
-
-        EditCounterDialogContent(
-            state = state,
-            onAction = viewModel::onAction
-        )
+        CompositionLocalProvider(LocalTextSelectionColors provides TransparentTextSelectionColors) {
+            EditCounterDialogContent(
+                state = state,
+                onAction = viewModel::onAction
+            )
+        }
     }
 }
 

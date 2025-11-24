@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -29,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -53,7 +51,6 @@ import com.atarusov.justcounter.features.counters_screen.ui.callbacks.CounterIte
 import com.atarusov.justcounter.features.counters_screen.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
-import com.atarusov.justcounter.ui.theme.TransparentTextSelectionColors
 import com.atarusov.justcounter.ui.theme.dangerRed
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
@@ -97,29 +94,27 @@ private fun CounterListScreenUI(
     onAction: (Action) -> Unit,
     lazyGridState: LazyGridState
 ) {
-    CompositionLocalProvider(LocalTextSelectionColors provides TransparentTextSelectionColors) {
-        Scaffold(
-            topBar = {
-                CounterListTopAppBar(
-                    removeMode = state.removeMode,
-                    onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
-                )
-            },
-            floatingActionButton = {
-                CounterListFAB(
-                    onClick = { onAction(Action.AddCounter) },
-                    isVisible = !state.removeMode
-                )
-            },
-        ) { paddingValues ->
-            CounterList(
-                lazyGridState = lazyGridState,
-                paddingValues = paddingValues,
+    Scaffold(
+        topBar = {
+            CounterListTopAppBar(
                 removeMode = state.removeMode,
-                counters = state.counters,
-                onAction = onAction
+                onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
             )
-        }
+        },
+        floatingActionButton = {
+            CounterListFAB(
+                onClick = { onAction(Action.AddCounter) },
+                isVisible = !state.removeMode
+            )
+        },
+    ) { paddingValues ->
+        CounterList(
+            lazyGridState = lazyGridState,
+            paddingValues = paddingValues,
+            removeMode = state.removeMode,
+            counters = state.counters,
+            onAction = onAction
+        )
     }
 }
 
