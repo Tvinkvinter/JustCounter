@@ -1,9 +1,9 @@
-package com.atarusov.justcounter.features.counters_screen.mvi
+package com.atarusov.justcounter.features.counter_list_screen.mvi
 
 import com.atarusov.justcounter.domain.Counter
 import com.atarusov.justcounter.domain.CounterListRepository
-import com.atarusov.justcounter.features.counters_screen.mvi.entities.Action
-import com.atarusov.justcounter.features.counters_screen.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.Action
+import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.InternalAction
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

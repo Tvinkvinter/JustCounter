@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counters_screen.mvi.entities
+package com.atarusov.justcounter.features.counter_list_screen.mvi.entities
 
 import com.atarusov.justcounter.domain.Counter
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
