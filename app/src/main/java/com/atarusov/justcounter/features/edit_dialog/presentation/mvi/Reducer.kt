@@ -1,8 +1,8 @@
-package com.atarusov.justcounter.features.edit_dialog.mvi
+package com.atarusov.justcounter.features.edit_dialog.presentation.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.InternalAction
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.State
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
 import com.atarusov.justcounter.ui.theme.CounterColor
 import javax.inject.Inject
 

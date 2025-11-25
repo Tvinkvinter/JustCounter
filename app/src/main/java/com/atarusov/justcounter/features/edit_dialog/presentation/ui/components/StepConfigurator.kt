@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.ui.edit_counter_dialog
+package com.atarusov.justcounter.features.edit_dialog.presentation.ui.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.ui.theme.getReadableContentColor
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.StepConfiguratorState
-import com.atarusov.justcounter.features.edit_dialog.ui.callbacks.StepConfiguratorCallbacks
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.StepConfiguratorState
+import com.atarusov.justcounter.features.edit_dialog.presentation.ui.callbacks.StepConfiguratorCallbacks
 import com.atarusov.justcounter.ui.theme.CounterColor
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions

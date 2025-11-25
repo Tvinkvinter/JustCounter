@@ -1,26 +1,24 @@
-package com.atarusov.justcounter.features.edit_dialog.mvi
+package com.atarusov.justcounter.features.edit_dialog.presentation.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.domain.Counter
-import com.atarusov.justcounter.domain.CounterListRepository
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.Action
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.InternalAction
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.State
+import com.atarusov.justcounter.features.edit_dialog.data.EditCounterRepository
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class Actor @Inject constructor(
-    val repository: CounterListRepository
+    val repository: EditCounterRepository
 ) {
     companion object {
         private const val MAX_TITLE_LENGTH = 24
         private const val MIN_VALUE = -999_999_999
         private const val MAX_VALUE = 999_999_999
     }
-
-    @Inject lateinit var defaultCounterTitles: List<String>
 
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
@@ -83,7 +81,7 @@ class Actor @Inject constructor(
         emit(InternalAction.CloseEditCounterDialog)
     }
 
-    fun State.toCounter() = Counter(
+    private fun State.toCounter() = Counter(
         title = titleField.text.validateTitle(),
         value = valueField.text.validateValue(),
         color = color,

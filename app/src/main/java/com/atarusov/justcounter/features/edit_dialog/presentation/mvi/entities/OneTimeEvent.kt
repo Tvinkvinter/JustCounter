@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.mvi.entities
+package com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities
 
 sealed class OneTimeEvent {
     data object ClearFocus : OneTimeEvent()

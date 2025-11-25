@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.ui.edit_counter_dialog
+package com.atarusov.justcounter.features.edit_dialog.presentation.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -67,11 +67,13 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.Action
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.OneTimeEvent
-import com.atarusov.justcounter.features.edit_dialog.mvi.entities.State
-import com.atarusov.justcounter.features.edit_dialog.ui.callbacks.StepConfiguratorCallbacks
-import com.atarusov.justcounter.features.edit_dialog.viewModel.EditCounterDialogViewModel
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
+import com.atarusov.justcounter.features.edit_dialog.presentation.ui.callbacks.StepConfiguratorCallbacks
+import com.atarusov.justcounter.features.edit_dialog.presentation.ui.components.ColorPalette
+import com.atarusov.justcounter.features.edit_dialog.presentation.ui.components.StepConfigurator
+import com.atarusov.justcounter.features.edit_dialog.presentation.viewModel.EditCounterDialogViewModel
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
@@ -95,8 +97,7 @@ fun EditCounterDialog(
                 OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
 
                 is OneTimeEvent.ShowEmptyTitleTip -> {
-                    val errorMessage =
-                        context.getString(R.string.counter_screen_empty_title_tip)
+                    val errorMessage = context.getString(R.string.counter_screen_empty_title_tip)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                 }
 

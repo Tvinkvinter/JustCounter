@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.mvi.entities
+package com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -19,14 +19,6 @@ data class State(
         color =  counter.color,
         stepConfiguratorState = StepConfiguratorState(counter),
         counterId =  counter.id,
-    )
-
-    constructor() : this(
-        titleField = TextFieldValue(),
-        valueField = TextFieldValue(),
-        color = CounterColor.Blue,
-        stepConfiguratorState = StepConfiguratorState(listOf(TextFieldValue("1")), CounterColor.Blue),
-        counterId =  "",
     )
 
     companion object {

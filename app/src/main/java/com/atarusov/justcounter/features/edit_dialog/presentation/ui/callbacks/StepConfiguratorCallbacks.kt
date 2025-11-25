@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.ui.callbacks
+package com.atarusov.justcounter.features.edit_dialog.presentation.ui.callbacks
 
 import androidx.compose.ui.text.input.TextFieldValue
 
