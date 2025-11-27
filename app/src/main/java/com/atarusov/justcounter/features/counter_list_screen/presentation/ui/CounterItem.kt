@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counter_list_screen.ui
+package com.atarusov.justcounter.features.counter_list_screen.presentation.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -40,9 +40,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.domain.Counter
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.getPreviewCounter
-import com.atarusov.justcounter.features.counter_list_screen.ui.callbacks.CounterItemCallbacks
+import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.getPreviewCounter
+import com.atarusov.justcounter.features.counter_list_screen.presentation.ui.callbacks.CounterItemCallbacks
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme

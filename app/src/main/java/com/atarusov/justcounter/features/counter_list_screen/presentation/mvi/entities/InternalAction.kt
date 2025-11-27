@@ -1,6 +1,6 @@
-package com.atarusov.justcounter.features.counter_list_screen.mvi.entities
+package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities
 
-import com.atarusov.justcounter.domain.Counter
+import com.atarusov.justcounter.common.Counter
 
 sealed class InternalAction {
     data class LoadCounters(val counters: List<Counter>) : InternalAction()

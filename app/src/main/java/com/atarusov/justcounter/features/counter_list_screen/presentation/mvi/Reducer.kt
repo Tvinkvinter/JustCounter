@@ -1,8 +1,8 @@
-package com.atarusov.justcounter.features.counter_list_screen.mvi
+package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi
 
-import com.atarusov.justcounter.domain.Counter
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.InternalAction
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.State
+import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.State
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {

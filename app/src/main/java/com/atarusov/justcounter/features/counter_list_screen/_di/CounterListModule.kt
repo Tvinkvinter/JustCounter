@@ -1,4 +1,4 @@
-package com.atarusov.justcounter._di
+package com.atarusov.justcounter.features.counter_list_screen._di
 
 import android.content.Context
 import com.atarusov.justcounter.R

@@ -1,7 +1,7 @@
 package com.atarusov.justcounter.features.edit_dialog.data
 
-import com.atarusov.justcounter.domain.Counter
-import com.atarusov.justcounter.domain.toProto
+import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.common.toProto
 import javax.inject.Inject
 
 class EditCounterRepositoryImpl @Inject constructor(

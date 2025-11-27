@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.domain
+package com.atarusov.justcounter.common
 
 import com.atarusov.justcounter.CounterProto
 import com.atarusov.justcounter.ui.theme.CounterColor
@@ -14,7 +14,7 @@ data class Counter(
     val id: String = Uuid.random().toString()
 )
 
-fun CounterProto.toDomain() = Counter(
+fun CounterProto.toCounter() = Counter(
     title = this.title,
     value = this.value,
     color = CounterColor.valueOf(this.color),

@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.data
+package com.atarusov.justcounter.common.util
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer

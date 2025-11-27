@@ -1,7 +1,7 @@
 package com.atarusov.justcounter.features.edit_dialog.presentation.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.atarusov.justcounter.domain.Counter
+import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.features.edit_dialog.data.EditCounterRepository
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction

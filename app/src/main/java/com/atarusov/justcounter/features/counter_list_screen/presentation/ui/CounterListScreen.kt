@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counter_list_screen.ui
+package com.atarusov.justcounter.features.counter_list_screen.presentation.ui
 
 import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
@@ -42,12 +42,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.domain.Counter
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.Action
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.OneTimeEvent
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.State
-import com.atarusov.justcounter.features.counter_list_screen.ui.callbacks.CounterItemCallbacks
-import com.atarusov.justcounter.features.counter_list_screen.viewModel.CounterListScreenViewModel
+import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.State
+import com.atarusov.justcounter.features.counter_list_screen.presentation.ui.callbacks.CounterItemCallbacks
+import com.atarusov.justcounter.features.counter_list_screen.presentation.viewModel.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.dangerRed

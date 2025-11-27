@@ -1,14 +1,14 @@
-package com.atarusov.justcounter.features.counter_list_screen.viewModel
+package com.atarusov.justcounter.features.counter_list_screen.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.atarusov.justcounter.features.counter_list_screen.mvi.Actor
-import com.atarusov.justcounter.features.counter_list_screen.mvi.Bootstrapper
-import com.atarusov.justcounter.features.counter_list_screen.mvi.OneTimeEventHandler
-import com.atarusov.justcounter.features.counter_list_screen.mvi.Reducer
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.Action
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.OneTimeEvent
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.State
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.Actor
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.Bootstrapper
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.OneTimeEventHandler
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.Reducer
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

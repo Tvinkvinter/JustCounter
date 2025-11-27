@@ -1,8 +1,8 @@
-package com.atarusov.justcounter.features.counter_list_screen.mvi
+package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi
 
-import com.atarusov.justcounter.domain.Counter
-import com.atarusov.justcounter.domain.CounterListRepository
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.InternalAction
+import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.data.CounterListRepository
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,7 +13,7 @@ class Bootstrapper @Inject constructor(
     val defaultCounterTitles: List<String>
 ) {
     fun bootstrap(): Flow<InternalAction> = flow {
-        repository.counters.collect {
+        repository.getCountersFlow().collect {
             if (it.isEmpty()) {
                 val newCounter = Counter(
                     defaultCounterTitles.random(),

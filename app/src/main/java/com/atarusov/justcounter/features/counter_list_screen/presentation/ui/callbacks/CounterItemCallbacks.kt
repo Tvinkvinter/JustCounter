@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counter_list_screen.ui.callbacks
+package com.atarusov.justcounter.features.counter_list_screen.presentation.ui.callbacks
 
 data class CounterItemCallbacks(
     val onCounterTap: () -> Unit,

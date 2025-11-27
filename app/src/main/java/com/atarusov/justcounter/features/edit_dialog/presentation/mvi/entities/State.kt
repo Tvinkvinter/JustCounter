@@ -2,7 +2,7 @@ package com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import com.atarusov.justcounter.domain.Counter
+import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.ui.theme.CounterColor
 
 

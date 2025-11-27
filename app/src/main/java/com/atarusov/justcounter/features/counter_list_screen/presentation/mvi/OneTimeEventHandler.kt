@@ -1,7 +1,7 @@
-package com.atarusov.justcounter.features.counter_list_screen.mvi
+package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi
 
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.InternalAction
-import com.atarusov.justcounter.features.counter_list_screen.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.OneTimeEvent
 import javax.inject.Inject
 
 class OneTimeEventHandler @Inject constructor() {

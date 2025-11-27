@@ -1,11 +1,11 @@
-package com.atarusov.justcounter._di
+package com.atarusov.justcounter.common.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
 import com.atarusov.justcounter.CounterListProto
-import com.atarusov.justcounter.data.CounterListProtoSerializer
+import com.atarusov.justcounter.common.util.CounterListProtoSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
