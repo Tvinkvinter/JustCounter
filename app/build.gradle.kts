@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    id("com.google.protobuf") version "0.9.5"
+    id("androidx.room") version "2.8.4"
 }
 
 android {
@@ -62,21 +62,8 @@ android {
     }
 }
 
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:4.32.1"
-    }
-    generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                java {
-                    create("java") {
-                        option("lite")
-                    }
-                }
-            }
-        }
-    }
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
@@ -98,8 +85,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.datastore)
-    implementation(libs.protobuf.javalite)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.reorderable)
 
     testImplementation(libs.junit)

@@ -16,10 +16,10 @@ class Bootstrapper @Inject constructor(
         repository.getCountersFlow().collect {
             if (it.isEmpty()) {
                 val newCounter = Counter(
-                    defaultCounterTitles.random(),
-                    0,
-                    CounterColorProvider.getRandomColor(),
-                    listOf(1)
+                    title = defaultCounterTitles.random(),
+                    value = 0,
+                    color = CounterColorProvider.getRandomColor(),
+                    steps = listOf(1)
                 )
 
                 repository.addCounter(newCounter)

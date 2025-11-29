@@ -18,4 +18,4 @@ Just Counter is a simple and convenient click counter app that helps you keep sc
 - **Core**: Android SDK, Kotlin, Jetpack Compose
 - **Dependency Injection**: Hilt
 - **Asynchronous processing**: Coroutines & Flows
-- **Storage**: DataStore
+- **Storage**: Room

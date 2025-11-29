@@ -45,12 +45,15 @@ class Reducer @Inject constructor() {
             }
         )
 
-    private fun swapCounters(previousState: State, fromIndex: Int, toIndex: Int): State {
-        val newCounters = previousState.counters.toMutableList()
-        val temp = newCounters[fromIndex]
-        newCounters[fromIndex] = newCounters[toIndex]
-        newCounters[toIndex] = temp
+    private fun swapCounters(previousState: State, firstIndex: Int, secondIndex: Int): State {
+        val newCounterList = previousState.counters.toMutableList()
 
-        return previousState.copy(counters = newCounters)
+        val firstCounter = newCounterList[firstIndex]
+        val secondCounter = newCounterList[secondIndex]
+
+        newCounterList[secondIndex] = firstCounter
+        newCounterList[firstIndex] = secondCounter
+
+        return previousState.copy(counters = newCounterList)
     }
 }
