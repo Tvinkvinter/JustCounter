@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.presentation.viewModel
+package com.atarusov.justcounter.features.edit_dialog.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
@@ -9,8 +9,8 @@ import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.Actor
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.OneTimeEventHandler
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.Reducer
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action
-import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.OneTimeEvent
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.StepConfiguratorState
 import com.atarusov.justcounter.navigation.EditCounterDialogRoute
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counter_list_screen.presentation.viewModel
+package com.atarusov.justcounter.features.counter_list_screen.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
