@@ -25,6 +25,7 @@ class Actor @Inject constructor(
             Action.TitleTap -> flowOf(InternalAction.ShowDragTip)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
+            is Action.ExpandCounter -> flowOf(InternalAction.NavigateToCounterFullScreen(action.counter))
             is Action.OpenCounterEditDialog -> flowOf(InternalAction.OpenEditCounterDialog(action.counter))
         }
     }
@@ -48,7 +49,7 @@ class Actor @Inject constructor(
     }
 
     private fun changeValue(counterId: String, oldValue: Int, step: Int) = flow<InternalAction> {
-        val newValue = (oldValue + step).coerceIn(MIN_VALUE, MAX_VALUE)
+        val newValue = (oldValue + step).coerceIn(Counter.MIN_VALUE, Counter.MAX_VALUE)
 
         emit(InternalAction.UpdateCounterValue(counterId, newValue))
         repository.updateCounterValue(counterId, newValue)
@@ -57,10 +58,5 @@ class Actor @Inject constructor(
     private fun swapCounters(firstIndex: Int, secondIndex: Int) = flow {
         emit(InternalAction.SwapCounters(firstIndex, secondIndex))
         repository.swapCounters(firstIndex, secondIndex)
-    }
-
-    companion object {
-        private const val MIN_VALUE = -999_999_999
-        private const val MAX_VALUE = 999_999_999
     }
 }

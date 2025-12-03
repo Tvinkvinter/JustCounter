@@ -11,7 +11,7 @@ class Reducer @Inject constructor() {
             is InternalAction.LoadCounters -> previousState.copy(counters = internalAction.counters)
             is InternalAction.AddCounter -> addCounter(previousState, internalAction.counter)
             is InternalAction.RemoveCounter -> removeCounter(previousState, internalAction.counterId)
-            is InternalAction.UpdateCounterValue -> updateCounterValueText(
+            is InternalAction.UpdateCounterValue -> updateCounterValue(
                 previousState,
                 internalAction.counterId,
                 internalAction.newValue
@@ -21,6 +21,7 @@ class Reducer @Inject constructor() {
 
             InternalAction.ShowDragTip,
             InternalAction.ScrollDown,
+            is InternalAction.NavigateToCounterFullScreen,
             is InternalAction.OpenEditCounterDialog -> previousState
         }
 
@@ -34,7 +35,7 @@ class Reducer @Inject constructor() {
             }
         )
 
-    private fun updateCounterValueText(
+    private fun updateCounterValue(
         previousState: State,
         counterId: String,
         newValue: Int

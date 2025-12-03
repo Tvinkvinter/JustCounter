@@ -20,6 +20,7 @@ object Dimensions {
         val medium = 32.dp
         val extraMedium = 36.dp
         val large = 48.dp
+        val huge = 70.dp
 
         val maxEditCounterDialogTitleWidth = 220.dp
     }
@@ -29,6 +30,7 @@ object Dimensions {
         val medium = 12.dp
         val large = 16.dp
         val extraLarge = 20.dp
+        val huge = 24.dp
     }
 
     object Border {

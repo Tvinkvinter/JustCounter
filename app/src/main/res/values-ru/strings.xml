@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="counter_screen_edit_btn_description">Редактировать счетчик</string>
-    <string name="counter_screen_add_btn_description">Добавить новый счетчик</string>
-    <string name="counter_screen_drag_tip">Нажмите и удерживайте, чтобы переместить счётчик</string>
-    <string name="counter_screen_empty_title_tip">Название счётчика пустое. Уверены, что потом не запутаетесь? 😊</string>
+    <string name="counter_card_edit_btn_description">Редактировать счетчик</string>
+    <string name="counter_card_cross_btn_description">Удалить счётчик</string>
+    <string name="counter_card_expand_btn_description">Раскрыть счётчик</string>
+    <string name="counter_card_shrink_btn_description">Свернуть счётчик</string>
+    <string name="counter_card_empty_title_tip">Название счётчика пустое. Уверены, что потом не запутаетесь?</string>
+
+    <string name="counter_full_screen_back_btn_description">Назад</string>
+
+    <string name="counter_list_screen_add_btn_description">Добавить новый счетчик</string>
+    <string name="counter_list_screen_trash_can_btn_description">Переключить режим удаления</string>
+    <string name="counter_list_screen_drag_tip">Нажмите и удерживайте, чтобы переместить счётчик</string>
 
     <string name="edit_dialog_title_hint">Название</string>
     <string name="edit_dialog_edit_title_btn_description">Редактировать название</string>

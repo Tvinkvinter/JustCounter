@@ -70,4 +70,25 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.5.sp
     ),
+    displaySmall = TextStyle(
+        fontFamily = Rubik,
+        fontWeight = FontWeight.Black,
+        fontSize = 32.sp,
+        lineHeight = 34.sp,
+        letterSpacing = 0.5.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = QuickSand,
+        fontWeight = FontWeight.Bold,
+        fontSize = 36.sp,
+        lineHeight = 38.sp,
+        letterSpacing = 0.5.sp
+    ),
+    displayLarge = TextStyle(
+        fontFamily = QuickSand,
+        fontWeight = FontWeight.Bold,
+        fontSize = 56.sp,
+        lineHeight = 58.sp,
+        letterSpacing = 0.5.sp
+    ),
 )

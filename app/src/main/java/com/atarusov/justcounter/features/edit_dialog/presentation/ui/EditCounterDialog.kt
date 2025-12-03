@@ -97,7 +97,7 @@ fun EditCounterDialog(
                 OneTimeEvent.ClearFocus -> focusManager.clearFocus(force = true)
 
                 is OneTimeEvent.ShowEmptyTitleTip -> {
-                    val errorMessage = context.getString(R.string.counter_screen_empty_title_tip)
+                    val errorMessage = context.getString(R.string.counter_card_empty_title_tip)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                 }
 

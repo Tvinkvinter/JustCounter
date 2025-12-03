@@ -26,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,6 +55,7 @@ import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 @Composable
 fun CounterListScreen(
+    onNavigateToCounterFullScreen: (counter: Counter) -> Unit,
     onNavigateToEditDialog: (counter: Counter) -> Unit,
     viewModel: CounterListScreenViewModel = hiltViewModel()
 ) {
@@ -68,10 +68,11 @@ fun CounterListScreen(
         viewModel.screenEvents.collect { event ->
             when (event) {
                 OneTimeEvent.ShowDragTip -> {
-                    val errorMessage = context.getString(R.string.counter_screen_drag_tip)
+                    val errorMessage = context.getString(R.string.counter_list_screen_drag_tip)
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
                 OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counters.lastIndex)
+                is OneTimeEvent.NavigateToCounterFullScreen -> onNavigateToCounterFullScreen(event.counter)
                 is OneTimeEvent.OpenEditCounterDialog -> onNavigateToEditDialog(event.counter)
             }
         }
@@ -143,12 +144,11 @@ private fun CounterListTopAppBar(
                         if (removeMode) R.drawable.ic_trash_can_opened
                         else R.drawable.ic_trash_can
                     ),
-                    contentDescription = stringResource(R.string.counter_screen_add_btn_description),
+                    contentDescription = stringResource(R.string.counter_list_screen_trash_can_btn_description),
                     modifier = Modifier.size(Dimensions.Size.small)
                 )
             }
-        },
-        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        }
     )
 }
 
@@ -171,7 +171,7 @@ private fun CounterListFAB(
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_plus),
-            contentDescription = stringResource(R.string.counter_screen_add_btn_description)
+            contentDescription = stringResource(R.string.counter_list_screen_add_btn_description)
         )
     }
 }
@@ -214,6 +214,7 @@ private fun CounterList(
                     onAction(Action.MinusClick(counter.id, counter.value, step))
                 },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counter)) },
+                onExpandClick = { onAction(Action.ExpandCounter(counter)) },
                 onRemoveClick = { onAction(Action.RemoveCounter(counter.id)) },
             )
 
@@ -240,8 +241,8 @@ private fun CounterList(
 private fun CounterTopAppBarPreview() {
     JustCounterTheme {
         Column {
-            CounterListTopAppBar(true, {})
-            CounterListTopAppBar(false, {})
+            CounterListTopAppBar(true) {}
+            CounterListTopAppBar(false) {}
         }
     }
 }

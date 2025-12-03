@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="counter_screen_edit_btn_description">Editar contador</string>
-    <string name="counter_screen_add_btn_description">Añadir nuevo contador</string>
-    <string name="counter_screen_drag_tip">Mantén pulsado para mover el contador</string>
-    <string name="counter_screen_empty_title_tip">El título del contador está vacío. ¿Seguro que no te confundirás más tarde? 😊</string>
+    <string name="counter_card_edit_btn_description">Editar contador</string>
+    <string name="counter_card_cross_btn_description">Eliminar contador</string>
+    <string name="counter_card_expand_btn_description">Expandir contador</string>
+    <string name="counter_card_shrink_btn_description">Reducir contador</string>
+    <string name="counter_card_empty_title_tip">El título del contador está vacío. ¿Seguro que no te confundirás más tarde?</string>
+
+    <string name="counter_full_screen_back_btn_description">Volver atrás</string>
+
+    <string name="counter_list_screen_add_btn_description">Añadir nuevo contador</string>
+    <string name="counter_list_screen_trash_can_btn_description">Cambiar al modo de eliminación</string>
+    <string name="counter_list_screen_drag_tip">Mantén pulsado para mover el contador</string>
 
     <string name="edit_dialog_title_hint">Título</string>
     <string name="edit_dialog_edit_title_btn_description">Editar título</string>

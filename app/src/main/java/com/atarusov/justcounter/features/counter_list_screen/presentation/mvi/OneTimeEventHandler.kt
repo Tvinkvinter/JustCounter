@@ -9,6 +9,8 @@ class OneTimeEventHandler @Inject constructor() {
         return when (internalAction) {
             InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
             InternalAction.ScrollDown -> OneTimeEvent.ScrollDown
+            is InternalAction.NavigateToCounterFullScreen ->
+                OneTimeEvent.NavigateToCounterFullScreen(internalAction.counter)
             is InternalAction.OpenEditCounterDialog ->
                 OneTimeEvent.OpenEditCounterDialog(internalAction.counter)
 
