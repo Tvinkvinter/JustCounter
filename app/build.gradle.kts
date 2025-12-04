@@ -76,9 +76,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.compose.ui)
 
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.navigation.compose)
