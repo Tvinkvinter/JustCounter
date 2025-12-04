@@ -72,12 +72,13 @@ fun StepConfigurator(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             state.steps.forEachIndexed { index, step ->
+                val textFits = step.text.length <= 3
                 BasicTextField(
                     value = step,
                     onValueChange = { callbacks.onStepInput(index, it) },
                     modifier = Modifier.size(Dimensions.Size.large),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
-                        textAlign = TextAlign.Center,
+                        textAlign = if (textFits) TextAlign.Center else TextAlign.Unspecified,
                         color = MaterialTheme.colorScheme.onSurface
                     ),
                     keyboardOptions = KeyboardOptions(
@@ -99,7 +100,10 @@ fun StepConfigurator(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            innerTextField()
+                            Row {
+                                if (!textFits) Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
+                                innerTextField()
+                            }
                         }
                     }
                 )
