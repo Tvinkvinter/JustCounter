@@ -1,3 +1,6 @@
+[<img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+      alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.atarusov.justcounter)
+
 # JustCounter 🧮
 Just Counter is a simple and convenient click counter app that helps you keep score in games, count glasses of water, or even manage your money.
 
