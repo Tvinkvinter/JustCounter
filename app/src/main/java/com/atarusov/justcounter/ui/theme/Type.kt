@@ -9,7 +9,8 @@ import androidx.compose.ui.unit.sp
 import com.atarusov.justcounter.R
 
 val Rubik = FontFamily(
-    Font(R.font.rubik_medium, weight = FontWeight.Medium)
+    Font(R.font.rubik_medium, weight = FontWeight.Medium),
+    Font(R.font.rubik_bold, weight = FontWeight.Bold),
 )
 
 val QuickSand = FontFamily(
@@ -51,14 +52,14 @@ val Typography = Typography(
     ),
     titleMedium = TextStyle(
         fontFamily = Rubik,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
         fontFamily = Rubik,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 1.sp
@@ -72,7 +73,7 @@ val Typography = Typography(
     ),
     displaySmall = TextStyle(
         fontFamily = Rubik,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         lineHeight = 34.sp,
         letterSpacing = 0.5.sp
