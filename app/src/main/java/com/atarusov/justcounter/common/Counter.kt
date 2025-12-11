@@ -1,6 +1,8 @@
 package com.atarusov.justcounter.common
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.atarusov.justcounter.ui.theme.CounterColor
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
@@ -9,13 +11,25 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Serializable
-@Entity(tableName = "counters")
+@Entity(
+    tableName = "counters",
+    foreignKeys = [
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = ["id"],
+            childColumns = ["categoryId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index("categoryId")]
+)
 @OptIn(ExperimentalUuidApi::class)
 data class Counter(
     val title: String,
     val value: Int,
     val color: CounterColor,
     val steps: List<Int>,
+    val categoryId: Int? = null,
     val position: Int = UNDEFINED_POSITION,
     @PrimaryKey val id: String = Uuid.random().toString()
 ) {
@@ -29,6 +43,7 @@ data class Counter(
             value = 128000,
             color = CounterColorProvider.getRandomColor(),
             steps = if (withCustomSteps) listOf(1, 2, 300) else listOf(1),
+            categoryId = 0
         )
     }
 }

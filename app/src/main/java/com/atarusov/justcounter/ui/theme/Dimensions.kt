@@ -23,6 +23,7 @@ object Dimensions {
         val huge = 70.dp
 
         val maxEditCounterDialogTitleWidth = 220.dp
+        val drawerSheetWidth = 320.dp
     }
 
     object Radius {

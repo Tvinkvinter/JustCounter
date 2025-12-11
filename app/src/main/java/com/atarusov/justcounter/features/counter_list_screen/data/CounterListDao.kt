@@ -17,7 +17,7 @@ interface CounterListDao {
     @Transaction
     suspend fun addCounter(counter: Counter) {
         if (counter.position != Counter.UNDEFINED_POSITION)
-            throw IllegalStateException("Do not pass position parameter when editing Counter")
+            throw IllegalStateException("Do not pass position parameter when adding Counter")
         val counterWithPosition = counter.copy(
             position = getMaxCounterPosition()?.let { it + 1 } ?: 0
         )

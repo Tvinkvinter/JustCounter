@@ -8,6 +8,15 @@
 
     <string name="counter_full_screen_back_btn_description">Назад</string>
 
+    <string name="drawer_category_item_unselected_description">Не выбрано</string>
+    <string name="drawer_uncategorized_counters_item_text">Счётчики без категории</string>
+    <string name="drawer_category_item_menu_delete_category_description">Удалить категорию</string>
+    <string name="drawer_category_item_menu_edit_category_description">Переименовать категорию</string>
+    <string name="drawer_category_item_menu_cancel_input_description">Отменить ввод</string>
+    <string name="drawer_category_item_menu_confirm_input_description">Подтвердить ввод</string>
+    <string name="drawer_category_item_add_category_text">Добавить категорию</string>
+    <string name="drawer_category_list_move_hint">Зажмите категорию, чтобы переместить её</string>
+    <string name="counter_list_screen_open_drawer">Открыть боковое меню</string>
     <string name="counter_list_screen_add_btn_description">Добавить новый счетчик</string>
     <string name="counter_list_screen_trash_can_btn_description">Переключить режим удаления</string>
     <string name="counter_list_screen_drag_tip">Нажмите и удерживайте, чтобы переместить счётчик</string>
@@ -42,5 +51,7 @@
     <string name="default_counter_name_deer">Олень</string>
     <string name="default_counter_name_capybara">Капибара</string>
     <string name="default_counter_name_fennec_fox">Фенек</string>
+    <string name="drawer_category_item_selected_description">Выбрано</string>
+    <string name="drawer_category_list_edit_delete_hint">Смахните категорию влево, чтобы изменить или удалить её</string>
 
 </resources>

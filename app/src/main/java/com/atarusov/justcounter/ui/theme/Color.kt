@@ -11,11 +11,14 @@ import androidx.compose.ui.graphics.luminance
 val black = Color(0xFF2A2A2D)
 val white = Color(0xFFFFFFFF)
 val lightGrey = Color(0xFFECECEC)
+val grey = Color(0xFFA9A9A9)
 val darkGrey = Color(0xFF3B3B3F)
 val extraDarkGrey = Color(0xFF414144)
 
+val green = Color(0xFF34C759)
 val lightOrange = Color(0xFFFFC75F)
 val dangerRed = Color(0xDFFF3B30)
+val lightBlue = Color(0xFF2BB7DA)
 
 @Keep
 enum class CounterColor {

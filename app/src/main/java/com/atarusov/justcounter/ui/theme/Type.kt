@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.atarusov.justcounter.R
 
 val Rubik = FontFamily(
+    Font(R.font.rubik, weight = FontWeight.Normal),
     Font(R.font.rubik_medium, weight = FontWeight.Medium),
     Font(R.font.rubik_bold, weight = FontWeight.Bold),
 )
@@ -22,6 +23,13 @@ val DMSans = FontFamily(
 )
 
 val Typography = Typography(
+    labelSmall = TextStyle(
+        fontFamily = Rubik,
+        fontWeight = FontWeight.Medium,
+        fontSize = 10.sp,
+        lineHeight = 12.sp,
+        letterSpacing = 0.5.sp
+    ),
     labelLarge = TextStyle(
         fontFamily = Rubik,
         fontWeight = FontWeight.Medium,
@@ -48,6 +56,13 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = Rubik,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 18.sp,
         letterSpacing = 0.5.sp
     ),
     titleMedium = TextStyle(

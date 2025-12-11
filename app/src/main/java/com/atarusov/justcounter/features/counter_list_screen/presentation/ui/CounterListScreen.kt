@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -23,12 +24,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -42,14 +46,16 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.category_drawer.presentation.ui.Drawer
+import com.atarusov.justcounter.features.counter_list_screen.presentation.CounterListScreenViewModel
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.State
 import com.atarusov.justcounter.features.counter_list_screen.presentation.ui.callbacks.CounterItemCallbacks
-import com.atarusov.justcounter.features.counter_list_screen.presentation.CounterListScreenViewModel
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.dangerRed
+import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
 
@@ -60,8 +66,11 @@ fun CounterListScreen(
     viewModel: CounterListScreenViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val state by viewModel.screenState.collectAsStateWithLifecycle()
+
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
     val lazyGridState = rememberLazyGridState()
 
     LaunchedEffect(Unit) {
@@ -78,23 +87,35 @@ fun CounterListScreen(
         }
     }
 
-    CounterListScreenUI(
-        state = state,
-        onAction = viewModel::onAction,
-        lazyGridState = lazyGridState
-    )
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            Drawer(
+                onCategorySelect = {}
+            )
+        }
+    ) {
+        CounterListScreenUI(
+            state = state,
+            onAction = viewModel::onAction,
+            onDrawerIconClick = { scope.launch { drawerState.open() } },
+            lazyGridState = lazyGridState
+        )
+    }
 }
 
 @Composable
 private fun CounterListScreenUI(
     state: State,
     onAction: (Action) -> Unit,
+    onDrawerIconClick: () -> Unit,
     lazyGridState: LazyGridState
 ) {
     Scaffold(
         topBar = {
             CounterListTopAppBar(
                 removeMode = state.removeMode,
+                onDrawerIconClick = onDrawerIconClick,
                 onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
             )
         },
@@ -119,6 +140,7 @@ private fun CounterListScreenUI(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CounterListTopAppBar(
     removeMode: Boolean,
+    onDrawerIconClick: () -> Unit,
     onRemoveModeSwitch: () -> Unit
 ) {
     TopAppBar(
@@ -129,6 +151,19 @@ private fun CounterListTopAppBar(
             )
         },
         modifier = Modifier.shadow(Dimensions.Elevation.topAppBar),
+        navigationIcon = {
+            IconButton(
+                onClick = onDrawerIconClick,
+                modifier = Modifier
+                    .padding(horizontal = Dimensions.Spacing.small)
+                    .size(Dimensions.Size.medium)
+            ) {
+                Icon (
+                    painter = painterResource(R.drawable.ic_menu),
+                    contentDescription = stringResource(R.string.counter_list_screen_open_drawer),
+                )
+            }
+        },
         actions = {
             IconButton(
                 onClick = onRemoveModeSwitch,
@@ -241,8 +276,8 @@ private fun CounterList(
 private fun CounterTopAppBarPreview() {
     JustCounterTheme {
         Column {
-            CounterListTopAppBar(true) {}
-            CounterListTopAppBar(false) {}
+            CounterListTopAppBar(true, {}) {}
+            CounterListTopAppBar(false, {}) {}
         }
     }
 }
@@ -262,6 +297,7 @@ private fun CounterListScreenPreview() {
         CounterListScreenUI(
             state = State.getPreviewState(false),
             onAction = {},
+            onDrawerIconClick = {},
             lazyGridState = LazyGridState()
         )
     }

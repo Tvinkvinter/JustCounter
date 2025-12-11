@@ -8,6 +8,15 @@
 
     <string name="counter_full_screen_back_btn_description">Volver atrás</string>
 
+    <string name="drawer_category_item_unselected_description">No seleccionada</string>
+    <string name="drawer_uncategorized_counters_item_text">Contadores sin categoría</string>
+    <string name="drawer_category_item_menu_delete_category_description">Eliminar categoría</string>
+    <string name="drawer_category_item_menu_edit_category_description">Renombrar categoría</string>
+    <string name="drawer_category_item_menu_cancel_input_description">Cancelar la entrada</string>
+    <string name="drawer_category_item_menu_confirm_input_description">Confirmar la entrada</string>
+    <string name="drawer_category_item_add_category_text">Agregar categoría</string>
+    <string name="drawer_category_list_move_hint">Mantén pulsada una categoría para moverla</string>
+    <string name="counter_list_screen_open_drawer">Abrir el menú lateral</string>
     <string name="counter_list_screen_add_btn_description">Añadir nuevo contador</string>
     <string name="counter_list_screen_trash_can_btn_description">Cambiar al modo de eliminación</string>
     <string name="counter_list_screen_drag_tip">Mantén pulsado para mover el contador</string>
@@ -42,5 +51,7 @@
     <string name="default_counter_name_deer">Ciervo</string>
     <string name="default_counter_name_capybara">Capibara</string>
     <string name="default_counter_name_fennec_fox">Fennec</string>
+    <string name="drawer_category_item_selected_description">Seleccionada</string>
+    <string name="drawer_category_list_edit_delete_hint">Desliza a la izquierda sobre una categoría para editarla o eliminarla</string>
 
 </resources>

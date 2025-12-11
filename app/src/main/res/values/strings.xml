@@ -9,6 +9,18 @@
 
     <string name="counter_full_screen_back_btn_description">Go back</string>
 
+    <string name="drawer_category_item_selected_description">Selected</string>
+    <string name="drawer_category_item_unselected_description">Unselected</string>
+    <string name="drawer_uncategorized_counters_item_text">Uncategorized counters</string>
+    <string name="drawer_category_item_menu_delete_category_description">Delete category</string>
+    <string name="drawer_category_item_menu_edit_category_description">Rename category</string>
+    <string name="drawer_category_item_menu_cancel_input_description">Cancel the input</string>
+    <string name="drawer_category_item_menu_confirm_input_description">Confirm the input</string>
+    <string name="drawer_category_item_add_category_text">Add category</string>
+    <string name="drawer_category_list_edit_delete_hint">Swipe a category left to edit or delete it</string>
+    <string name="drawer_category_list_move_hint">Press and hold a category to move it</string>
+
+    <string name="counter_list_screen_open_drawer">Open side menu</string>
     <string name="counter_list_screen_add_btn_description">Add new counter</string>
     <string name="counter_list_screen_trash_can_btn_description">Switch remove mode</string>
     <string name="counter_list_screen_drag_tip">Press and hold to move the counter</string>
