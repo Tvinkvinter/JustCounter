@@ -19,6 +19,7 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.RemoveCounter,
             is InternalAction.UpdateCounterValue,
             is InternalAction.SwapCounters,
+            is InternalAction.ChangeCategory,
             InternalAction.SwitchRemoveMode -> null
         }
     }

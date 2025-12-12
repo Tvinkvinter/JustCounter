@@ -55,6 +55,7 @@ import com.atarusov.justcounter.features.counter_list_screen.presentation.ui.cal
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.dangerRed
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
@@ -91,7 +92,13 @@ fun CounterListScreen(
         drawerState = drawerState,
         drawerContent = {
             Drawer(
-                onCategorySelect = {}
+                onCategorySelect = { categoryId, closeDrawer ->
+                    viewModel.onAction(Action.ChangeCategory(categoryId))
+                    if (closeDrawer) scope.launch {
+                        delay(300)
+                        drawerState.close()
+                    }
+                },
             )
         }
     ) {
@@ -115,13 +122,14 @@ private fun CounterListScreenUI(
         topBar = {
             CounterListTopAppBar(
                 removeMode = state.removeMode,
+                categoryId = state.categoryId,
                 onDrawerIconClick = onDrawerIconClick,
                 onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
             )
         },
         floatingActionButton = {
             CounterListFAB(
-                onClick = { onAction(Action.AddCounter) },
+                onClick = { onAction(Action.AddCounter(state.categoryId)) },
                 isVisible = !state.removeMode
             )
         },
@@ -140,13 +148,14 @@ private fun CounterListScreenUI(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CounterListTopAppBar(
     removeMode: Boolean,
+    categoryId: Int?,
     onDrawerIconClick: () -> Unit,
     onRemoveModeSwitch: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = stringResource(R.string.app_name),
+                text = categoryId?.toString() ?: stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineLarge
             )
         },
@@ -276,8 +285,8 @@ private fun CounterList(
 private fun CounterTopAppBarPreview() {
     JustCounterTheme {
         Column {
-            CounterListTopAppBar(true, {}) {}
-            CounterListTopAppBar(false, {}) {}
+            CounterListTopAppBar(true, null, {}) {}
+            CounterListTopAppBar(false, null, {}) {}
         }
     }
 }

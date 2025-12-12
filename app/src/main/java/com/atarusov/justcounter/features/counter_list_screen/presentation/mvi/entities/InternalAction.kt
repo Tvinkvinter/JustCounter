@@ -12,6 +12,7 @@ sealed class InternalAction {
 
     data object SwitchRemoveMode : InternalAction()
     data object ScrollDown : InternalAction()
+    data class ChangeCategory(val categoryId: Int?): InternalAction()
     data class NavigateToCounterFullScreen(val counter: Counter) : InternalAction()
     data class OpenEditCounterDialog(val counter: Counter) : InternalAction()
 }

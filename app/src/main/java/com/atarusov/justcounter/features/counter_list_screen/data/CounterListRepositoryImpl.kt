@@ -8,7 +8,8 @@ class CounterListRepositoryImpl @Inject constructor(
     val counterListDao: CounterListDao
 ) : CounterListRepository {
 
-    override suspend fun getCountersFlow(): Flow<List<Counter>> = counterListDao.getCounterList()
+    override suspend fun getCountersFlow(categoryId: Int?): Flow<List<Counter>> =
+        counterListDao.getCounterList(categoryId)
 
     override suspend fun addCounter(counter: Counter) = counterListDao.addCounter(counter)
 

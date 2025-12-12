@@ -17,7 +17,7 @@ class Actor @Inject constructor(
 
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
-            Action.AddCounter -> createNewCounter()
+            is Action.AddCounter -> createNewCounter(action.categoryId)
             is Action.RemoveCounter -> removeCounter(action.counterId)
             is Action.SwapCounters -> swapCounters(action.firstIndex, action.secondIndex)
             is Action.MinusClick -> changeValue(action.counterId, action.oldValue, -action.step)
@@ -25,17 +25,19 @@ class Actor @Inject constructor(
             Action.TitleTap -> flowOf(InternalAction.ShowDragTip)
 
             Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
+            is Action.ChangeCategory -> flowOf(InternalAction.ChangeCategory(action.categoryId))
             is Action.ExpandCounter -> flowOf(InternalAction.NavigateToCounterFullScreen(action.counter))
             is Action.OpenCounterEditDialog -> flowOf(InternalAction.OpenEditCounterDialog(action.counter))
         }
     }
 
-    private fun createNewCounter() = flow {
+    private fun createNewCounter(categoryId: Int?) = flow {
         val newCounter = Counter(
             title = defaultCounterTitles.random(),
             value = 0,
             color = CounterColorProvider.getRandomColor(),
-            steps = listOf(1)
+            steps = listOf(1),
+            categoryId = categoryId
         )
 
         emit(InternalAction.AddCounter(newCounter))

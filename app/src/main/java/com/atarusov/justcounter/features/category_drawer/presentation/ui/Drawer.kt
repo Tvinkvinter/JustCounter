@@ -36,7 +36,7 @@ import com.atarusov.justcounter.ui.theme.JustCounterTheme
 
 @Composable
 fun Drawer(
-    onCategorySelect: (categoryId: Int?) -> Unit,
+    onCategorySelect: (categoryId: Int?, closeDrawer: Boolean) -> Unit,
     viewModel: CategoriesDrawerViewModel = hiltViewModel()
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
@@ -46,7 +46,7 @@ fun Drawer(
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
             when (event) {
-                is OneTimeEvent.SelectCategory -> onCategorySelect(event.categoryId)
+                is OneTimeEvent.SelectCategory -> onCategorySelect(event.categoryId, true)
                 is OneTimeEvent.ScrollCategoryListDown -> {
                     if (state.categories.isNotEmpty())
                         categoriesLazyListState.animateScrollToItem(state.categories.lastIndex)

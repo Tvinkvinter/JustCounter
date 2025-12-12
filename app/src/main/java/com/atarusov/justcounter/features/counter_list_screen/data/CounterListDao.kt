@@ -11,21 +11,30 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CounterListDao {
 
-    @Query("SELECT * FROM counters ORDER BY position")
-    fun getCounterList(): Flow<List<Counter>>
+    @Query("""
+        SELECT * FROM counters
+        WHERE (:categoryId IS NULL AND categoryId IS NULL)
+            OR (:categoryId IS NOT NULL AND categoryId = :categoryId)
+        ORDER BY position
+    """)
+    fun getCounterList(categoryId: Int?): Flow<List<Counter>>
 
     @Transaction
     suspend fun addCounter(counter: Counter) {
         if (counter.position != Counter.UNDEFINED_POSITION)
             throw IllegalStateException("Do not pass position parameter when adding Counter")
         val counterWithPosition = counter.copy(
-            position = getMaxCounterPosition()?.let { it + 1 } ?: 0
+            position = getMaxCounterPosition(counter.categoryId)?.let { it + 1 } ?: 0
         )
         addCounterRow(counterWithPosition)
     }
 
-    @Query("SELECT MAX(position) FROM counters")
-    suspend fun getMaxCounterPosition(): Int?
+    @Query("""
+        SELECT MAX(position) FROM counters 
+        WHERE (:categoryId IS NULL AND categoryId IS NULL) 
+            OR (:categoryId IS NOT NULL AND categoryId = :categoryId)
+""")
+    suspend fun getMaxCounterPosition(categoryId: Int?): Int?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addCounterRow(counter: Counter)

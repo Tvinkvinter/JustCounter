@@ -18,6 +18,10 @@ class Reducer @Inject constructor() {
             )
             is InternalAction.SwapCounters -> swapCounters(previousState, internalAction.fromIndex, internalAction.toIndex)
             InternalAction.SwitchRemoveMode -> previousState.copy(removeMode = !previousState.removeMode)
+            is InternalAction.ChangeCategory -> previousState.copy(
+                categoryId = internalAction.categoryId,
+                counters = listOf()
+            )
 
             InternalAction.ShowDragTip,
             InternalAction.ScrollDown,
