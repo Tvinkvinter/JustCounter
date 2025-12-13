@@ -74,12 +74,13 @@ fun CounterListScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val lazyGridState = rememberLazyGridState()
 
+    val dragTipMessage = stringResource(R.string.counter_list_screen_drag_tip)
+
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
             when (event) {
                 OneTimeEvent.ShowDragTip -> {
-                    val errorMessage = context.getString(R.string.counter_list_screen_drag_tip)
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, dragTipMessage, Toast.LENGTH_SHORT).show()
                 }
                 OneTimeEvent.ScrollDown -> lazyGridState.animateScrollToItem(state.counters.lastIndex)
                 is OneTimeEvent.NavigateToCounterFullScreen -> onNavigateToCounterFullScreen(event.counter)
