@@ -1,12 +1,12 @@
 package com.atarusov.justcounter.ui.theme
 
-import androidx.annotation.Keep
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import com.atarusov.justcounter.common.CounterColor
 
 val black = Color(0xFF2A2A2D)
 val white = Color(0xFFFFFFFF)
@@ -19,11 +19,6 @@ val green = Color(0xFF34C759)
 val lightOrange = Color(0xFFFFC75F)
 val dangerRed = Color(0xDFFF3B30)
 val lightBlue = Color(0xFF2BB7DA)
-
-@Keep
-enum class CounterColor {
-    Blue, Cyan, Green, Yellow, Orange, Red, Pink, Purple, Brown, Gray
-}
 
 object CounterColorProvider {
 

@@ -1,10 +1,10 @@
 package com.atarusov.justcounter.common
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.atarusov.justcounter.ui.theme.CounterColor
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import kotlinx.serialization.Serializable
 import kotlin.uuid.ExperimentalUuidApi
@@ -46,4 +46,9 @@ data class Counter(
             categoryId = 0
         )
     }
+}
+
+@Keep
+enum class CounterColor {
+    Blue, Cyan, Green, Yellow, Orange, Red, Pink, Purple, Brown, Gray
 }

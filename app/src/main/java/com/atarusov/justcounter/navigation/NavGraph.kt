@@ -5,10 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import com.atarusov.justcounter.common.CounterColor
 import com.atarusov.justcounter.features.counter_full_screen.presentation.ui.CounterFullScreen
 import com.atarusov.justcounter.features.counter_list_screen.presentation.ui.CounterListScreen
 import com.atarusov.justcounter.features.edit_dialog.presentation.ui.EditCounterDialog
-import com.atarusov.justcounter.ui.theme.CounterColor
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,7 +1,6 @@
 package com.atarusov.justcounter.common
 
 import androidx.room.TypeConverter
-import com.atarusov.justcounter.ui.theme.CounterColor
 import kotlinx.serialization.json.Json
 
 class Converters {

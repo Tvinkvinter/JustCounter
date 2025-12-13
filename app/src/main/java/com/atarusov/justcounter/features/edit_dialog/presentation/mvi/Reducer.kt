@@ -1,9 +1,9 @@
 package com.atarusov.justcounter.features.edit_dialog.presentation.mvi
 
 import androidx.compose.ui.text.input.TextFieldValue
+import com.atarusov.justcounter.common.CounterColor
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
-import com.atarusov.justcounter.ui.theme.CounterColor
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {

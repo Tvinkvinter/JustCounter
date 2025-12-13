@@ -31,10 +31,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.atarusov.justcounter.R
+import com.atarusov.justcounter.common.CounterColor
 import com.atarusov.justcounter.ui.theme.getReadableContentColor
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.StepConfiguratorState
 import com.atarusov.justcounter.features.edit_dialog.presentation.ui.callbacks.StepConfiguratorCallbacks
-import com.atarusov.justcounter.ui.theme.CounterColor
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
