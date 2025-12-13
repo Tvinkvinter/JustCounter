@@ -123,14 +123,14 @@ private fun CounterListScreenUI(
         topBar = {
             CounterListTopAppBar(
                 removeMode = state.removeMode,
-                categoryId = state.categoryId,
+                categoryName = state.category?.name  ?: stringResource(R.string.app_name),
                 onDrawerIconClick = onDrawerIconClick,
                 onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
             )
         },
         floatingActionButton = {
             CounterListFAB(
-                onClick = { onAction(Action.AddCounter(state.categoryId)) },
+                onClick = { onAction(Action.AddCounter(state.category?.id)) },
                 isVisible = !state.removeMode
             )
         },
@@ -149,14 +149,14 @@ private fun CounterListScreenUI(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CounterListTopAppBar(
     removeMode: Boolean,
-    categoryId: Int?,
+    categoryName: String,
     onDrawerIconClick: () -> Unit,
     onRemoveModeSwitch: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = categoryId?.toString() ?: stringResource(R.string.app_name),
+                text = categoryName,
                 style = MaterialTheme.typography.headlineLarge
             )
         },
@@ -286,8 +286,8 @@ private fun CounterList(
 private fun CounterTopAppBarPreview() {
     JustCounterTheme {
         Column {
-            CounterListTopAppBar(true, null, {}) {}
-            CounterListTopAppBar(false, null, {}) {}
+            CounterListTopAppBar(true, "Category name", {}) {}
+            CounterListTopAppBar(false, "Category name", {}) {}
         }
     }
 }

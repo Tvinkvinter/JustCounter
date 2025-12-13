@@ -18,8 +18,8 @@ class Bootstrapper @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun bootstrap(categoryIds: StateFlow<Int?>): Flow<InternalAction> = categoryIds.flatMapLatest { categoryId ->
         flow {
-            repository.getCountersFlow(categoryId).collect { counters ->
-                if (counters.isEmpty()) {
+            repository.getCountersOfCategory(categoryId).collect { countersOfCategory ->
+                if (countersOfCategory.counters.isEmpty()) {
                     val newCounter = Counter(
                         title = defaultCounterTitles.random(),
                         value = 0,
@@ -31,7 +31,7 @@ class Bootstrapper @Inject constructor(
                     repository.addCounter(newCounter)
                     emit(InternalAction.AddCounter(newCounter))
                 }
-                emit(InternalAction.LoadCounters(counters))
+                emit(InternalAction.LoadData(countersOfCategory))
             }
         }
     }

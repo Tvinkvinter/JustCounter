@@ -1,15 +1,22 @@
 package com.atarusov.justcounter.features.counter_list_screen.data
 
 import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.data.model.CountersOfCategory
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CounterListRepositoryImpl @Inject constructor(
     val counterListDao: CounterListDao
 ) : CounterListRepository {
 
-    override suspend fun getCountersFlow(categoryId: Int?): Flow<List<Counter>> =
-        counterListDao.getCounterList(categoryId)
+    override suspend fun getCountersOfCategory(categoryId: Int?): Flow<CountersOfCategory> =
+        counterListDao.getCountersWithCategory(categoryId).map { countersWithCategory ->
+            CountersOfCategory(
+                category = countersWithCategory.first().category,
+                counters = countersWithCategory.map { it.counter }
+            )
+        }
 
     override suspend fun addCounter(counter: Counter) = counterListDao.addCounter(counter)
 

@@ -8,7 +8,10 @@ import javax.inject.Inject
 class Reducer @Inject constructor() {
     fun reduce(previousState: State, internalAction: InternalAction): State =
         when (internalAction) {
-            is InternalAction.LoadCounters -> previousState.copy(counters = internalAction.counters)
+            is InternalAction.LoadData -> previousState.copy(
+                category = internalAction.countersOfCategory.category,
+                counters = internalAction.countersOfCategory.counters
+            )
             is InternalAction.AddCounter -> addCounter(previousState, internalAction.counter)
             is InternalAction.RemoveCounter -> removeCounter(previousState, internalAction.counterId)
             is InternalAction.UpdateCounterValue -> updateCounterValue(
@@ -18,10 +21,10 @@ class Reducer @Inject constructor() {
             )
             is InternalAction.SwapCounters -> swapCounters(previousState, internalAction.fromIndex, internalAction.toIndex)
             InternalAction.SwitchRemoveMode -> previousState.copy(removeMode = !previousState.removeMode)
-            is InternalAction.ChangeCategory -> previousState.copy(
+            is InternalAction.ChangeCategory -> previousState/*.copy(
                 categoryId = internalAction.categoryId,
                 counters = listOf()
-            )
+            )*/ //todo
 
             InternalAction.ShowDragTip,
             InternalAction.ScrollDown,

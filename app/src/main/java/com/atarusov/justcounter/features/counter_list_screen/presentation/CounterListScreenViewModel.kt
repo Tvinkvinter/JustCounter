@@ -39,10 +39,10 @@ class CounterListScreenViewModel @Inject constructor(
     private val _screenState = MutableStateFlow(initialState)
     val screenState: StateFlow<State> = _screenState.asStateFlow()
 
-    private val _categoryIds = screenState.map { it.categoryId }.stateIn(
+    private val _categoryIds = screenState.map { it.category?.id }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = initialState.categoryId
+        initialValue = initialState.category?.id
     )
 
     init {

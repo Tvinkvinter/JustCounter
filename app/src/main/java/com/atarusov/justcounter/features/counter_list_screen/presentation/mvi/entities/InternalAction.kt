@@ -1,9 +1,10 @@
 package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities
 
 import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.data.model.CountersOfCategory
 
 sealed class InternalAction {
-    data class LoadCounters(val counters: List<Counter>) : InternalAction()
+    data class LoadData(val countersOfCategory: CountersOfCategory) : InternalAction()
     data class AddCounter(val counter: Counter) : InternalAction()
     data class RemoveCounter(val counterId: String) : InternalAction()
     data class UpdateCounterValue(val counterId: String, val newValue: Int) : InternalAction()

@@ -6,18 +6,31 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_list_screen.data.model.CounterWithCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CounterListDao {
 
     @Query("""
-        SELECT * FROM counters
-        WHERE (:categoryId IS NULL AND categoryId IS NULL)
+    SELECT
+        counters.id AS counter_id,
+        counters.title AS counter_title,
+        counters.value AS counter_value,
+        counters.color AS counter_color,
+        counters.steps AS counter_steps,
+        counters.position AS counter_position,
+        counters.categoryId AS counter_categoryId,
+
+        categories.id AS category_id,
+        categories.name AS category_name
+    FROM counters
+    LEFT JOIN categories ON counters.categoryId = categories.id
+    WHERE (:categoryId IS NULL AND categoryId IS NULL)
             OR (:categoryId IS NOT NULL AND categoryId = :categoryId)
-        ORDER BY position
-    """)
-    fun getCounterList(categoryId: Int?): Flow<List<Counter>>
+    ORDER BY counter_position
+""")
+    fun getCountersWithCategory(categoryId: Int?): Flow<List<CounterWithCategory>>
 
     @Transaction
     suspend fun addCounter(counter: Counter) {
