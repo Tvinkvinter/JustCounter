@@ -13,7 +13,7 @@ class CounterListRepositoryImpl @Inject constructor(
     override suspend fun getCountersOfCategory(categoryId: Int?): Flow<CountersOfCategory> =
         counterListDao.getCountersWithCategory(categoryId).map { countersWithCategory ->
             CountersOfCategory(
-                category = countersWithCategory.first().category,
+                category = countersWithCategory.firstOrNull()?.category,
                 counters = countersWithCategory.map { it.counter }
             )
         }

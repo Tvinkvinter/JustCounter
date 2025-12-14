@@ -79,6 +79,7 @@ fun CounterListScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
             when (event) {
+                is OneTimeEvent.ChangeCategory -> viewModel.setCategoryId(event.id)
                 OneTimeEvent.ShowDragTip -> {
                     Toast.makeText(context, dragTipMessage, Toast.LENGTH_SHORT).show()
                 }

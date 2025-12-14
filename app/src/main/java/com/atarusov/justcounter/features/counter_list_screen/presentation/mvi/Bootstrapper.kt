@@ -16,7 +16,8 @@ class Bootstrapper @Inject constructor(
     val defaultCounterTitles: List<String>
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun bootstrap(categoryIds: StateFlow<Int?>): Flow<InternalAction> = categoryIds.flatMapLatest { categoryId ->
+    fun bootstrap(categoryIds: StateFlow<Int?>): Flow<InternalAction> =
+        categoryIds.flatMapLatest { categoryId ->
         flow {
             repository.getCountersOfCategory(categoryId).collect { countersOfCategory ->
                 if (countersOfCategory.counters.isEmpty()) {

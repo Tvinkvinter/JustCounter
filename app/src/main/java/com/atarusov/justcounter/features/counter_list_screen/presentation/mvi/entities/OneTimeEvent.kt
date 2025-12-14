@@ -3,6 +3,7 @@ package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.e
 import com.atarusov.justcounter.common.Counter
 
 sealed class OneTimeEvent {
+    data class ChangeCategory(val id: Int?) : OneTimeEvent()
     data object ScrollDown: OneTimeEvent()
     data object ShowDragTip : OneTimeEvent()
     data class NavigateToCounterFullScreen(val counter: Counter) : OneTimeEvent()

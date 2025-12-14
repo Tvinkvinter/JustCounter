@@ -9,11 +9,11 @@ sealed class InternalAction {
     data class RemoveCounter(val counterId: String) : InternalAction()
     data class UpdateCounterValue(val counterId: String, val newValue: Int) : InternalAction()
     data class SwapCounters(val fromIndex: Int, val toIndex: Int) : InternalAction()
-    data object ShowDragTip: InternalAction()
 
-    data object SwitchRemoveMode : InternalAction()
-    data object ScrollDown : InternalAction()
     data class ChangeCategory(val categoryId: Int?): InternalAction()
+    data object SwitchRemoveMode : InternalAction()
+    data object ShowDragTip: InternalAction()
+    data object ScrollDown : InternalAction()
     data class NavigateToCounterFullScreen(val counter: Counter) : InternalAction()
     data class OpenEditCounterDialog(val counter: Counter) : InternalAction()
 }

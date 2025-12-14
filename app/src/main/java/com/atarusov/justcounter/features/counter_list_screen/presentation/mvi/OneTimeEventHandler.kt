@@ -7,6 +7,7 @@ import javax.inject.Inject
 class OneTimeEventHandler @Inject constructor() {
     fun handleEvent(internalAction: InternalAction): OneTimeEvent? {
         return when (internalAction) {
+            is InternalAction.ChangeCategory -> OneTimeEvent.ChangeCategory(internalAction.categoryId)
             InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
             InternalAction.ScrollDown -> OneTimeEvent.ScrollDown
             is InternalAction.NavigateToCounterFullScreen ->
@@ -19,7 +20,6 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.RemoveCounter,
             is InternalAction.UpdateCounterValue,
             is InternalAction.SwapCounters,
-            is InternalAction.ChangeCategory,
             InternalAction.SwitchRemoveMode -> null
         }
     }
