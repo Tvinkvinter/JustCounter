@@ -11,8 +11,7 @@ class Bootstrapper @Inject constructor(
 ) {
     fun bootstrap(counterId: String): Flow<InternalAction> = flow {
         repository.getCounterFlowById(counterId).collect {
-            if (it == null) return@collect
-            emit(InternalAction.LoadCounter(it))
+            emit(InternalAction.LoadData(it))
         }
     }
 }

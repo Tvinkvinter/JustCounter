@@ -11,7 +11,7 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.OpenEditCounterDialog ->
                 OneTimeEvent.OpenEditCounterDialog(internalAction.counter)
 
-            is InternalAction.LoadCounter,
+            is InternalAction.LoadData,
             is InternalAction.UpdateCounterValue,
             InternalAction.SwitchRemoveMode -> null
 

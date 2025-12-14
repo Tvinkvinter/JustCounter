@@ -13,10 +13,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CounterFullScreen(
-    val title: String,
-    val value: Int,
-    val color: CounterColor,
-    val steps: List<Int>,
     val counterId: String
 )
 
@@ -55,7 +51,7 @@ fun SetupNavGraph(
         composable<CounterListScreenRoute> {
             CounterListScreen(
                 onNavigateToCounterFullScreen = { counter ->
-                    val route = with(counter) { CounterFullScreen(title, value, color, steps, id) }
+                    val route = CounterFullScreen(counter.id)
                     navController.navigate(route)
                 },
                 onNavigateToEditDialog = { counter ->

@@ -37,7 +37,7 @@ fun CounterFullScreen(
     onNavigateToEditDialog: (counter: Counter) -> Unit,
     viewModel: CounterFullScreenViewModel = hiltViewModel()
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val stateVM by viewModel.screenState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.screenEvents.collect { event ->
@@ -48,17 +48,21 @@ fun CounterFullScreen(
         }
     }
 
-    CounterFullScreenUI(state, viewModel::onAction)
+    when (val state = stateVM) {
+        is State.Loading -> {}
+        is State.Loaded -> CounterFullScreenUI(state, viewModel::onAction)
+    }
 }
 
 @Composable
 fun CounterFullScreenUI(
-    state: State,
+    state: State.Loaded,
     onAction: (Action) -> Unit,
 ) {
     Scaffold(
         topBar = {
             CounterFullScreenTopAppBar(
+                title = state.categoryName ?: stringResource(R.string.app_name),
                 removeMode = state.removeMode,
                 onBackPressed = { onAction(Action.BackPressed) },
                 onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
@@ -89,6 +93,7 @@ fun CounterFullScreenUI(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CounterFullScreenTopAppBar(
+    title: String,
     removeMode: Boolean,
     onBackPressed: () -> Unit,
     onRemoveModeSwitch: () -> Unit
@@ -96,7 +101,7 @@ private fun CounterFullScreenTopAppBar(
     TopAppBar(
         title = {
             Text(
-                text = stringResource(R.string.app_name),
+                text = title,
                 style = MaterialTheme.typography.headlineLarge
             )
         },

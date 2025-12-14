@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.Actor
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.Bootstrapper
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.OneTimeEventHandler
@@ -34,19 +33,17 @@ class CounterFullScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<CounterFullScreen>()
-    private val initialCounterState = with(route) {
-        Counter(title, value, color, steps, id = counterId)
-    }
+    private val counterId = route.counterId
 
     private val _screenEvents = MutableSharedFlow<OneTimeEvent>()
     val screenEvents: SharedFlow<OneTimeEvent> = _screenEvents.asSharedFlow()
 
-    private val _screenState = MutableStateFlow(State(false, initialCounterState))
+    private val _screenState = MutableStateFlow<State>(State.Loading)
     val screenState: StateFlow<State> = _screenState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            bootstrapper.bootstrap(initialCounterState.id).collect { internalAction ->
+            bootstrapper.bootstrap(counterId).collect { internalAction ->
                 _screenState.update { previousState ->
                     reducer.reduce(previousState, internalAction)
                 }
