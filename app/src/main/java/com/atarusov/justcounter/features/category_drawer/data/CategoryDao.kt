@@ -48,4 +48,15 @@ interface CategoryDao {
 
     @Query("UPDATE categories SET position = position - 1 WHERE position > :deletedPosition")
     suspend fun shiftPositions(deletedPosition: Int)
+
+    @Transaction
+    suspend fun swapCategoriesOnPositions(firstPosition: Int, secondPosition: Int) {
+        val temp = -1
+        setPosition(firstPosition, temp)
+        setPosition(secondPosition, firstPosition)
+        setPosition(temp, secondPosition)
+    }
+
+    @Query("UPDATE categories SET position = :newPosition WHERE position = :oldPosition")
+    suspend fun setPosition(oldPosition: Int, newPosition: Int)
 }

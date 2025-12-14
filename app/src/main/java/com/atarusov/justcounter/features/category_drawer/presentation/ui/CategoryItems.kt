@@ -1,5 +1,6 @@
 package com.atarusov.justcounter.features.category_drawer.presentation.ui
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -33,7 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -62,6 +62,7 @@ private enum class RegularCategoryItemMode {
 fun RegularCategoryItem(
     category: Category,
     isSelected: Boolean,
+    dragMode: Boolean,
     onClick: () -> Unit,
     onEdit: (newName: String) -> Unit,
     onDelete: () -> Unit,
@@ -73,6 +74,9 @@ fun RegularCategoryItem(
     var menuSize by remember { mutableFloatStateOf(0f) }
     val offset = remember { Animatable(initialValue = menuSize) }
 
+    val itemScale by animateFloatAsState(if (dragMode) 1.05f else 1f)
+    val itemBackground by animateColorAsState(if (dragMode) MaterialTheme.colorScheme.surfaceContainerHigh
+                                              else MaterialTheme.colorScheme.background)
     val focusManager = LocalFocusManager.current
     val textFieldFocusRequester = remember { FocusRequester() }
     val textFieldState = rememberTextFieldState(initialText = category.name)
@@ -119,16 +123,24 @@ fun RegularCategoryItem(
         )
     }
 
-    Row(modifier = modifier.swipeCategoryItemModifier()) {
+    Row(modifier = modifier
+        .drawBehind { drawRect(itemBackground) }
+        .swipeCategoryItemModifier()
+    ) {
         Row(
             modifier = Modifier
                 .weight(1f)
                 .height(Dimensions.Size.large)
-                .clip(RoundedCornerShape(24.dp))
+                .graphicsLayer {
+                    scaleY = itemScale
+                    scaleX = itemScale
+                }
                 .clickable(
+                    enabled = !dragMode,
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { onClick() },
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = onClick
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(Modifier.width(Dimensions.Spacing.medium))
@@ -315,9 +327,9 @@ fun CategoryItemPreview() {
             modifier = Modifier.width(300.dp)
         ) {
             NoCategoryItem(true, {})
-            RegularCategoryItem(Category.getPreviewCategory(), false, {}, {}, {})
-            RegularCategoryItem(Category.getPreviewCategory(), false, {}, {}, {})
-            RegularCategoryItem(Category.getPreviewCategory(), false, {}, {}, {})
+            RegularCategoryItem(Category.getPreviewCategory(), false, false, {}, {}, {})
+            RegularCategoryItem(Category.getPreviewCategory(), false, false, {}, {}, {})
+            RegularCategoryItem(Category.getPreviewCategory(), false, false, {}, {}, {})
             AddCategoryItem({})
         }
     }

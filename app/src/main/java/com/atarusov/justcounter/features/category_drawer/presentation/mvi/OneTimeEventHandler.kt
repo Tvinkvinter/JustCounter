@@ -10,6 +10,7 @@ class OneTimeEventHandler @Inject constructor() {
             is InternalAction.SelectCategory -> OneTimeEvent.SelectCategory(internalAction.categoryId)
             is InternalAction.ScrollCategoryListDown -> OneTimeEvent.ScrollCategoryListDown
 
+            is InternalAction.SwapCategories,
             is InternalAction.LoadCategories -> null
         }
     }

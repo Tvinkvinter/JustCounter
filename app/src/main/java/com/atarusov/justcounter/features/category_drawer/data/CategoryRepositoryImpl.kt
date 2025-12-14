@@ -10,8 +10,10 @@ class CategoryRepositoryImpl @Inject constructor(
 
     override suspend fun getCategoriesFlow(): Flow<List<Category>> = categoryDao.getCategories()
     override suspend fun addCategory(name: String) = categoryDao.addCategory(Category(name))
-    override suspend fun renameCategory(categoryId: Int, newName: String) {
+    override suspend fun renameCategory(categoryId: Int, newName: String) =
         categoryDao.renameCategoryById(categoryId, newName)
-    }
+
     override suspend fun removeCategory(categoryId: Int) = categoryDao.deleteCategoryById(categoryId)
+    override suspend fun swapCategories(firstPosition: Int, secondPosition: Int) =
+        categoryDao.swapCategoriesOnPositions(firstPosition, secondPosition)
 }

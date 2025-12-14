@@ -25,6 +25,10 @@ class Actor @Inject constructor(
                 repository.removeCategory(action.categoryId)
                 if (action.isSelected) emit(InternalAction.SelectCategory(null))
             }
+            is Action.SwapCategories -> flow {
+                emit(InternalAction.SwapCategories(action.firstIndex, action.secondIndex))
+                repository.swapCategories(action.firstIndex, action.secondIndex)
+            }
         }
     }
 

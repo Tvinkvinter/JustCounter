@@ -5,5 +5,6 @@ import com.atarusov.justcounter.common.Category
 sealed class InternalAction {
     data class LoadCategories(val categories: List<Category>) : InternalAction()
     data class SelectCategory(val categoryId: Int?) : InternalAction()
+    data class SwapCategories(val fromIndex: Int, val toIndex: Int) : InternalAction()
     data object ScrollCategoryListDown : InternalAction()
 }

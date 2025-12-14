@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +35,9 @@ import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entiti
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.State
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
+import sh.calvin.reorderable.DragGestureDetector
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun Drawer(
@@ -79,44 +84,82 @@ fun DrawerContent(
             style = MaterialTheme.typography.headlineLarge
         )
         Spacer(Modifier.height(Dimensions.Spacing.small))
-        Column(
-            modifier = Modifier.padding(start = Dimensions.Spacing.small)
+        CategoryList(state, categoryLazyListState, onAction)
+        Spacer(Modifier.height(Dimensions.Spacing.large))
+        DrawerHints()
+    }
+}
+
+@Composable
+fun CategoryList(
+    state: State,
+    lazyListState: LazyListState,
+    onAction: (Action) -> Unit
+) {
+    val hapticFeedback = LocalHapticFeedback.current
+
+    Column(
+        modifier = Modifier.padding(start = Dimensions.Spacing.small)
+    ) {
+        NoCategoryItem(
+            isSelected = state.selectedCategoryId == null,
+            onClick = { onAction(Action.SelectCategory(null)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(Dimensions.Size.extraMedium)
+        )
+
+        val reorderableLazyListState =
+            rememberReorderableLazyListState(lazyListState) { first, second ->
+                onAction(Action.SwapCategories(first.index, second.index))
+            }
+
+        LazyColumn(
+            modifier = Modifier.heightIn(max = Dimensions.Size.extraMedium * 10),
+            state = lazyListState
         ) {
-            NoCategoryItem (
-                isSelected = state.selectedCategoryId == null,
-                onClick = { onAction(Action.SelectCategory(null)) },
-                modifier = Modifier.fillMaxWidth().height(Dimensions.Size.extraMedium)
-            )
-            LazyColumn(
-                modifier = Modifier.heightIn(max = Dimensions.Size.extraMedium * 10),
-                state = categoryLazyListState
-            ) {
-                items(
-                    items = state.categories,
-                    key = { it.id }
-                ) { category ->
+
+            items(
+                items = state.categories,
+                key = { it.id }
+            ) { category ->
+                ReorderableItem(
+                    state = reorderableLazyListState,
+                    key = category.id
+                ) { isDragging ->
                     RegularCategoryItem(
                         category = category,
                         isSelected = category.id == state.selectedCategoryId,
+                        dragMode = isDragging,
                         onClick = { onAction(Action.SelectCategory(category.id)) },
                         onEdit = { onAction(Action.RenameCategory(category.id, it)) },
                         onDelete = {
                             val isSelected = category.id == state.selectedCategoryId
                             onAction(Action.RemoveCategory(category.id, isSelected))
                         },
-                        modifier = Modifier.fillMaxWidth().height(Dimensions.Size.extraMedium)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimensions.Size.extraMedium)
+                            .draggableHandle(
+                                onDragStarted = {
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                onDragStopped = {
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                                },
+                                dragGestureDetector = DragGestureDetector.LongPress
+                            )
                     )
                 }
             }
-            AddCategoryItem(
-                onInputDone = { text -> onAction(Action.AddCategory(text)) },
-                modifier = Modifier.height(Dimensions.Size.extraMedium)
-
-            )
         }
-        Spacer(Modifier.height(Dimensions.Spacing.large))
-        DrawerHints()
+        AddCategoryItem(
+            onInputDone = { text -> onAction(Action.AddCategory(text)) },
+            modifier = Modifier.height(Dimensions.Size.extraMedium)
+
+        )
     }
+
 }
 
 @Composable

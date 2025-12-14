@@ -14,6 +14,7 @@ private val DarkColorScheme = darkColorScheme(
     primaryContainer = lightOrange,
     onPrimaryContainer = extraDarkGrey,
     onTertiary = white,
+    surfaceContainerHigh = black,
     surfaceContainerHighest = darkGrey,
     inverseOnSurface = extraDarkGrey
 )
@@ -26,6 +27,7 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = lightOrange,
     onPrimaryContainer = extraDarkGrey,
     onTertiary = white,
+    surfaceContainerHigh = lightGrey,
     surfaceContainerHighest = lightGrey,
     inverseOnSurface = white
 )
