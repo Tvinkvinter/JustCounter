@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counter_full_screen.presentation.ui
+package com.atarusov.justcounter.features.counter_full_screen.presentation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,11 +22,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.Counter
-import com.atarusov.justcounter.features.counter_full_screen.presentation.CounterFullScreenViewModel
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.State
-import com.atarusov.justcounter.features.counter_full_screen.presentation.ui.callbacks.CounterFullScreenCallbacks
+import com.atarusov.justcounter.features.counter_full_screen.presentation.components.CounterFullScreenCard
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.dangerRed

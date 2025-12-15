@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.category_drawer.presentation.ui
+package com.atarusov.justcounter.features.category_drawer.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,10 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
-import com.atarusov.justcounter.features.category_drawer.presentation.CategoriesDrawerViewModel
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.State
+import com.atarusov.justcounter.features.category_drawer.presentation.components.AddCategoryItem
+import com.atarusov.justcounter.features.category_drawer.presentation.components.NoCategoryItem
+import com.atarusov.justcounter.features.category_drawer.presentation.components.RegularCategoryItem
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import sh.calvin.reorderable.DragGestureDetector

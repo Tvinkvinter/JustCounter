@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.category_drawer.presentation.ui
+package com.atarusov.justcounter.features.category_drawer.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable

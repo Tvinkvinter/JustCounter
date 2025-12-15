@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.edit_dialog.presentation.ui
+package com.atarusov.justcounter.features.edit_dialog.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -70,10 +70,8 @@ import com.atarusov.justcounter.R
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
-import com.atarusov.justcounter.features.edit_dialog.presentation.ui.callbacks.StepConfiguratorCallbacks
-import com.atarusov.justcounter.features.edit_dialog.presentation.ui.components.ColorPalette
-import com.atarusov.justcounter.features.edit_dialog.presentation.ui.components.StepConfigurator
-import com.atarusov.justcounter.features.edit_dialog.presentation.EditCounterDialogViewModel
+import com.atarusov.justcounter.features.edit_dialog.presentation.components.ColorPalette
+import com.atarusov.justcounter.features.edit_dialog.presentation.components.StepConfigurator
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme

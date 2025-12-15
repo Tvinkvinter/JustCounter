@@ -1,4 +1,4 @@
-package com.atarusov.justcounter.features.counter_full_screen.presentation.ui.callbacks
+package com.atarusov.justcounter.features.counter_full_screen.presentation
 
 data class CounterFullScreenCallbacks(
     val onPLusClick: (step: Int) -> Unit,

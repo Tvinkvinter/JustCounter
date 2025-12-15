@@ -1,32 +1,28 @@
-package com.atarusov.justcounter.features.counter_full_screen.presentation.ui
+package com.atarusov.justcounter.features.counter_list_screen.presentation.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,27 +31,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.common.Counter.Companion.getPreviewCounter
-import com.atarusov.justcounter.features.counter_full_screen.presentation.ui.callbacks.CounterFullScreenCallbacks
+import com.atarusov.justcounter.features.counter_list_screen.presentation.CounterItemCallbacks
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.getReadableContentColor
+import sh.calvin.reorderable.DragGestureDetector
+import sh.calvin.reorderable.ReorderableCollectionItemScope
 
 @Composable
-fun CounterFullScreenCard(
+fun CounterItem(
     state: Counter,
     removeMode: Boolean,
-    callbacks: CounterFullScreenCallbacks,
-    modifier: Modifier = Modifier
+    dragMode: Boolean,
+    callbacks: CounterItemCallbacks,
+    modifier: Modifier = Modifier,
+    reorderableScope: ReorderableCollectionItemScope? = null
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
+
+    val cardScale by animateFloatAsState(if (dragMode) 1.05f else 1f)
     val contentAlpha by animateFloatAsState(
         targetValue = if (removeMode) 0.5f else 1f,
         animationSpec = tween(durationMillis = 300)
@@ -64,44 +70,58 @@ fun CounterFullScreenCard(
     val itemColor = CounterColorProvider.getColor(state.color)
     val contentColor = itemColor.getReadableContentColor()
 
-    Column(
-        modifier = modifier.padding(
-            horizontal = Dimensions.Spacing.large,
-            vertical = Dimensions.Spacing.huge
-        )
-    ) {
+    Column(modifier.width(150.dp)) {
         Card(
-            shape = RoundedCornerShape(Dimensions.Radius.extraLarge),
+            modifier = Modifier
+                .graphicsLayer {
+                    scaleX = cardScale
+                    scaleY = cardScale
+                }.clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = callbacks.onCounterTap
+                ).then(
+                    reorderableScope?.run {
+                        Modifier.draggableHandle(
+                            onDragStarted = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            },
+                            onDragStopped = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                            },
+                            dragGestureDetector = DragGestureDetector.LongPress
+                        )
+                    } ?: Modifier
+                ),
+            shape = RoundedCornerShape(Dimensions.Radius.medium),
             colors = CardDefaults.cardColors(
                 containerColor = itemColor,
                 contentColor = contentColor
             ),
             elevation = CardDefaults.cardElevation(Dimensions.Elevation.card),
-            modifier = Modifier.weight(1f)
         ) {
             Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = Dimensions.Spacing.extraMedium)
-                        .padding(horizontal = Dimensions.Spacing.extraMedium),
+                        .padding(top = Dimensions.Spacing.extraSmall),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_shrink_arrow),
-                        contentDescription = stringResource(R.string.counter_card_shrink_btn_description),
+                        painter = painterResource(R.drawable.ic_expand_arrow),
+                        contentDescription = stringResource(R.string.counter_card_expand_btn_description),
                         modifier = Modifier
-                            .size(Dimensions.Size.medium)
+                            .padding(start = Dimensions.Spacing.extraSmall)
+                            .size(Dimensions.Size.small)
                             .graphicsLayer { alpha = 0.5f }
                             .clickable(
-                                onClick = { if (!removeMode) callbacks.onShrinkClick() },
+                                onClick = { if (!removeMode) callbacks.onExpandClick() },
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(
                                     bounded = false,
-                                    radius = Dimensions.Radius.large
+                                    radius = Dimensions.Radius.medium
                                 ),
                             ),
                         tint = contentColor
@@ -115,9 +135,9 @@ fun CounterFullScreenCard(
                         color = contentColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.displaySmall.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = contentColor,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     )
 
@@ -126,9 +146,13 @@ fun CounterFullScreenCard(
                             if (removeMode) R.drawable.ic_cross
                             else R.drawable.ic_pencil
                         ),
-                        contentDescription = stringResource(R.string.counter_full_screen_back_btn_description),
+                        contentDescription = stringResource(
+                            if (removeMode) R.string.counter_card_cross_btn_description
+                            else R.string.counter_card_edit_btn_description
+                        ),
                         modifier = Modifier
-                            .size(Dimensions.Size.medium)
+                            .padding(end = Dimensions.Spacing.extraSmall)
+                            .size(Dimensions.Size.small)
                             .graphicsLayer { alpha = if (removeMode) 1f else 0.5f }
                             .clickable(
                                 onClick = {
@@ -138,71 +162,30 @@ fun CounterFullScreenCard(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(
                                     bounded = false,
-                                    radius = Dimensions.Radius.large
+                                    radius = Dimensions.Radius.medium
                                 ),
                             ),
                         tint = contentColor
                     )
                 }
-                Box(
+                Text(
+                    text = state.value.toString(),
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(
-                            horizontal = Dimensions.Spacing.huge,
-                            vertical = Dimensions.Spacing.medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = state.value.toString(),
-                        modifier = Modifier
-                            .graphicsLayer { alpha = contentAlpha },
-                        style = MaterialTheme.typography.displayLarge,
-                        autoSize = TextAutoSize.StepBased(),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = Dimensions.Spacing.small),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    for (index in state.steps.indices.reversed()) {
-                        if (index != 0) {
-                            ExtraStepButton(
-                                text = "−${state.steps[index]}",
-                                contentColor = contentColor,
-                                contentAlpha = contentAlpha,
-                                enabled = !removeMode,
-                                onClick = { callbacks.onMinusClick(state.steps[index]) },
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                    }
-                    for (index in state.steps.indices) {
-                        if (index != 0) {
-                            ExtraStepButton(
-                                text = "+${state.steps[index]}",
-                                contentColor = contentColor,
-                                contentAlpha = contentAlpha,
-                                enabled = !removeMode,
-                                onClick = { callbacks.onPLusClick(state.steps[index]) },
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                    }
-                }
+                        .graphicsLayer { alpha = contentAlpha }
+                        .padding(vertical = Dimensions.Spacing.extraMedium),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        textAlign = TextAlign.Center
+                    ),
+                    textAlign = TextAlign.Center,
+                    maxLines = 1
+                )
                 Row(
                     Modifier
-                        .height(Dimensions.Size.huge)
                         .padding(bottom = Dimensions.Spacing.extraSmall)
                         .graphicsLayer { alpha = contentAlpha },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Spacer(Modifier.width(Dimensions.Spacing.medium))
+                    Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
 
                     BasicText(
                         text = if (state.steps[0] == 1) "−" else "−${state.steps[0]}",
@@ -211,10 +194,7 @@ fun CounterFullScreenCard(
                             .clickable(
                                 onClick = { callbacks.onMinusClick(state.steps[0]) },
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(
-                                    bounded = false,
-                                    radius = Dimensions.Radius.huge
-                                ),
+                                indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                                 enabled = !removeMode
                             ),
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -225,11 +205,11 @@ fun CounterFullScreenCard(
                         color = { contentColor },
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = Dimensions.Typography.minFontSize,
-                            maxFontSize = MaterialTheme.typography.displayLarge.fontSize
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
                         )
                     )
 
-                    Spacer(Modifier.width(Dimensions.Spacing.extraMedium))
+                    Spacer(Modifier.width(Dimensions.Spacing.small))
 
                     BasicText(
                         text = if (state.steps[0] == 1) "+" else "+${state.steps[0]}",
@@ -238,10 +218,7 @@ fun CounterFullScreenCard(
                             .clickable(
                                 onClick = { callbacks.onPLusClick(state.steps[0]) },
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(
-                                    bounded = false,
-                                    radius = Dimensions.Radius.huge
-                                ),
+                                indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                                 enabled = !removeMode
                             ),
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -252,11 +229,42 @@ fun CounterFullScreenCard(
                         color = { contentColor },
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = Dimensions.Typography.minFontSize,
-                            maxFontSize = MaterialTheme.typography.displayLarge.fontSize
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize
                         )
                     )
 
-                    Spacer(Modifier.width(Dimensions.Spacing.medium))
+                    Spacer(Modifier.width(Dimensions.Spacing.extraSmall))
+                }
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = Dimensions.Spacing.extraSmall),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            for (index in state.steps.indices.reversed()) {
+                if (index != 0) {
+                    ExtraStepButton(
+                        text = "-${state.steps[index]}",
+                        containerColor = itemColor,
+                        contentColor = contentColor,
+                        contentAlpha = contentAlpha,
+                        enabled = !removeMode,
+                        onClick = { callbacks.onMinusClick(state.steps[index]) }
+                    )
+                }
+            }
+            for (index in state.steps.indices) {
+                if (index != 0) {
+                    ExtraStepButton(
+                        text = "+${state.steps[index]}",
+                        containerColor = itemColor,
+                        contentColor = contentColor,
+                        contentAlpha = contentAlpha,
+                        enabled = !removeMode,
+                        onClick = { callbacks.onPLusClick(state.steps[index]) }
+                    )
                 }
             }
         }
@@ -266,25 +274,27 @@ fun CounterFullScreenCard(
 @Composable
 private fun ExtraStepButton(
     text: String,
+    containerColor: Color,
     contentColor: Color,
     contentAlpha: Float,
     enabled: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit
 ) {
     BasicText(
         text = text,
-        modifier = modifier
-            .padding(horizontal = Dimensions.Spacing.small)
+        modifier = Modifier
+            .size(Dimensions.Size.extraMedium)
+            .background(color = containerColor, shape = CircleShape)
+            .padding(horizontal = Dimensions.Spacing.xxSmall)
             .wrapContentSize()
             .graphicsLayer { alpha = contentAlpha }
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(bounded = false, radius = Dimensions.Radius.huge),
+                indication = ripple(bounded = false, radius = Dimensions.Radius.large),
                 enabled = enabled
             ),
-        style = MaterialTheme.typography.displayMedium.copy(
+        style = MaterialTheme.typography.bodyMedium.copy(
             textAlign = TextAlign.Center,
         ),
         overflow = TextOverflow.Ellipsis,
@@ -292,36 +302,71 @@ private fun ExtraStepButton(
         color = { contentColor },
         autoSize = TextAutoSize.StepBased(
             minFontSize = Dimensions.Typography.minFontSize,
-            maxFontSize = MaterialTheme.typography.displayMedium.fontSize
+            maxFontSize = MaterialTheme.typography.bodyMedium.fontSize
         )
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
+@Preview(showBackground = true)
 @Composable
-fun CounterFullScreenCardPreview() {
+private fun CounterPreview() {
     JustCounterTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Some AppBar") },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Gray
-                    )
-                )
-            }
-        ) { paddingValues ->
-            CounterFullScreenCard(
-                state = getPreviewCounter(withCustomSteps = false),
-                removeMode = false,
-                callbacks = CounterFullScreenCallbacks.getEmptyCallbacks(),
-                modifier = Modifier.padding(paddingValues)
-            )
-        }
+        CounterItem(
+            state = getPreviewCounter(),
+            removeMode = false,
+            dragMode = false,
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
+            modifier = Modifier
+                .width(200.dp)
+                .padding(Dimensions.Spacing.medium)
+        )
+    }
+}
 
+@Preview(showBackground = true)
+@Composable
+private fun CounterInRemoveModePreview() {
+    JustCounterTheme {
+        CounterItem(
+            state = getPreviewCounter(),
+            removeMode = true,
+            dragMode = false,
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
+            modifier = Modifier
+                .width(200.dp)
+                .padding(Dimensions.Spacing.medium)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CounterWithExtraStepsPreview() {
+    JustCounterTheme {
+        CounterItem(
+            state = getPreviewCounter(withCustomSteps = true),
+            removeMode = false,
+            dragMode = false,
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
+            modifier = Modifier
+                .width(200.dp)
+                .padding(Dimensions.Spacing.medium)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CounterWithExtraStepsInRemoveModePreview() {
+    JustCounterTheme {
+        CounterItem(
+            state = getPreviewCounter(withCustomSteps = true),
+            removeMode = true,
+            dragMode = false,
+            callbacks = CounterItemCallbacks.getEmptyCallbacks(),
+            modifier = Modifier
+                .width(200.dp)
+                .padding(Dimensions.Spacing.medium)
+        )
     }
 }
