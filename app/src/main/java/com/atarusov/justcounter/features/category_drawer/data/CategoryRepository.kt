@@ -4,7 +4,7 @@ import com.atarusov.justcounter.common.Category
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
-    suspend fun getCategoriesFlow(): Flow<List<Category>>
+    fun getCategoriesFlow(): Flow<List<Category>>
     suspend fun addCategory(name: String)
     suspend fun renameCategory(categoryId: Int, newName: String)
     suspend fun removeCategory(categoryId: Int)

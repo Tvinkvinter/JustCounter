@@ -8,7 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
 class Bootstrapper @Inject constructor(
@@ -18,8 +18,7 @@ class Bootstrapper @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun bootstrap(categoryIds: StateFlow<Int?>): Flow<InternalAction> =
         categoryIds.flatMapLatest { categoryId ->
-        flow {
-            repository.getCountersOfCategory(categoryId).collect { countersOfCategory ->
+            repository.getCountersOfCategory(categoryId).transform { countersOfCategory ->
                 if (countersOfCategory.counters.isEmpty()) {
                     val newCounter = Counter(
                         title = defaultCounterTitles.random(),
@@ -34,6 +33,5 @@ class Bootstrapper @Inject constructor(
                 }
                 emit(InternalAction.LoadData(countersOfCategory))
             }
-        }
     }
 }

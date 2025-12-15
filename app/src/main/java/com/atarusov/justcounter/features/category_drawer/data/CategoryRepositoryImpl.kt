@@ -8,7 +8,7 @@ class CategoryRepositoryImpl @Inject constructor(
     val categoryDao: CategoryDao
 ) : CategoryRepository {
 
-    override suspend fun getCategoriesFlow(): Flow<List<Category>> = categoryDao.getCategories()
+    override fun getCategoriesFlow(): Flow<List<Category>> = categoryDao.getCategories()
     override suspend fun addCategory(name: String) = categoryDao.addCategory(Category(name))
     override suspend fun renameCategory(categoryId: Int, newName: String) =
         categoryDao.renameCategoryById(categoryId, newName)
