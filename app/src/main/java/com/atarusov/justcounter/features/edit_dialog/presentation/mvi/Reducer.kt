@@ -3,33 +3,33 @@ package com.atarusov.justcounter.features.edit_dialog.presentation.mvi
 import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.common.CounterColor
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction.*
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {
     fun reduce(previousState: State, internalAction: InternalAction): State =
         when (internalAction) {
-            is InternalAction.LoadCounterItem -> State(internalAction.counter)
-            is InternalAction.UpdateCounterItemTitleField ->
+            is LoadCounterItem -> State(internalAction.counter)
+            is UpdateCounterItemTitleField ->
                 previousState.copy(titleField = internalAction.newTextField)
 
-            is InternalAction.UpdateCounterItemValueField ->
+            is UpdateCounterItemValueField ->
                 previousState.copy(valueField = internalAction.newTextField)
 
-            is InternalAction.UpdateStepConfiguratorField -> updateStepConfiguratorField(
+            is UpdateStepConfiguratorField -> updateStepConfiguratorField(
                 previousState,
                 internalAction.stepIndex,
                 internalAction.newTextField
             )
 
-            InternalAction.RemoveLastStepField -> removeLastStepField(previousState)
-            InternalAction.AddStepField -> addStepField(previousState)
-            is InternalAction.UpdateCounterItemColor ->
-                updateCounterItemColor(previousState, internalAction.newColor)
+            RemoveLastStepField -> removeLastStepField(previousState)
+            AddStepField -> addStepField(previousState)
+            is UpdateCounterItemColor -> updateCounterItemColor(previousState, internalAction.newColor)
 
-            InternalAction.ClearFocus,
-            InternalAction.ShowEmptyTitleTip,
-            InternalAction.CloseEditCounterDialog -> previousState
+            ClearFocus,
+            ShowEmptyTitleTip,
+            CloseEditCounterDialog -> previousState
     }
 
     private fun updateStepConfiguratorField(

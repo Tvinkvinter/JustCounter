@@ -2,31 +2,38 @@ package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi
 
 import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction.*
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.State
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {
     fun reduce(previousState: State, internalAction: InternalAction): State =
         when (internalAction) {
-            is InternalAction.LoadData -> previousState.copy(
+            is LoadData -> previousState.copy(
                 category = internalAction.countersOfCategory.category,
                 counters = internalAction.countersOfCategory.counters
             )
-            is InternalAction.AddCounter -> addCounter(previousState, internalAction.counter)
-            is InternalAction.RemoveCounter -> removeCounter(previousState, internalAction.counterId)
-            is InternalAction.UpdateCounterValue -> updateCounterValue(
+            is AddCounter -> addCounter(previousState, internalAction.counter)
+            is RemoveCounter -> removeCounter(previousState, internalAction.counterId)
+            is UpdateCounterValue -> updateCounterValue(
                 previousState,
                 internalAction.counterId,
                 internalAction.newValue
             )
-            is InternalAction.SwapCounters -> swapCounters(previousState, internalAction.fromIndex, internalAction.toIndex)
-            InternalAction.SwitchRemoveMode -> previousState.copy(removeMode = !previousState.removeMode)
 
-            is InternalAction.ChangeCategory,
-            InternalAction.ShowDragTip,
-            InternalAction.ScrollDown,
-            is InternalAction.NavigateToCounterFullScreen,
-            is InternalAction.OpenEditCounterDialog -> previousState
+            is SwapCounters -> swapCounters(
+                previousState,
+                internalAction.fromIndex,
+                internalAction.toIndex
+
+            )
+            SwitchRemoveMode -> previousState.copy(removeMode = !previousState.removeMode)
+
+            is ChangeCategory,
+            ShowDragTip,
+            ScrollDown,
+            is NavigateToCounterFullScreen,
+            is OpenEditCounterDialog -> previousState
         }
 
     private fun addCounter(previousState: State, newCounter: Counter) =

@@ -1,13 +1,14 @@
 package com.atarusov.justcounter.features.counter_full_screen.presentation.mvi
 
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.InternalAction.*
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.State
 import javax.inject.Inject
 
 class Reducer @Inject constructor() {
     fun reduce(previousState: State, internalAction: InternalAction): State =
         when (internalAction) {
-            is InternalAction.LoadData -> when (previousState) {
+            is LoadData -> when (previousState) {
                 State.Loading -> State.Loaded(
                     removeMode = false,
                     categoryName = internalAction.data.categoryName,
@@ -19,19 +20,19 @@ class Reducer @Inject constructor() {
                 )
             }
 
-            is InternalAction.UpdateCounterValue -> when (previousState) {
+            is UpdateCounterValue -> when (previousState) {
                 State.Loading -> previousState
                 is State.Loaded -> previousState.copy(
                     counter = previousState.counter.copy(value = internalAction.newValue)
                 )
             }
 
-            InternalAction.SwitchRemoveMode -> when (previousState) {
+            SwitchRemoveMode -> when (previousState) {
                 State.Loading -> previousState
                 is State.Loaded -> previousState.copy(removeMode = !previousState.removeMode)
             }
 
-            InternalAction.NavigateBack,
-            is InternalAction.OpenEditCounterDialog -> previousState
+            NavigateBack,
+            is OpenEditCounterDialog -> previousState
         }
 }

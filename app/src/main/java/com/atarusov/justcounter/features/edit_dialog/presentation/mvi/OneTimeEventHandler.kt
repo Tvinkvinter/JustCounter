@@ -1,23 +1,24 @@
 package com.atarusov.justcounter.features.edit_dialog.presentation.mvi
 
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction.*
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.OneTimeEvent
 import javax.inject.Inject
 
 class OneTimeEventHandler @Inject constructor() {
     fun handleEvent(internalAction: InternalAction): OneTimeEvent? {
         return when (internalAction) {
-            InternalAction.ClearFocus -> OneTimeEvent.ClearFocus
-            InternalAction.CloseEditCounterDialog -> OneTimeEvent.CloseEditDialog
-            InternalAction.ShowEmptyTitleTip -> OneTimeEvent.ShowEmptyTitleTip
+            ClearFocus -> OneTimeEvent.ClearFocus
+            CloseEditCounterDialog -> OneTimeEvent.CloseEditDialog
+            ShowEmptyTitleTip -> OneTimeEvent.ShowEmptyTitleTip
 
-            is InternalAction.LoadCounterItem,
-            is InternalAction.UpdateCounterItemTitleField,
-            is InternalAction.UpdateCounterItemValueField,
-            is InternalAction.UpdateStepConfiguratorField,
-            InternalAction.RemoveLastStepField,
-            InternalAction.AddStepField,
-            is InternalAction.UpdateCounterItemColor -> null
+            is LoadCounterItem,
+            is UpdateCounterItemTitleField,
+            is UpdateCounterItemValueField,
+            is UpdateStepConfiguratorField,
+            RemoveLastStepField,
+            AddStepField,
+            is UpdateCounterItemColor -> null
         }
     }
 }

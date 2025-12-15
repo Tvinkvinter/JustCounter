@@ -2,6 +2,7 @@ package com.atarusov.justcounter.features.category_drawer.presentation.mvi
 
 import com.atarusov.justcounter.features.category_drawer.data.CategoryRepository
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.Action.*
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.InternalAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,19 +14,19 @@ class Actor @Inject constructor(
 ) {
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
-            is Action.SelectCategory -> flowOf(InternalAction.SelectCategory(action.categoryId))
-            is Action.AddCategory -> flow {
+            is SelectCategory -> flowOf(InternalAction.SelectCategory(action.categoryId))
+            is AddCategory -> flow {
                 repository.addCategory(action.name.trim())
                 emit(InternalAction.ScrollCategoryListDown)
             }
-            is Action.RenameCategory -> flow {
+            is RenameCategory -> flow {
                 repository.renameCategory(action.categoryId, action.newName.trim())
             }
-            is Action.RemoveCategory -> flow {
+            is RemoveCategory -> flow {
                 repository.removeCategory(action.categoryId)
                 if (action.isSelected) emit(InternalAction.SelectCategory(null))
             }
-            is Action.SwapCategories -> flow {
+            is SwapCategories -> flow {
                 emit(InternalAction.SwapCategories(action.firstIndex, action.secondIndex))
                 repository.swapCategories(action.firstIndex, action.secondIndex)
             }

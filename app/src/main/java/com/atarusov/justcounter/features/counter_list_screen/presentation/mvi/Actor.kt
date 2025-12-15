@@ -3,6 +3,7 @@ package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi
 import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.features.counter_list_screen.data.CounterListRepository
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.Action.*
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction
 import com.atarusov.justcounter.ui.theme.CounterColorProvider
 import kotlinx.coroutines.flow.Flow
@@ -17,17 +18,17 @@ class Actor @Inject constructor(
 
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
-            is Action.AddCounter -> createNewCounter(action.categoryId)
-            is Action.RemoveCounter -> removeCounter(action.counterId)
-            is Action.SwapCounters -> swapCounters(action.firstIndex, action.secondIndex)
-            is Action.MinusClick -> changeValue(action.counterId, action.oldValue, -action.step)
-            is Action.PlusClick -> changeValue(action.counterId, action.oldValue, action.step)
-            Action.TitleTap -> flowOf(InternalAction.ShowDragTip)
+            is AddCounter -> createNewCounter(action.categoryId)
+            is RemoveCounter -> removeCounter(action.counterId)
+            is SwapCounters -> swapCounters(action.firstIndex, action.secondIndex)
+            is MinusClick -> changeValue(action.counterId, action.oldValue, -action.step)
+            is PlusClick -> changeValue(action.counterId, action.oldValue, action.step)
+            TitleTap -> flowOf(InternalAction.ShowDragTip)
 
-            Action.SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
-            is Action.ChangeCategory -> flowOf(InternalAction.ChangeCategory(action.categoryId))
-            is Action.ExpandCounter -> flowOf(InternalAction.NavigateToCounterFullScreen(action.counter))
-            is Action.OpenCounterEditDialog -> flowOf(InternalAction.OpenEditCounterDialog(action.counter))
+            SwitchRemoveMode -> flowOf(InternalAction.SwitchRemoveMode)
+            is ChangeCategory -> flowOf(InternalAction.ChangeCategory(action.categoryId))
+            is ExpandCounter -> flowOf(InternalAction.NavigateToCounterFullScreen(action.counter))
+            is OpenCounterEditDialog -> flowOf(InternalAction.OpenEditCounterDialog(action.counter))
         }
     }
 

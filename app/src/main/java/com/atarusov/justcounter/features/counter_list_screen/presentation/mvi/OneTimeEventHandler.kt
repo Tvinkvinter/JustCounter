@@ -1,26 +1,26 @@
 package com.atarusov.justcounter.features.counter_list_screen.presentation.mvi
 
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction
+import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.InternalAction.*
 import com.atarusov.justcounter.features.counter_list_screen.presentation.mvi.entities.OneTimeEvent
 import javax.inject.Inject
 
 class OneTimeEventHandler @Inject constructor() {
     fun handleEvent(internalAction: InternalAction): OneTimeEvent? {
         return when (internalAction) {
-            is InternalAction.ChangeCategory -> OneTimeEvent.ChangeCategory(internalAction.categoryId)
-            InternalAction.ShowDragTip -> OneTimeEvent.ShowDragTip
-            InternalAction.ScrollDown -> OneTimeEvent.ScrollDown
-            is InternalAction.NavigateToCounterFullScreen ->
+            is ChangeCategory -> OneTimeEvent.ChangeCategory(internalAction.categoryId)
+            ShowDragTip -> OneTimeEvent.ShowDragTip
+            ScrollDown -> OneTimeEvent.ScrollDown
+            is NavigateToCounterFullScreen ->
                 OneTimeEvent.NavigateToCounterFullScreen(internalAction.counter)
-            is InternalAction.OpenEditCounterDialog ->
-                OneTimeEvent.OpenEditCounterDialog(internalAction.counter)
+            is OpenEditCounterDialog -> OneTimeEvent.OpenEditCounterDialog(internalAction.counter)
 
-            is InternalAction.LoadData,
-            is InternalAction.AddCounter,
-            is InternalAction.RemoveCounter,
-            is InternalAction.UpdateCounterValue,
-            is InternalAction.SwapCounters,
-            InternalAction.SwitchRemoveMode -> null
+            is LoadData,
+            is AddCounter,
+            is RemoveCounter,
+            is UpdateCounterValue,
+            is SwapCounters,
+            SwitchRemoveMode -> null
         }
     }
 }

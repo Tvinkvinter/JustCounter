@@ -4,6 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.atarusov.justcounter.common.Counter
 import com.atarusov.justcounter.features.edit_dialog.data.EditCounterRepository
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action
+import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.Action.*
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.InternalAction
 import com.atarusov.justcounter.features.edit_dialog.presentation.mvi.entities.State
 import kotlinx.coroutines.flow.Flow
@@ -22,16 +23,16 @@ class Actor @Inject constructor(
 
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
-            is Action.TitleInput -> updateCounterTitle(action.inputField)
-            is Action.TitleInputDone -> flowOf(InternalAction.ClearFocus)
-            is Action.ValueInput -> updateCounterValue(action.inputField)
-            is Action.ValueInputDone -> onValueInputDone(action.input)
-            is Action.StepInput -> updateStep(action.stepIndex, action.inputField)
-            Action.StepInputDone -> flowOf(InternalAction.ClearFocus)
-            Action.RemoveStep -> flowOf(InternalAction.RemoveLastStepField)
-            Action.AddStep -> flowOf(InternalAction.AddStepField)
-            is Action.ChangeColor -> flowOf(InternalAction.UpdateCounterItemColor(action.newColor))
-            is Action.CloseCounterEditDialog -> closeEditDialog(action.state, action.saveChanges)
+            is TitleInput -> updateCounterTitle(action.inputField)
+            is TitleInputDone -> flowOf(InternalAction.ClearFocus)
+            is ValueInput -> updateCounterValue(action.inputField)
+            is ValueInputDone -> onValueInputDone(action.input)
+            is StepInput -> updateStep(action.stepIndex, action.inputField)
+            StepInputDone -> flowOf(InternalAction.ClearFocus)
+            RemoveStep -> flowOf(InternalAction.RemoveLastStepField)
+            AddStep -> flowOf(InternalAction.AddStepField)
+            is ChangeColor -> flowOf(InternalAction.UpdateCounterItemColor(action.newColor))
+            is CloseCounterEditDialog -> closeEditDialog(action.state, action.saveChanges)
         }
     }
 
