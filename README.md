@@ -8,13 +8,18 @@ Just Counter is a simple and convenient click counter app that helps you keep sc
 - Add/remove counters
 - Edit title, value, custom steps and color of the counters
 - Reorder counters by dragging
+- Organize counters using customizable categories that can be reordered, edited, or removed
+- Full screen mode
 - Light & Dark mode
 
 ## Screens 📱
-<img width="200" src="https://github.com/user-attachments/assets/9015a817-8139-4c15-baf8-1bee31c661cd" />
-<img width="200" src="https://github.com/user-attachments/assets/658d3b89-10f4-4a71-aa02-95d6fa8084c1" />
-<img width="200" src="https://github.com/user-attachments/assets/810cbc7f-4807-49d6-9933-93c1018a3132" />
-<img width="200" src="https://github.com/user-attachments/assets/16053144-b2cb-4c86-b810-11612cdd7610" />
+<img width="200" src="https://github.com/user-attachments/assets/f80aba5f-2c1b-41de-b564-afefaccb5e6e" />
+<img width="200" src="https://github.com/user-attachments/assets/7cfdce1c-ac8f-487d-adb5-593669e1640b" />
+<img width="200" src="https://github.com/user-attachments/assets/edfb5f20-26f6-4478-9481-8fe6b071a4e3" />
+<br>
+<img width="200" src="https://github.com/user-attachments/assets/b6221089-80e2-47d2-9997-a7ffc391b011" />
+<img width="200" src="https://github.com/user-attachments/assets/b64ed5d0-4c23-4d98-876f-d160240280c3" />
+
 
 
 ## Technologies and Patterns ⚒️
