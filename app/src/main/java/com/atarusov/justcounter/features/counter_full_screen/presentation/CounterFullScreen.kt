@@ -13,6 +13,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
@@ -22,10 +25,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atarusov.justcounter.R
 import com.atarusov.justcounter.common.Counter
+import com.atarusov.justcounter.features.counter_full_screen.presentation.components.CounterFullScreenCard
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.OneTimeEvent
 import com.atarusov.justcounter.features.counter_full_screen.presentation.mvi.entities.State
-import com.atarusov.justcounter.features.counter_full_screen.presentation.components.CounterFullScreenCard
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.dangerRed
@@ -98,6 +101,8 @@ private fun CounterFullScreenTopAppBar(
     onBackPressed: () -> Unit,
     onRemoveModeSwitch: () -> Unit
 ) {
+    var isNavigatingBack by remember { mutableStateOf(false) }
+
     TopAppBar(
         title = {
             Text(
@@ -108,10 +113,14 @@ private fun CounterFullScreenTopAppBar(
         modifier = Modifier.shadow(Dimensions.Elevation.topAppBar),
         navigationIcon = {
             IconButton(
-                onClick = onBackPressed,
+                onClick = {
+                    onBackPressed()
+                    isNavigatingBack = true
+                },
                 modifier = Modifier
                     .padding(horizontal = Dimensions.Spacing.small)
-                    .size(Dimensions.Size.medium)
+                    .size(Dimensions.Size.medium),
+                enabled = !isNavigatingBack
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back_arrow),
