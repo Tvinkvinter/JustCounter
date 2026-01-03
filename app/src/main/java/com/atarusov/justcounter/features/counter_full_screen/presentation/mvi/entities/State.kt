@@ -10,6 +10,7 @@ sealed class State {
         val categoryName: String?,
         val counter: Counter
     ) : State()
+    data object ItemRemoved : State()
 
     companion object {
         fun getPreviewState(removeMode: Boolean) = Loaded(

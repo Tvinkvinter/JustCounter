@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CounterFullScreenRepositoryImpl @Inject constructor(
     val counterFullScreenDao: CounterFullScreenDao
 ) : CounterFullScreenRepository {
-    override suspend fun getCounterFlowById(counterId: String): Flow<CounterWithCategoryName> =
+    override suspend fun getCounterFlowById(counterId: String): Flow<CounterWithCategoryName?> =
         counterFullScreenDao.getCounterWithCategoryNameById(counterId)
 
     override suspend fun updateCounterValue(counterId: String, newValue: Int) =

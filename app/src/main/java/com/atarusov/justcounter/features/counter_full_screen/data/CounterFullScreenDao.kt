@@ -15,7 +15,7 @@ interface CounterFullScreenDao {
     LEFT JOIN categories ON counters.categoryId = categories.id
     WHERE counters.id = :id
     """)
-    fun getCounterWithCategoryNameById(id: String): Flow<CounterWithCategoryName>
+    fun getCounterWithCategoryNameById(id: String): Flow<CounterWithCategoryName?>
 
     @Query("UPDATE counters SET value = :newValue WHERE id = :id")
     suspend fun updateCounterValue(id: String, newValue: Int)

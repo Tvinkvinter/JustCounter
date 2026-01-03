@@ -50,6 +50,7 @@ fun CounterFullScreen(
     when (val state = stateVM) {
         is State.Loading -> {}
         is State.Loaded -> CounterFullScreenUI(state, viewModel::onAction)
+        is State.ItemRemoved -> {}
     }
 }
 
