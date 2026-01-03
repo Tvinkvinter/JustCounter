@@ -16,8 +16,8 @@ android {
         applicationId = "com.atarusov.justcounter"
         minSdk = 28
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.2.0"
+        versionCode = 7
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
