@@ -22,10 +22,14 @@ interface CounterFullScreenDao {
 
     @Transaction
     suspend fun deleteCounterById(id: String) {
+        val counterCategoryId = getCounterCategoryIdById(id)
         val counterPosition = getCounterPositionById(id)
         deleteRowById(id)
-        shiftPositions(counterPosition)
+        shiftPositions(counterCategoryId, counterPosition)
     }
+
+    @Query("SELECT categoryId FROM counters WHERE id = :id")
+    suspend fun getCounterCategoryIdById(id: String): Int?
 
     @Query("SELECT position FROM counters WHERE id = :id")
     suspend fun getCounterPositionById(id: String): Int
@@ -33,6 +37,14 @@ interface CounterFullScreenDao {
     @Query("DELETE FROM counters WHERE id = :id")
     suspend fun deleteRowById(id: String)
 
-    @Query("UPDATE counters SET position = position - 1 WHERE position > :deletedPosition")
-    suspend fun shiftPositions(deletedPosition: Int)
+    @Query("""
+        UPDATE counters
+        SET position = position - 1
+        WHERE position > :deletedPosition
+            AND (
+                (:categoryId IS NULL AND categoryId IS NULL)
+                OR (:categoryId IS NOT NULL AND categoryId = :categoryId)
+            )
+    """)
+    suspend fun shiftPositions(categoryId: Int?, deletedPosition: Int)
 }
