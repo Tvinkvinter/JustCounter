@@ -124,7 +124,7 @@ private fun CounterFullScreenTopAppBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back_arrow),
-                    contentDescription = stringResource(R.string.counter_list_screen_add_btn_description),
+                    contentDescription = stringResource(R.string.counter_full_screen_back_btn_description),
                     modifier = Modifier.size(Dimensions.Size.small)
                 )
             }
@@ -144,7 +144,7 @@ private fun CounterFullScreenTopAppBar(
                         if (removeMode) R.drawable.ic_trash_can_opened
                         else R.drawable.ic_trash_can
                     ),
-                    contentDescription = stringResource(R.string.counter_list_screen_add_btn_description),
+                    contentDescription = stringResource(R.string.counter_list_screen_trash_can_btn_description),
                     modifier = Modifier.size(Dimensions.Size.small)
                 )
             }

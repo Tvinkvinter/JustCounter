@@ -126,7 +126,10 @@ fun CounterFullScreenCard(
                             if (removeMode) R.drawable.ic_cross
                             else R.drawable.ic_pencil
                         ),
-                        contentDescription = stringResource(R.string.counter_full_screen_back_btn_description),
+                        contentDescription = stringResource(
+                            if (removeMode) R.string.counter_card_cross_btn_description
+                            else R.string.counter_card_edit_btn_description
+                        ),
                         modifier = Modifier
                             .size(Dimensions.Size.medium)
                             .graphicsLayer { alpha = if (removeMode) 1f else 0.5f }
