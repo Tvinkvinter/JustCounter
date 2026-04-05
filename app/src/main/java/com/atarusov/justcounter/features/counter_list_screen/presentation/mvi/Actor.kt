@@ -20,7 +20,7 @@ class Actor @Inject constructor(
         return when (action) {
             is AddCounter -> createNewCounter(action.categoryId)
             is RemoveCounter -> removeCounter(action.counterId)
-            is SwapCounters -> swapCounters(action.firstIndex, action.secondIndex)
+            is SwapCounters -> swapCounters(action.categoryId, action.firstIndex, action.secondIndex)
             is MinusClick -> changeValue(action.counterId, action.oldValue, -action.step)
             is PlusClick -> changeValue(action.counterId, action.oldValue, action.step)
             TitleTap -> flowOf(InternalAction.ShowDragTip)
@@ -58,8 +58,8 @@ class Actor @Inject constructor(
         repository.updateCounterValue(counterId, newValue)
     }
 
-    private fun swapCounters(firstIndex: Int, secondIndex: Int) = flow {
+    private fun swapCounters(categoryId: Int?, firstIndex: Int, secondIndex: Int) = flow {
         emit(InternalAction.SwapCounters(firstIndex, secondIndex))
-        repository.swapCounters(firstIndex, secondIndex)
+        repository.swapCounters(categoryId, firstIndex, secondIndex)
     }
 }

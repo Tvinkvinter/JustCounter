@@ -25,6 +25,6 @@ class CounterListRepositoryImpl @Inject constructor(
 
     override suspend fun removeCounter(counterId: String) = counterListDao.deleteCounterById(counterId)
 
-    override suspend fun swapCounters(firstPosition: Int, secondPosition: Int) =
-        counterListDao.swapCountersOnPositions(firstPosition, secondPosition)
+    override suspend fun swapCounters(categoryId: Int?, firstPosition: Int, secondPosition: Int) =
+        counterListDao.swapCountersOnPositions(categoryId, firstPosition, secondPosition)
 }

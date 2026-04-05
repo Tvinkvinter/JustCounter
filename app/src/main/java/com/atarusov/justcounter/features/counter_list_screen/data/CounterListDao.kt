@@ -72,13 +72,21 @@ interface CounterListDao {
     suspend fun shiftPositions(deletedPosition: Int)
 
     @Transaction
-    suspend fun swapCountersOnPositions(firstPosition: Int, secondPosition: Int) {
+    suspend fun swapCountersOnPositions(categoryId: Int?, firstPosition: Int, secondPosition: Int) {
         val temp = -1
-        setPosition(firstPosition, temp)
-        setPosition(secondPosition, firstPosition)
-        setPosition(temp, secondPosition)
+        setPosition(categoryId, firstPosition, temp)
+        setPosition(categoryId, secondPosition, firstPosition)
+        setPosition(categoryId, temp, secondPosition)
     }
 
-    @Query("UPDATE counters SET position = :newPosition WHERE position = :oldPosition")
-    suspend fun setPosition(oldPosition: Int, newPosition: Int)
+    @Query("""
+        UPDATE counters
+        SET position = :newPosition
+        WHERE position = :oldPosition
+            AND (
+                (:categoryId IS NULL AND categoryId IS NULL)
+                OR (:categoryId IS NOT NULL AND categoryId = :categoryId)
+            )
+    """)
+    suspend fun setPosition(categoryId: Int?, oldPosition: Int, newPosition: Int)
 }

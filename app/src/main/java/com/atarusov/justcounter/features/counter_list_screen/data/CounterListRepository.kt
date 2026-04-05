@@ -9,5 +9,5 @@ interface CounterListRepository {
     suspend fun addCounter(counter: Counter)
     suspend fun updateCounterValue(counterId: String, newValue: Int)
     suspend fun removeCounter(counterId: String)
-    suspend fun swapCounters(firstPosition: Int, secondPosition: Int)
+    suspend fun swapCounters(categoryId: Int?, firstPosition: Int, secondPosition: Int)
 }

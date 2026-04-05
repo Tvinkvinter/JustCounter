@@ -139,6 +139,7 @@ private fun CounterListScreenUI(
             lazyGridState = lazyGridState,
             paddingValues = paddingValues,
             removeMode = state.removeMode,
+            categoryId = state.category?.id,
             counters = state.counters,
             onAction = onAction
         )
@@ -226,12 +227,13 @@ private fun CounterList(
     lazyGridState: LazyGridState,
     paddingValues: PaddingValues,
     removeMode: Boolean,
+    categoryId: Int?,
     counters: List<Counter>,
     onAction: (action: Action) -> Unit
 ) {
     val reorderableLazyGridState =
         rememberReorderableLazyGridState(lazyGridState) { first, second ->
-            onAction(Action.SwapCounters(first.index, second.index))
+            onAction(Action.SwapCounters(categoryId, first.index, second.index))
         }
 
     LazyVerticalGrid(
