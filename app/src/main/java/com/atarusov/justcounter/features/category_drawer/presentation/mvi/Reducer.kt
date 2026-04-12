@@ -17,6 +17,10 @@ class Reducer @Inject constructor() {
             )
 
             ScrollCategoryListDown -> previousState
+            is UpdateHintsState -> previousState.copy(
+                editDeleteHintDismissed = internalAction.hintsState.editDeleteHintDismissed,
+                moveHintDismissed = internalAction.hintsState.moveHintDismissed,
+            )
         }
 
     private fun swapCategories(previousState: State, firstIndex: Int, secondIndex: Int): State {

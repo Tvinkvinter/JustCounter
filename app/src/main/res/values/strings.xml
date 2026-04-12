@@ -19,6 +19,7 @@
     <string name="drawer_category_item_add_category_text">Add category</string>
     <string name="drawer_category_list_edit_delete_hint">Swipe a category left to edit or delete it</string>
     <string name="drawer_category_list_move_hint">Press and hold a category to move it</string>
+    <string name="hint_confirm_button">Got it</string>
 
     <string name="counter_list_screen_open_drawer">Open side menu</string>
     <string name="counter_list_screen_add_btn_description">Add new counter</string>

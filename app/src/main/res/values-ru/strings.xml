@@ -16,6 +16,7 @@
     <string name="drawer_category_item_menu_confirm_input_description">Подтвердить ввод</string>
     <string name="drawer_category_item_add_category_text">Добавить категорию</string>
     <string name="drawer_category_list_move_hint">Зажмите категорию, чтобы переместить её</string>
+    <string name="hint_confirm_button">Понятно</string>
     <string name="counter_list_screen_open_drawer">Открыть боковое меню</string>
     <string name="counter_list_screen_add_btn_description">Добавить новый счетчик</string>
     <string name="counter_list_screen_trash_can_btn_description">Переключить режим удаления</string>

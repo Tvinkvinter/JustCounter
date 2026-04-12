@@ -16,6 +16,7 @@
     <string name="drawer_category_item_menu_confirm_input_description">Confirmar la entrada</string>
     <string name="drawer_category_item_add_category_text">Agregar categoría</string>
     <string name="drawer_category_list_move_hint">Mantén pulsada una categoría para moverla</string>
+    <string name="hint_confirm_button">Entendido</string>
     <string name="counter_list_screen_open_drawer">Abrir el menú lateral</string>
     <string name="counter_list_screen_add_btn_description">Añadir nuevo contador</string>
     <string name="counter_list_screen_trash_can_btn_description">Cambiar al modo de eliminación</string>

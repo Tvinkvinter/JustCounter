@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,6 +34,7 @@ import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entiti
 import com.atarusov.justcounter.features.category_drawer.presentation.components.AddCategoryItem
 import com.atarusov.justcounter.features.category_drawer.presentation.components.NoCategoryItem
 import com.atarusov.justcounter.features.category_drawer.presentation.components.RegularCategoryItem
+import com.atarusov.justcounter.shared_features.hints.presentation.DismissableHintCard
 import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import sh.calvin.reorderable.DragGestureDetector
@@ -87,8 +87,10 @@ fun DrawerContent(
         )
         Spacer(Modifier.height(Dimensions.Spacing.small))
         CategoryList(state, categoryLazyListState, onAction)
-        Spacer(Modifier.height(Dimensions.Spacing.large))
-        DrawerHints()
+        if (!state.editDeleteHintDismissed || !state.moveHintDismissed) {
+            Spacer(Modifier.height(Dimensions.Spacing.large))
+            DrawerHints(state = state, onAction = onAction)
+        }
     }
 }
 
@@ -165,23 +167,28 @@ fun CategoryList(
 }
 
 @Composable
-fun DrawerHints() {
-    Column {
-        Text(
-            text = stringResource(R.string.drawer_category_list_edit_delete_hint),
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.labelSmall,
-        )
-        Spacer(Modifier.height(Dimensions.Spacing.small))
-        Text(
-            text = stringResource(R.string.drawer_category_list_move_hint),
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.labelSmall,
-        )
+fun DrawerHints(
+    state: State,
+    onAction: (Action) -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = Dimensions.Spacing.medium)
+    ) {
+        if (!state.editDeleteHintDismissed) {
+            DismissableHintCard(
+                text = stringResource(R.string.drawer_category_list_edit_delete_hint),
+                onDismiss = { onAction(Action.DismissEditDeleteHint) }
+            )
+        }
+        if (!state.editDeleteHintDismissed && !state.moveHintDismissed) {
+            Spacer(Modifier.height(Dimensions.Spacing.small))
+        }
+        if (!state.moveHintDismissed) {
+            DismissableHintCard(
+                text = stringResource(R.string.drawer_category_list_move_hint),
+                onDismiss = { onAction(Action.DismissMoveHint) }
+            )
+        }
     }
 }
 

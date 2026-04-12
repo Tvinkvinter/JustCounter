@@ -12,7 +12,8 @@ class OneTimeEventHandler @Inject constructor() {
             is ScrollCategoryListDown -> OneTimeEvent.ScrollCategoryListDown
 
             is SwapCategories,
-            is LoadCategories -> null
+            is LoadCategories,
+            is UpdateHintsState -> null
         }
     }
 }

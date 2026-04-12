@@ -1,5 +1,6 @@
 package com.atarusov.justcounter.features.category_drawer.presentation.mvi
 
+import com.atarusov.justcounter.shared_features.hints.data.HintsRepository
 import com.atarusov.justcounter.features.category_drawer.data.CategoryRepository
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.Action
 import com.atarusov.justcounter.features.category_drawer.presentation.mvi.entities.Action.*
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class Actor @Inject constructor(
-    val repository: CategoryRepository
+    val repository: CategoryRepository,
+    val hintsRepository: HintsRepository,
 ) {
     fun handleAction(action: Action): Flow<InternalAction> {
         return when (action) {
@@ -29,6 +31,12 @@ class Actor @Inject constructor(
             is SwapCategories -> flow {
                 emit(InternalAction.SwapCategories(action.firstIndex, action.secondIndex))
                 repository.swapCategories(action.firstIndex, action.secondIndex)
+            }
+            DismissEditDeleteHint -> flow {
+                hintsRepository.dismissEditDeleteHint()
+            }
+            DismissMoveHint -> flow {
+                hintsRepository.dismissMoveHint()
             }
         }
     }

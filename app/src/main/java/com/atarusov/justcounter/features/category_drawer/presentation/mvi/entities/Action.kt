@@ -6,4 +6,6 @@ sealed class Action {
     data class RenameCategory(val categoryId: Int, val newName: String) : Action()
     data class RemoveCategory(val categoryId: Int, val isSelected: Boolean) : Action()
     data class SwapCategories(val firstIndex: Int, val secondIndex: Int) : Action()
+    data object DismissEditDeleteHint : Action()
+    data object DismissMoveHint : Action()
 }
