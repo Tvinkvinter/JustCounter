@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("androidx.room") version "2.8.4"
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -88,6 +89,9 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.reorderable)
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
