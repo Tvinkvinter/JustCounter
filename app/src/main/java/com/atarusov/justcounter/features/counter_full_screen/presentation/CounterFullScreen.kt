@@ -68,20 +68,36 @@ fun CounterFullScreenUI(
                 title = state.categoryName ?: stringResource(R.string.app_name),
                 removeMode = state.removeMode,
                 onBackPressed = { onAction(Action.BackPressed) },
-                onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
+                onRemoveModeSwitch = {
+                    onAction(Action.SwitchRemoveMode(enabled = !state.removeMode))
+                }
             )
         },
     ) { paddingValues ->
         val counterFullScreenCallbacks = CounterFullScreenCallbacks(
             onPLusClick = { step ->
-                onAction(Action.PlusClick(state.counter.id, state.counter.value, step))
+                onAction(
+                    Action.PlusClick(
+                        state.counter.id,
+                        state.counter.value,
+                        step,
+                        state.counter.steps != listOf(1),
+                    )
+                )
             },
             onMinusClick = { step ->
-                onAction(Action.MinusClick(state.counter.id, state.counter.value, step))
+                onAction(
+                    Action.MinusClick(
+                        state.counter.id,
+                        state.counter.value,
+                        step,
+                        state.counter.steps != listOf(1),
+                    )
+                )
             },
             onShrinkClick = { onAction(Action.BackPressed) },
             onEditClick = { onAction(Action.OpenCounterEditDialog(state.counter)) },
-            onRemoveClick = { onAction(Action.RemoveCounter(state.counter.id)) },
+            onRemoveClick = { onAction(Action.RemoveCounter(state.counter)) },
         )
 
         CounterFullScreenCard(

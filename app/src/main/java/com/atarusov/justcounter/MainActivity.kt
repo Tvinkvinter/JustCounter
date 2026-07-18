@@ -7,12 +7,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.atarusov.justcounter.navigation.SetupNavGraph
+import com.atarusov.justcounter.shared_features.analytics.AnalyticsTracker
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import dagger.hilt.android.AndroidEntryPoint
-
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var analyticsTracker: AnalyticsTracker
 
     lateinit var navController: NavHostController
 
@@ -23,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JustCounterTheme {
                 navController = rememberNavController()
-                SetupNavGraph(navController)
+                SetupNavGraph(navController, analyticsTracker)
             }
         }
     }

@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -55,6 +56,7 @@ import com.atarusov.justcounter.ui.theme.Dimensions
 import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import com.atarusov.justcounter.ui.theme.dangerRed
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
@@ -63,7 +65,8 @@ import sh.calvin.reorderable.rememberReorderableLazyGridState
 fun CounterListScreen(
     onNavigateToCounterFullScreen: (counter: Counter) -> Unit,
     onNavigateToEditDialog: (counter: Counter) -> Unit,
-    viewModel: CounterListScreenViewModel = hiltViewModel()
+    onDrawerVisibilityChanged: suspend (isVisible: Boolean) -> Unit,
+    viewModel: CounterListScreenViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -87,6 +90,14 @@ fun CounterListScreen(
                 is OneTimeEvent.OpenEditCounterDialog -> onNavigateToEditDialog(event.counter)
             }
         }
+    }
+
+    LaunchedEffect(drawerState) {
+        snapshotFlow { drawerState.currentValue }
+            .distinctUntilChanged()
+            .collect { drawerValue ->
+                onDrawerVisibilityChanged(drawerValue == DrawerValue.Open)
+            }
     }
 
     ModalNavigationDrawer(
@@ -125,7 +136,9 @@ private fun CounterListScreenUI(
                 removeMode = state.removeMode,
                 categoryName = state.category?.name  ?: stringResource(R.string.app_name),
                 onDrawerIconClick = onDrawerIconClick,
-                onRemoveModeSwitch = { onAction(Action.SwitchRemoveMode) }
+                onRemoveModeSwitch = {
+                    onAction(Action.SwitchRemoveMode(enabled = !state.removeMode))
+                }
             )
         },
         floatingActionButton = {
@@ -255,14 +268,28 @@ private fun CounterList(
             val counterItemCallbacks = CounterItemCallbacks(
                 onCounterTap = { onAction(Action.TitleTap) },
                 onPLusClick = { step ->
-                    onAction(Action.PlusClick(counter.id, counter.value, step))
+                    onAction(
+                        Action.PlusClick(
+                            counter.id,
+                            counter.value,
+                            step,
+                            counter.steps != listOf(1),
+                        )
+                    )
                 },
                 onMinusClick = { step ->
-                    onAction(Action.MinusClick(counter.id, counter.value, step))
+                    onAction(
+                        Action.MinusClick(
+                            counter.id,
+                            counter.value,
+                            step,
+                            counter.steps != listOf(1),
+                        )
+                    )
                 },
                 onEditClick = { onAction(Action.OpenCounterEditDialog(counter)) },
                 onExpandClick = { onAction(Action.ExpandCounter(counter)) },
-                onRemoveClick = { onAction(Action.RemoveCounter(counter.id)) },
+                onRemoveClick = { onAction(Action.RemoveCounter(counter)) },
             )
 
             ReorderableItem(

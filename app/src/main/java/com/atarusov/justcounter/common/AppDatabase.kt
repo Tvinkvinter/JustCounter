@@ -8,6 +8,7 @@ import com.atarusov.justcounter.features.category_drawer.data.CategoryDao
 import com.atarusov.justcounter.features.counter_full_screen.data.CounterFullScreenDao
 import com.atarusov.justcounter.features.counter_list_screen.data.CounterListDao
 import com.atarusov.justcounter.features.edit_dialog.data.EditCounterDao
+import com.atarusov.justcounter.shared_features.analytics.data.AnalyticsDao
 
 @Database(
     entities = [Counter::class, Category::class],
@@ -20,4 +21,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun counterFullScreenDao(): CounterFullScreenDao
     abstract fun counterListDao(): CounterListDao
     abstract fun editCounter(): EditCounterDao
+    abstract fun analyticsDao(): AnalyticsDao
 }
