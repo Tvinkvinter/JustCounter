@@ -1,5 +1,9 @@
 package com.atarusov.justcounter.features.category_drawer.presentation
 
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,6 +44,9 @@ import com.atarusov.justcounter.ui.theme.JustCounterTheme
 import sh.calvin.reorderable.DragGestureDetector
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun Drawer(
@@ -91,6 +98,8 @@ fun DrawerContent(
             Spacer(Modifier.height(Dimensions.Spacing.large))
             DrawerHints(state = state, onAction = onAction)
         }
+        Spacer(modifier = Modifier.weight(1f))
+        FeedbackEmailText()
     }
 }
 
@@ -212,4 +221,44 @@ fun DrawerPreview() {
             drawerState = rememberDrawerState(DrawerValue.Open)
         ) { }
     }
+}
+
+@Composable
+private fun FeedbackEmailText() {
+    val email = stringResource(R.string.drawer_category_email)
+
+    val annotatedText = buildAnnotatedString {
+        append(stringResource(R.string.drawer_category_feedback_text))
+
+        val start = length
+        append(email)
+        val end = length
+
+        addLink(
+            LinkAnnotation.Url(
+                url = "mailto:$email",
+                styles = TextLinkStyles(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        textDecoration = TextDecoration.Underline
+                    )
+                )
+            ),
+            start = start,
+            end = end
+        )
+    }
+
+    Text(
+        text = annotatedText,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Dimensions.Spacing.medium)
+            .padding(bottom = Dimensions.Spacing.medium),
+        style = MaterialTheme.typography.bodyMedium.copy(
+            textAlign = TextAlign.Center,
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    )
 }

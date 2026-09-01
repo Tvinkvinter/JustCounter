@@ -20,6 +20,8 @@
     <string name="drawer_category_list_edit_delete_hint">Swipe a category left to edit or delete it</string>
     <string name="drawer_category_list_move_hint">Press and hold a category to move it</string>
     <string name="hint_confirm_button">Got it</string>
+    <string name="drawer_category_email" translatable="false">daylightsupport@gmail.com</string>
+    <string name="drawer_category_feedback_text">Have feedback or suggestions?\nEmail us at\u00A0</string>
 
     <string name="counter_list_screen_open_drawer">Open side menu</string>
     <string name="counter_list_screen_add_btn_description">Add new counter</string>
