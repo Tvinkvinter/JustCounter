@@ -57,4 +57,6 @@
     <string name="drawer_category_item_selected_description">Seleccionada</string>
     <string name="drawer_category_list_edit_delete_hint">Desliza a la izquierda sobre una categoría para editarla o eliminarla</string>
 
+    <string name="shortcut_short_label">Contáctanos</string>
+    <string name="shortcut_long_label">¿Algo va mal? Avísanos</string>
 </resources>
