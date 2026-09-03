@@ -57,4 +57,6 @@
     <string name="drawer_category_item_selected_description">Выбрано</string>
     <string name="drawer_category_list_edit_delete_hint">Смахните категорию влево, чтобы изменить или удалить её</string>
 
+    <string name="shortcut_short_label">Связаться с нами</string>
+    <string name="shortcut_long_label">Что-то не так? Напишите нам</string>
 </resources>

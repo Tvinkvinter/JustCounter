@@ -59,6 +59,9 @@
     <string name="default_counter_name_capybara">Capybara</string>
     <string name="default_counter_name_fennec_fox">Fennec fox</string>
 
+    <string name="shortcut_short_label">Contact us</string>
+    <string name="shortcut_long_label">Something wrong? Let us know</string>
+
     <string-array name="default_counter_names">
         <item>@string/default_counter_name_fox</item>
         <item>@string/default_counter_name_bunny</item>
